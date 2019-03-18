@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import './App.scss';
-import Login from './components/log-in/log-in.js';
+import Navbar from './components/navbar/navbar';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <Login/>
+      <div>
+        <Navbar></Navbar>
       </div>
     );
   }

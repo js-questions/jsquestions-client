@@ -1,0 +1,24 @@
+$bg-color: rgb(33, 35, 51);
+$yellow-color: rgb(255, 216, 102);
+$white-color: rgb(255, 255, 255);
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  background-color: $bg-color;
+  height: 100px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.navbar-component {
+  display: flex;
+  flex-direction: row;
+}
+
+.navbar-item {
+  margin-right: 15px;
+  font-weight: bold;
+  color: $white-color;
+}

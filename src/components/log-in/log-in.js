@@ -13,7 +13,7 @@ class Login extends Component {
       email: '',
       password: '',
       // url: 'https://private-90f3d7-jsquestions.apiary-mock.com',
-      url: process.env.REACT_APP_URL,
+      url: process.env.REACT_APP_END_POINT_URL,
       userExists: false
     }
     this.handleSignup = this.handleSignup.bind(this);
@@ -64,9 +64,9 @@ class Login extends Component {
         localStorage.setItem('token', 'credentialsnotfound');
       }
   }
-  
+
   render() {
-    
+
     if (!this.state.userExists) {
       return(
         <div className="ooo-signup">
