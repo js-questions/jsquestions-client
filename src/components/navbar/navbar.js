@@ -1,21 +1,33 @@
 import React from 'react';
 import './navbar.scss';
-
 import { connect } from 'react-redux';
 import { setToken } from '../../redux/actions.js';
-
 import Login from '../log-in/log-in.js';
+import logo from '../../assets/square-logo.png';
+import token from '../../assets/token.png';
 
 class Navbar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      showSignup: false
+      showSignup: false,
+      openModal: true
     }
+  }
+
+  componentDidMount = () => {
+    this.checkToken();
   }
 
   toggleSignUp = () => {
     this.setState({showSignup: !this.state.showSignup})
+  }
+
+  checkToken = () => {
+    const checkToken = localStorage.getItem('token');
+    if (checkToken) {
+      return this.props.setToken(checkToken);
+    }
   }
 
   loginProcess = () => {
@@ -25,9 +37,12 @@ class Navbar extends React.Component {
     else {
       return (
         <div className="navbar-component">
-          <div className="navbar-item">Karma</div>
-          <div className="navbar-item">Gems</div>
-          <div className="navbar-item">Picture</div>
+          <div className="navbar-item">{this.props.user.karma}<span role="img" className="navbar-icon" aria-label="karma"> 🙏</span></div>
+          <div className="navbar-item">{this.props.user.credits}<img src={token} className="navbar-icon" width="18px" alt="tokens"/></div>
+          <div className="navbar-item">
+            <img src={this.props.user.profileBadge} width="50px" alt="profile-badge"/>
+            <p id="username">{this.props.user.username}</p>  
+          </div>
         </div>
       )
     }
@@ -36,7 +51,7 @@ class Navbar extends React.Component {
 
   showSignupModal = () => {
     if (this.state.showSignup) {
-      return <Login/>
+      return <Login close={this.toggleSignUp}/>
     }
   }
 
@@ -46,6 +61,7 @@ class Navbar extends React.Component {
       <div>
         <div className="navbar">
           <div className="navbar-component">
+            <div className="navbar-item"><img src={logo} width="55px" alt="logo"/></div>
             <div className="navbar-item">Ask for help.</div>
             <div className="navbar-item">Help others.</div>
           </div>

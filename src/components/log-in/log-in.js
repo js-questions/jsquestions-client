@@ -12,7 +12,6 @@ class Login extends Component {
       username: '',
       email: '',
       password: '',
-      // url: 'https://private-90f3d7-jsquestions.apiary-mock.com',
       url: process.env.REACT_APP_END_POINT_URL,
       userExists: false
     }
@@ -39,7 +38,7 @@ class Login extends Component {
      .then(res => {
       localStorage.setItem('token', res.token);
       this.props.setToken(res.token)
-      console.log('user', this.props.user)
+      this.props.close()
      })
 
   }
@@ -58,7 +57,7 @@ class Login extends Component {
       .then(res => {
         localStorage.setItem('token', res.token);
         this.props.setToken(res.token)
-        console.log('user', this.props.user)
+        this.props.close()
       })
       if (!res) {
         localStorage.setItem('token', 'credentialsnotfound');
@@ -69,27 +68,31 @@ class Login extends Component {
 
     if (!this.state.userExists) {
       return(
-        <div className="ooo-signup">
-        <button>Open Login Form</button>
-          <form onSubmit={this.handleSignup}>
-          <input type='text' placeholder='Username' value={this.state.username} onChange={(event) => this.setState({username: event.target.value}, () => console.log(this.state.username))}/>
-            <input type='text' placeholder='E-mail address' value={this.state.email} onChange={(event) => this.setState({email: event.target.value}, () => console.log(this.state.email))}/>
-            <input type='text' placeholder='Password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value}, () => console.log(this.state.email))}/>
-            <button>Sign up</button>
-          </form>
-          <button onClick={() => this.setState({userExists: !this.state.userExists})}>I already have an account</button>
+        <div className="backdrop">
+          <div className="modal">
+            <button onClick={this.props.close}>X</button>
+            <form onSubmit={this.handleSignup}>
+            <input type='text' placeholder='Username' value={this.state.username} onChange={(event) => this.setState({username: event.target.value}, () => console.log(this.state.username))}/>
+              <input type='text' placeholder='E-mail address' value={this.state.email} onChange={(event) => this.setState({email: event.target.value}, () => console.log(this.state.email))}/>
+              <input type='text' placeholder='Password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value}, () => console.log(this.state.email))}/>
+              <button>Sign up</button>
+            </form>
+            <button onClick={() => this.setState({userExists: !this.state.userExists})}>I already have an account</button>
+          </div>
         </div>
       )
     } else {
       return(
-        <div className="ooo-login">
-        <button>Open Login Form</button>
-          <form onSubmit={this.handleLogin}>
-            <input type='text' placeholder='E-mail address' value={this.state.email} onChange={(event) => this.setState({email: event.target.value}, () => console.log(this.state.email))}/>
-            <input type='text' placeholder='Password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value}, () => console.log(this.state.email))}/>
-            <button>Sign in</button>
-          </form>
-          <button onClick={() => this.setState({userExists: !this.state.userExists})}>I don't have an account</button>
+        <div className="backdrop">
+          <div className="modal">
+          <button onClick={this.props.close}>X</button>
+            <form onSubmit={this.handleLogin}>
+              <input type='text' placeholder='E-mail address' value={this.state.email} onChange={(event) => this.setState({email: event.target.value}, () => console.log(this.state.email))}/>
+              <input type='text' placeholder='Password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value}, () => console.log(this.state.email))}/>
+              <button>Sign in</button>
+            </form>
+            <button onClick={() => this.setState({userExists: !this.state.userExists})}>I don't have an account</button>
+          </div>
         </div>
       )
     }

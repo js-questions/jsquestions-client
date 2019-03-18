@@ -15,10 +15,21 @@ $white-color: rgb(255, 255, 255);
 .navbar-component {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .navbar-item {
   margin-right: 15px;
   font-weight: bold;
   color: $white-color;
+}
+
+.navbar-icon {
+  margin: 0 5px;
+}
+
+#username {
+  font-size: .8em;
+  margin: 0;
+  padding: 0;
 }
