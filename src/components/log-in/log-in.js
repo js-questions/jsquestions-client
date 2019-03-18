@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './log-in.scss';
-const EndPointURL = process.env.END_POINT_URL;
+import btoa from 'btoa';
+import { setToken } from '../../redux/actions.js';
+import { connect } from 'react-redux';
 
 class Login extends Component {
 
@@ -10,6 +12,8 @@ class Login extends Component {
       username: '',
       email: '',
       password: '',
+      // url: 'https://private-90f3d7-jsquestions.apiary-mock.com',
+      url: process.env.REACT_APP_URL,
       userExists: false
     }
     this.handleSignup = this.handleSignup.bind(this);
@@ -18,7 +22,7 @@ class Login extends Component {
 
   handleSignup (e) {
     e.preventDefault();
-    fetch(`${EndPointURL}/sign-up`, {
+    fetch(`${this.state.url}/sign-up`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -31,38 +35,39 @@ class Login extends Component {
         }
       )
       })
-     .then(res => localStorage.setItem('token', res.token))
+     .then(res => res.json())
+     .then(res => {
+      localStorage.setItem('token', res.token);
+      this.props.setToken(res.token)
+      console.log('user', this.props.user)
+     })
 
-      this.handleLogin(_, localStorage.getItem('token'))
-      // protected routes usng middleware - every time we route to a new component, check if user has the token
   }
 
-  handleLogin (e, token) {
+  handleLogin = async (e, res) => {
     e.preventDefault();
-    fetch(`${EndPointURL}/user/log-in`, {
+    const payload = btoa(`${this.state.email}:${this.state.password}`);
+    console.log(payload);
+    fetch(`${this.state.url}/log-in`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        
+        'Authorization': 'Basic ' + payload,
       },
-      body: JSON.stringify(
-        {
-          "email": this.state.email,
-          "password": this.state.password
-        }
-      )
       })
-      .then(res => localStorage.setItem('token', '12345abcdef'))
-      if (!token) {
-        localStorage.setItem('token', '12345abcdef');
+      .then(res => res.json())
+      .then(res => {
+        localStorage.setItem('token', res.token);
+        this.props.setToken(res.token)
+        console.log('user', this.props.user)
+      })
+      if (!res) {
+        localStorage.setItem('token', 'credentialsnotfound');
       }
-
   }
   
   render() {
     
     if (!this.state.userExists) {
-      console.log('should be false', this.state.userExists)
       return(
         <div className="ooo-signup">
         <button>Open Login Form</button>
@@ -76,7 +81,6 @@ class Login extends Component {
         </div>
       )
     } else {
-      console.log('should be true', this.state.userExists)
       return(
         <div className="ooo-login">
         <button>Open Login Form</button>
@@ -92,4 +96,13 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => ({
+  user: state.user
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  setToken: (token) => dispatch(setToken(token))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
