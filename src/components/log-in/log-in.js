@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './log-in.scss';
+const EndPointURL = process.env.END_POINT_URL;
 
 class Login extends Component {
 
@@ -9,7 +10,6 @@ class Login extends Component {
       username: '',
       email: '',
       password: '',
-      url: 'http://jsquestions.docs.apiary.io',
       userExists: false
     }
     this.handleSignup = this.handleSignup.bind(this);
@@ -18,7 +18,7 @@ class Login extends Component {
 
   handleSignup (e) {
     e.preventDefault();
-    fetch(`${this.state.url}/sign-up`, {
+    fetch(`${EndPointURL}/sign-up`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -31,29 +31,31 @@ class Login extends Component {
         }
       )
       })
-      // .then(res => localStorage.setItem('token', res.token))
+     .then(res => localStorage.setItem('token', res.token))
 
-      localStorage.setItem('token', '12345abcdef')
-
+      this.handleLogin(_, localStorage.getItem('token'))
       // protected routes usng middleware - every time we route to a new component, check if user has the token
   }
 
-  handleLogin (e) {
+  handleLogin (e, token) {
     e.preventDefault();
-    // fetch(`${this.state.url}/user/log-in`, {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(
-    //     {
-    //       "email": this.state.email,
-    //       "password": this.state.password
-    //     }
-    //   )
-    //   })
-      // .then(res => localStorage.setItem('token', '12345abcdef'))
-      localStorage.setItem('token', '12345abcdef')
+    fetch(`${EndPointURL}/user/log-in`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        
+      },
+      body: JSON.stringify(
+        {
+          "email": this.state.email,
+          "password": this.state.password
+        }
+      )
+      })
+      .then(res => localStorage.setItem('token', '12345abcdef'))
+      if (!token) {
+        localStorage.setItem('token', '12345abcdef');
+      }
 
   }
   
