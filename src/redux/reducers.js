@@ -4,9 +4,7 @@ import jwt_decode from 'jwt-decode';
 const user = (state = [], action) => {
   switch(action.type) {
     case 'SET_TOKEN':
-      console.log(action.token);
       const decoded = jwt_decode(action.token);
-      console.log('decoded', decoded);
       return decoded;
     default:
       return state;

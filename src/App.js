@@ -11,14 +11,10 @@ class App extends Component {
     return (
       <div>
         <Navbar></Navbar>
-      <div className="App">
-      <Router>
-        <div>
-          <Route exact path="/" component={LandingPage}/>
-          <Route path="/ask" component={AskQuestions}/>
-        </div>
-      </Router>
-      </div>
+        <Router>
+            <Route exact path="/" component={LandingPage}/>
+            <Route path="/ask" component={AskQuestions}/>
+        </Router>
       </div>
     );
   }

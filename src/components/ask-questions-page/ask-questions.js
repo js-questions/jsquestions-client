@@ -70,7 +70,7 @@ class AskQuestions extends Component {
 
   componentWillUnmount() {
     //The below componentWillUnmount is needed for warning issues with React
-    this.setState = (state,callback )=> {
+    this.setState = ()=> {
       return;
     };
   }
@@ -83,7 +83,7 @@ class AskQuestions extends Component {
           <h4>Title</h4>
           <input value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} placeholder='My title is...' />
           
-          <h4>Discribe your problem</h4>
+          <h4>Describe your problem</h4>
           <input onChange={(event) => this.setState({describeProblem: event.target.value})} placeholder='What problem are you having? What do you want to achieve?'/>
           
           <h4>Related resources</h4>

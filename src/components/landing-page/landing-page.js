@@ -3,7 +3,7 @@ import './landing-page.scss';
 
 class LandingPage extends Component {
 
-  handleClick(e) {
+  handleClick = (e) => {
     const searchTerm = document.getElementById("searchTerm").value;
     e.preventDefault();
     this.props.history.push('/ask', searchTerm);
