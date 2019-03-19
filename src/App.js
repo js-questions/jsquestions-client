@@ -6,9 +6,17 @@ import AskQuestions from './components/ask-questions-page/ask-questions';
 import LandingPage from './components/landing-page/landing-page';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
+import openSocket from 'socket.io-client';
+
+import Chat from './components/chat/chat.js';
+
+const socket = openSocket('http://localhost:3001/');
+const room = '1234'
+
 class App extends Component {
   render() {
     return (
+      // <Chat socket={socket} room={room}></Chat>
       <div>
         <Navbar></Navbar>
         <Router>
