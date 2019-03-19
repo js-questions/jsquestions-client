@@ -40,20 +40,27 @@ $border-grey-color: rgb(150, 150, 150);
 }
 
 .editor {
-  width: 50%;
+  width: 48%;
   background-color: $background-grey-color;
   margin: 20px 10px 20px 20px;
   border: solid 1px $border-grey-color;
 }
 
+#txtArea {
+  width: 95%;
+  height: 95%;
+  min-height: 500px;
+}
+
 .chat-box {
-  width: 50%;
+  width: 48%;
   background-color: $background-grey-color;
   margin: 20px 10px 20px 20px;
   border: solid 1px $border-grey-color;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden;
 }
 
 form {
@@ -61,6 +68,7 @@ form {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  min-height: 35px;
 }
 
 form input {
@@ -81,6 +89,9 @@ form button:hover {
 #messages {
   display: flex;
   flex-direction: column;
+  overflow: auto;
+  overflow-y: auto;
+  vertical-align: bottom;
 }
 
 .oneMessage {
