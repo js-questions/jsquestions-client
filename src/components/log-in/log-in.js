@@ -48,6 +48,7 @@ class Login extends Component {
       this.props.close()
      })
 
+     this.forwardsToQuestionPosted();
   }
 
   handleLogin = async (e, res) => {
@@ -64,12 +65,21 @@ class Login extends Component {
         if (res.token) {
           localStorage.setItem('token', res.token);
           this.props.setToken(res.token)
-          this.props.close()
+          this.props.close();
+          this.forwardsToQuestionPosted();
         } else {
           // todo: update the error message when the button is clicked - for some reason the component is not updating after this.setState
           this.setState({loginError: res}, () => console.log(res)); //eslint-disable-line no-console
         }
       })
+      
+  }
+
+  forwardsToQuestionPosted = () => {
+    const token = localStorage.getItem('token');
+    if (this.props.signedIn) {
+      this.props.signedIn(token)
+    }
   }
 
   render() {
