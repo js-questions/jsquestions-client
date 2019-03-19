@@ -16,6 +16,7 @@ class Login extends Component {
       url: 'http://localhost:4000',
       userExists: false,
       loginError: '',
+      signUpError: ''
     }
     this.handleSignup = this.handleSignup.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -38,17 +39,15 @@ class Login extends Component {
       })
      .then(res => res.json())
      .then(res => {
-       console.log('sign up', res)
        if (res.token) {
          localStorage.setItem('token', res.token);
-         this.props.setToken(res.token)
+         this.props.setToken(res.token);
+         this.forwardsToQuestionPosted();
+         this.props.close();
        } else {
-         console.log(res); //eslint-disable-line no-console
+        this.setState({signUpError: res}, () => console.log(res)); 
        }
-      this.props.close()
-     })
-
-     this.forwardsToQuestionPosted();
+     }) 
   }
 
   handleLogin = async (e, res) => {
@@ -68,8 +67,7 @@ class Login extends Component {
           this.props.close();
           this.forwardsToQuestionPosted();
         } else {
-          // todo: update the error message when the button is clicked - for some reason the component is not updating after this.setState
-          this.setState({loginError: res}, () => console.log(res)); //eslint-disable-line no-console
+          this.setState({loginError: res}, () => console.log(res)); 
         }
       })
       
@@ -95,7 +93,7 @@ class Login extends Component {
               <input type='password' minLength="6" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" title="Please include at least 1 uppercase character, 1 lowercase character, and 1 number" placeholder='Password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value})} required />
               <button>Sign up</button>
             </form>
-            <p>{this.state.loginError}</p>
+            <p>{this.state.signUpError}</p>
             <button onClick={() => this.setState({userExists: !this.state.userExists})}>I already have an account</button>
           </div>
         </div>
@@ -110,6 +108,7 @@ class Login extends Component {
               <input type='password' placeholder='Password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value})} required/>
               <button>Sign in</button>
             </form>
+            <p>{this.state.loginError}</p>
             <button onClick={() => this.setState({userExists: !this.state.userExists})}>I don't have an account</button>
           </div>
         </div>
