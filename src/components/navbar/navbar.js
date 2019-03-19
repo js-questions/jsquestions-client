@@ -46,7 +46,6 @@ class Navbar extends React.Component {
         </div>
       )
     }
-
   }
 
   showSignupModal = () => {
@@ -56,7 +55,6 @@ class Navbar extends React.Component {
   }
 
   render() {
-
     return(
       <div>
         <div className="navbar">
@@ -71,7 +69,6 @@ class Navbar extends React.Component {
       </div>
     )
   }
-
 }
 
 const mapStateToProps = (state) => ({
