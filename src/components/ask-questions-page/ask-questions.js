@@ -13,7 +13,7 @@ class AskQuestions extends Component {
 
   handleClick = (e) => {
     const token = localStorage.getItem('token');
-    e.preventDefault()
+    e.preventDefault();
 
     if (!token) {
       //forces user to sign up before continuing
@@ -21,7 +21,7 @@ class AskQuestions extends Component {
         showSignup:true
       })
     } else {
-      this.signedIn(token)
+      this.signedIn(token);
     }
   }
 
@@ -45,7 +45,7 @@ class AskQuestions extends Component {
 
   showSignupModal = () => {
     if (this.state.showSignup) {
-      return <Login close={this.toggleSignUp} signedIn={this.signedIn}/>
+      return <Login close={this.toggleSignUp} signedIn={this.signedIn}/>;
     }
   }
 
@@ -56,7 +56,7 @@ class AskQuestions extends Component {
   signedIn = async (token) => {
     //sends question to database and then sends user to question posted page 
     await this.postQuestion(token);
-    this.props.history.push('/question-posted')
+    this.props.history.push('/question-posted');
   }
 
   componentDidMount() {
@@ -66,6 +66,13 @@ class AskQuestions extends Component {
         title: this.props.location.state
       })
     }
+  }
+
+  componentWillUnmount() {
+    //The below componentWillUnmount is needed for warning issues with React
+    this.setState = (state,callback )=> {
+      return;
+    };
   }
 
   render() {
