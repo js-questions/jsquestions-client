@@ -1,24 +1,34 @@
 import React, { Component } from 'react';
 import './ask-questions.scss';
 import { HashRouter, Redirect } from 'react-router-dom';
+import Login from '../log-in/log-in.js';
 
 class AskQuestions extends Component {
   state = {
       title : '',
       describeProblem : '',
       relatedResources : '',
-      codeLink : ''
+      codeLink : '',
+      showSignup: false 
     }
 
   handleClick(e) {
+    const token = localStorage.getItem('token');
     e.preventDefault()
-    //Amber TTD: If (not Logged in ) -> await sign up modal to continue
-    if( localStorage.getItem('token')) {
+
+    if(!token){
+      //forces user to sign up before continueing
+      this.setState({
+        showSignup:true ///
+      })
+    }
+
+    if(token) {
       //sends question to post to database
       fetch(`${process.env.REACT_APP_END_POINT_URL}/questions`, {
         method: 'post', 
         headers : { 
-          'Authorization' : 'Bearer ' + localStorage.getItem('token'),
+          'Authorization' : 'Bearer ' + token,
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
@@ -29,11 +39,21 @@ class AskQuestions extends Component {
           "code": this.state.codeLink }
       )})
       .then(res => res.json())
-      .then(res => console.log(res))
       //sends user to question posted page 
       this.props.history.push('/question-posted')
     }
   }
+
+  showSignupModal = () => {
+    if (this.state.showSignup) {
+      return <Login close={this.toggleSignUp}/>
+    }
+  }
+
+  toggleSignUp = () => {
+    this.setState({showSignup: !this.state.showSignup})
+  }
+  
 
   componentDidMount(){
     //populates input field on user searched term from landing page
@@ -64,6 +84,8 @@ Codepens, etc. here.'/>
           <input onChange={(event) => this.setState({codeLink: event.target.value})} placeholder='Ex: Github Repo, JSFiddle, Codepen, etc.'/>
           <button onClick={this.handleClick.bind(this)}>Help!</button>
         </form>
+
+        {this.showSignupModal()}
       </div>
     )
 
