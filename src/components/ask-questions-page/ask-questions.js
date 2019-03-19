@@ -35,15 +35,26 @@ class AskQuestions extends Component {
     }
   }
 
+  componentDidMount(){
+    //populates input field on user searched term from landing page
+    if(this.props.location.state){
+      this.setState({
+        title: this.props.location.state
+      })
+    }
+  }
 
   render() {
-    //Amber TTD: Need to add prefilled title if (not loggedin ) statement here from landing page... 
     return (
       <div>
         <h1>Ask a Question</h1>
         <form>
           <h4>Title</h4>
-          <input onChange={(event) => this.setState({title: event.target.value})} placeholder='My title is...PREFILLED QUESTION' />
+          {this.props.location.state ? 
+            <input value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} placeholder='My title is...PREFILLED QUESTION' />
+          : <input onChange={(event) => this.setState({title: event.target.value})} placeholder='My title is...PREFILLED QUESTION' />
+          }
+          
           <h4>Discribe your problem</h4>
           <input onChange={(event) => this.setState({describeProblem: event.target.value})} placeholder='What problem are you having? What do you want to achieve?'/>
           <h4>Related resources</h4>
