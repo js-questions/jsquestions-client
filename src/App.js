@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.scss';
 import Navbar from './components/navbar/navbar';
-
 import AskQuestions from './components/ask-questions-page/ask-questions';
 import LandingPage from './components/landing-page/landing-page';
 import { BrowserRouter as Router, Route } from "react-router-dom";
