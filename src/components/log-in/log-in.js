@@ -41,6 +41,7 @@ class Login extends Component {
       this.props.close()
      })
 
+     this.forwardsToQuestionPosted();
   }
 
   handleLogin = async (e, res) => {
@@ -62,6 +63,16 @@ class Login extends Component {
       if (!res) {
         localStorage.setItem('token', 'credentialsnotfound');
       }
+
+      this.forwardsToQuestionPosted();
+      
+  }
+
+  forwardsToQuestionPosted = () => {
+    const token = localStorage.getItem('token');
+    if (this.props.signedIn) {
+      this.props.signedIn(token)
+    }
   }
 
   render() {
