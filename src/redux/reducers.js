@@ -4,9 +4,9 @@ import jwt_decode from 'jwt-decode';
 const user = (state = [], action) => {
   switch(action.type) {
     case 'SET_TOKEN':
-      const decoded = jwt_decode(action.token)
-      console.log('decoded', decoded);
-      return decoded;
+      let decoded = jwt_decode(action.token)
+      decoded = decoded.user; // remove extra iat field and get only the user
+      return decoded
     default:
       return state;
   }
