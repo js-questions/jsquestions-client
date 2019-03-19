@@ -38,8 +38,9 @@ class Chat extends React.Component {
     const dateNowFormatted = dateNow.toLocaleString();
     const msgToSend = {
       date: dateNowFormatted,
-      id:  this.props.socket.id,
-     value:  this.message.value
+      id: this.props.socket.id,
+      value: this.message.value,
+      room: this.props.room
     };
     this.props.socket.emit('chat message', msgToSend);
     this.message.value = '';
@@ -74,6 +75,12 @@ class Chat extends React.Component {
   }
 
   componentDidMount() {
+
+    const room = this.props.room;
+    this.props.socket.emit('join room', room)
+
+
+    // CHAT
     this.props.socket.on('chat message', (msg) => {
       let currentId = this.props.socket.id;
       let oneMessage = document.createElement('div');
@@ -90,6 +97,7 @@ class Chat extends React.Component {
       else messages.className += ' elseMessage';
     });
 
+    // CODE EDITOR
     this.codemirror =  CodeMirror.fromTextArea(this.textArea.current, {
       mode: "javascript",
       theme: "default",
@@ -97,9 +105,9 @@ class Chat extends React.Component {
       content: this.textArea.current,
     })
     this.codemirror.on('blur', this.textChanged);
-
     this.props.socket.on('text', this.handleReceivedText);
     this.props.socket.on('newUser', this.updateText);
+
   }
 
   render() {
