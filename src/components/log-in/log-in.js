@@ -14,7 +14,8 @@ class Login extends Component {
       password: '',
       // url: process.env.REACT_APP_END_POINT_URL,
       url: 'http://localhost:4000',
-      userExists: false
+      userExists: false,
+      loginError: '',
     }
     this.handleSignup = this.handleSignup.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -37,6 +38,7 @@ class Login extends Component {
       })
      .then(res => res.json())
      .then(res => {
+       console.log('sign up', res)
        if (res.token) {
          localStorage.setItem('token', res.token);
          this.props.setToken(res.token)
@@ -59,13 +61,15 @@ class Login extends Component {
       })
       .then(res => res.json())
       .then(res => {
-        localStorage.setItem('token', res.token);
-        this.props.setToken(res.token)
-        this.props.close()
+        if (res.token) {
+          localStorage.setItem('token', res.token);
+          this.props.setToken(res.token)
+          this.props.close()
+        } else {
+          // todo: update the error message when the button is clicked - for some reason the component is not updating after this.setState
+          this.setState({loginError: res}, () => console.log(res)); //eslint-disable-line no-console
+        }
       })
-      if (!res) {
-        localStorage.setItem('token', 'credentialsnotfound');
-      }
   }
 
   render() {
@@ -76,11 +80,12 @@ class Login extends Component {
           <div className="modal">
             <button onClick={this.props.close}>X</button>
             <form onSubmit={this.handleSignup}>
-            <input type='text' placeholder='Username' value={this.state.username} onChange={(event) => this.setState({username: event.target.value}, () => console.log(this.state.username))}/>
-              <input type='text' placeholder='E-mail address' value={this.state.email} onChange={(event) => this.setState({email: event.target.value}, () => console.log(this.state.email))}/>
-              <input type='text' placeholder='Password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value}, () => console.log(this.state.email))}/>
+            <input type='text' minLength="4" maxLength="12" placeholder='Username' value={this.state.username} onChange={(event) => this.setState({username: event.target.value})} required />
+              <input type='email' placeholder='E-mail address' value={this.state.email} onChange={(event) => this.setState({email: event.target.value})} required />
+              <input type='password' minLength="6" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" title="Please include at least 1 uppercase character, 1 lowercase character, and 1 number" placeholder='Password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value})} required />
               <button>Sign up</button>
             </form>
+            <p>{this.state.loginError}</p>
             <button onClick={() => this.setState({userExists: !this.state.userExists})}>I already have an account</button>
           </div>
         </div>
@@ -91,8 +96,8 @@ class Login extends Component {
           <div className="modal">
           <button onClick={this.props.close}>X</button>
             <form onSubmit={this.handleLogin}>
-              <input type='text' placeholder='E-mail address' value={this.state.email} onChange={(event) => this.setState({email: event.target.value}, () => console.log(this.state.email))}/>
-              <input type='text' placeholder='Password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value}, () => console.log(this.state.email))}/>
+              <input type='email' placeholder='E-mail address' value={this.state.email} onChange={(event) => this.setState({email: event.target.value})} required/>
+              <input type='password' placeholder='Password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value})} required/>
               <button>Sign in</button>
             </form>
             <button onClick={() => this.setState({userExists: !this.state.userExists})}>I don't have an account</button>
