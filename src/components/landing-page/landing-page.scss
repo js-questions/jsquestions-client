@@ -18,7 +18,7 @@ $searchSize :  45px;
   color:rgba(0, 0, 0, 0.4);
 }
 
-button{
+.searchTerm-button{
   background-color: $primary;
   transition: all 0.3s;
   border: none;
@@ -29,13 +29,13 @@ button{
   padding: 0;
 }
 
-button:hover {
+.searchTerm-button:hover {
   background-color: darken($primary, 5%);
   box-shadow: inset 2px 2px 2px darken($primary, 40%);
 }
 
 /*DELETE below */
-form {
+.searchTerm-form {
   background-color: black;
   min-height: 100px;
   display: flex;
