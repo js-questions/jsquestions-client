@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.scss';
 import Navbar from './components/navbar/navbar';
-
 import AskQuestions from './components/ask-questions-page/ask-questions';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 

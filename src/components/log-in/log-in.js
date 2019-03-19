@@ -12,7 +12,8 @@ class Login extends Component {
       username: '',
       email: '',
       password: '',
-      url: process.env.REACT_APP_END_POINT_URL,
+      // url: process.env.REACT_APP_END_POINT_URL,
+      url: 'http://localhost:4000',
       userExists: false
     }
     this.handleSignup = this.handleSignup.bind(this);
@@ -36,8 +37,12 @@ class Login extends Component {
       })
      .then(res => res.json())
      .then(res => {
-      localStorage.setItem('token', res.token);
-      this.props.setToken(res.token)
+       if (res.token) {
+         localStorage.setItem('token', res.token);
+         this.props.setToken(res.token)
+       } else {
+         console.log(res); //eslint-disable-line no-console
+       }
       this.props.close()
      })
 
@@ -46,7 +51,6 @@ class Login extends Component {
   handleLogin = async (e, res) => {
     e.preventDefault();
     const payload = btoa(`${this.state.email}:${this.state.password}`);
-    console.log(payload);
     fetch(`${this.state.url}/log-in`, {
       method: 'GET',
       headers: {
