@@ -1,17 +1,20 @@
 import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
-import { setToken } from '../../redux/actions.js';
+import { setToken, logout } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
+import { Link } from "react-router-dom";
+import ProfileMenu from './profile-menu';
 
 class Navbar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       showSignup: false,
-      openModal: true
+      openModal: true,
+      showMenu: false
     }
   }
 
@@ -27,7 +30,7 @@ class Navbar extends React.Component {
     const checkToken = localStorage.getItem('token');
     if (checkToken) {
       return this.props.setToken(checkToken);
-    }
+    } 
   }
 
   loginProcess = () => {
@@ -40,7 +43,7 @@ class Navbar extends React.Component {
           <div className="navbar-item">{this.props.user.karma}<span role="img" className="navbar-icon" aria-label="karma"> 🙏</span></div>
           <div className="navbar-item">{this.props.user.credits}<img src={token} className="navbar-icon" width="18px" alt="tokens"/></div>
           <div className="navbar-item">
-            <img src={this.props.user.profileBadge} width="50px" alt="profile-badge"/>
+            <img src={this.props.user.profileBadge} width="50px" alt="profile-badge" onClick={() => this.setState({showMenu: !this.state.showMenu})}/>
             <p id="username">{this.props.user.username}</p>  
           </div>
         </div>
@@ -54,18 +57,28 @@ class Navbar extends React.Component {
     }
   }
 
+  showMenu = () => {
+    if (this.state.showMenu) {
+      return <ProfileMenu/>
+    }
+  }
+
   render() {
+   
     return(
       <div>
-        <div className="navbar">
-          <div className="navbar-component">
-            <div className="navbar-item" path='/'><img src={logo} width="55px" alt="logo"/></div>
-            <div className="navbar-item" path='/ask'>Ask for help.</div>
-            <div className="navbar-item" path='/answer'>Help others.</div>
+        <div>
+          <div className="navbar">
+            <div className="navbar-component">
+              <div className="navbar-item"><Link to='/'><img src={logo} width="55px" alt="logo"/></Link></div>
+              <div className="navbar-item"><Link to='/ask'>Ask for help.</Link></div>
+              <div className="navbar-item"><Link to='/answer'>Help others.</Link></div>
+            </div>
+            {this.loginProcess()}
           </div>
-          {this.loginProcess()}
+          {this.showSignupModal()}
         </div>
-        {this.showSignupModal()}
+        {this.showMenu()}
       </div>
     )
   }
@@ -76,7 +89,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  setToken: (token) => dispatch(setToken(token))
+  setToken: (token) => dispatch(setToken(token)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
