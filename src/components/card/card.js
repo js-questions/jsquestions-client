@@ -8,13 +8,13 @@ class Card extends Component {
       return (
         <div className="card-container">
           <div className="card-avatar">
-            <div>Avatar</div>
-            <div>{this.props.tutor}</div>
+            <div>{this.props.tutor.username}</div>
+            <div>{this.props.tutor.credits}</div>
             <div>Status</div>
           </div>
           <div className="card-body">
-            <div>{this.props.dateSubmitted}</div>
-            <div>{this.props.message}</div>
+            <div>{this.props.offer.dateSubmitted}</div>
+            <div>{this.props.offer.message}</div>
             <div># Karma earned so far</div>
           </div>
           <div className="card-action">

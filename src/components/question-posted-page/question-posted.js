@@ -42,9 +42,14 @@ class QuestionPosted extends Component {
 
   renderOffers = () => {
     const offers = this.props.offers;
-    return offers.map(offer => {
-      return <div key={offer.offerId}><Card chatNow={this.handleClick} dateSubmitted={offer.createdAt} expiration={offer.expiration} tutorId={offer.tutor} message={offer.message}/></div>
-    });
+    const tutors = this.props.tutors;
+      return offers.map((offer, index) => {
+        if (tutors[index]) {
+          return <div key={offer.offerId}><Card tutor={tutors[index]} offer={offer} chatNow={this.handleClick} /></div>
+        } else {
+          return '';
+        }
+      });
   }
 
 //Amber TTD: Check how user is being sent to backend in the chat component into socket...COMPLETED need to talk to Natalia about requests
@@ -73,7 +78,8 @@ class QuestionPosted extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  offers: state.offers
+  offers: state.offers,
+  tutors: state.tutors
 })
 
 const mapDispatchToProps = { fetchQuestionAndOffers };

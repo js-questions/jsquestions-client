@@ -24,10 +24,10 @@ const offers = (state = [], action) => {
   }
 }
 
-const tutors = (state = {}, action) => {
+const tutors = (state = [], action) => {
   switch(action.type) {
     case 'UPDATE_TUTORS':
-      return action.tutors;
+      return [...state, action.tutor]
     default:
       return state;
   }
