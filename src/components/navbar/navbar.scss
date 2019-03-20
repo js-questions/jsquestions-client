@@ -33,3 +33,17 @@ $white-color: rgb(255, 255, 255);
   margin: 0;
   padding: 0;
 }
+
+.profile-menu {
+  background-color: lightgray;
+  width: 140px;
+  height: 100px;
+  position: absolute;
+  right: 0;
+  top: 50;
+  padding: 10px;
+}
+
+.menu-item {
+  padding: 2px;
+}

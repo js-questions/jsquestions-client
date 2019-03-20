@@ -6,6 +6,8 @@ const user = (state = [], action) => {
     case 'SET_TOKEN':
       const decoded = jwt_decode(action.token);
       return decoded;
+    case 'LOGOUT':
+      return state;
     default:
       return state;
   }

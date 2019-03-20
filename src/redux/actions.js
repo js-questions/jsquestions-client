@@ -3,3 +3,9 @@ export const setToken = (token) => ({
   token
 })
 
+export const logout = (user) => ({
+  type: 'LOGOUT',
+  user
+})
+
+
