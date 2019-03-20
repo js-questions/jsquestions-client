@@ -64,7 +64,9 @@ class Navbar extends React.Component {
   }
 
   render() {
-   
+    // Sending token on user refresh
+    this.props.socket.emit('user online', {token: localStorage.getItem('token')});
+
     return(
       <div>
         <div>

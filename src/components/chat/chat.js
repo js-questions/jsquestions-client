@@ -34,8 +34,7 @@ class Chat extends React.Component {
   }
 
   sendMessage = () => {
-
-    const dateNow = new Date(Date.now());
+    const dateNow = new Date();
     const dateNowFormatted = dateNow.toLocaleString();
     const msgToSend = {
       date: dateNowFormatted,
@@ -50,7 +49,8 @@ class Chat extends React.Component {
   textChanged = () => {
     const editorContent = this.codemirror.getDoc().getValue();
     const data = {
-        text: editorContent
+        text: editorContent,
+        room: this.state.roomId
     };
 
       // var myElement = document.getElementById('txtArea');
@@ -60,7 +60,7 @@ class Chat extends React.Component {
       // console.log('startPosition ', startPosition)
       // console.log('endPosition ', endPosition)
     if (this.codemirror.getDoc().getValue()!==this.state.keepChangeEditor) {
-      this.props.socket.emit('text', data);
+      this.props.socket.emit('editor', data);
       this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()});
     }
 
@@ -76,7 +76,6 @@ class Chat extends React.Component {
   }
 
   componentDidMount() {
-
     //const room = this.props.room; //Amber removed this ... TTD to refractor 
     this.props.socket.emit('join room', this.state.roomId)
 
@@ -106,7 +105,7 @@ class Chat extends React.Component {
       content: this.textArea.current,
     })
     this.codemirror.on('blur', this.textChanged);
-    this.props.socket.on('text', this.handleReceivedText);
+    this.props.socket.on('editor', this.handleReceivedText);
     this.props.socket.on('newUser', this.updateText);
 
   }
