@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import './question-posted.scss';
 import { connect } from 'react-redux';
 import { fetchQuestionAndOffers } from '../../redux/actions.js';
+import Card from '../card/card.js';
 
 const toDELETETutorId = 123456;
 
 class QuestionPosted extends Component {
   state = {
-    // we changed userId to questionId
     questionid: this.props.location.state.questionId
   }
 
@@ -17,10 +17,8 @@ class QuestionPosted extends Component {
 
   handleClick = (e) => {
     e.preventDefault();
-
     const token = localStorage.getItem('token');
     this.alertTutor(token);
-
     this.props.history.push('/chat', this.props.location.state);
   }
 
@@ -40,10 +38,18 @@ class QuestionPosted extends Component {
     )})
     .then(res => res.json())
     .then(res=> console.log("here", res)) //I don't need a response back here
-}
+  }
+
+  renderOffers = () => {
+    const offers = this.props.offers;
+    return offers.map(offer => {
+      return <div key={offer.offerId}><Card chatNow={this.handleClick} dateSubmitted={offer.createdAt} expiration={offer.expiration} tutorId={offer.tutor} message={offer.message}/></div>
+    });
+  }
 
 //Amber TTD: Check how user is being sent to backend in the chat component into socket...COMPLETED need to talk to Natalia about requests
   render() {
+
     return (
       <div>
         Question was Posted
@@ -58,8 +64,7 @@ class QuestionPosted extends Component {
           <br/>
         </div>
         <div>
-          TO DELETE: Fake tutor wants to 
-          <button onClick={this.handleClick.bind(this)}>chat now</button>
+          {this.renderOffers()}
         </div>
       </div>
     )
@@ -67,7 +72,8 @@ class QuestionPosted extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user
+  user: state.user,
+  offers: state.offers
 })
 
 const mapDispatchToProps = { fetchQuestionAndOffers };

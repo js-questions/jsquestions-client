@@ -25,6 +25,12 @@ export const updateQuestion = (question) => ({
   question
 })
 
+export const updateTutors = (tutors) => ({
+  type: 'UPDATE_TUTOR',
+  tutors
+})
+
+
 
 export const fetchQuestionAndOffers = (questionid) => {
   return function (dispatch) {
@@ -39,6 +45,20 @@ export const fetchQuestionAndOffers = (questionid) => {
         },
         })
         .then(res => res.json())
+        .then(async res => {
+          const offers = res.offers;
+          const tutorInfo = await Promise.all(offers.map(offer => fetch(`http://localhost:4000/users/${offer.tutor}`, {
+            method: 'GET',
+              headers: {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json'
+              },
+              })
+              .then(res => res.json())
+              .catch(err => console.log(err))));
+          dispatch(updateTutors(tutorInfo))
+          return res;
+        })
         .then(res => {
           dispatch(updateQuestion(res.question));
           dispatch(updateOffers(res.offers))
@@ -47,7 +67,6 @@ export const fetchQuestionAndOffers = (questionid) => {
       console.log('User needs to log in to see their questions');
     }
   }
-  
 }
 
 
