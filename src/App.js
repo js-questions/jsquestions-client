@@ -10,10 +10,10 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 // import AnswerQuestions from './components/answer-questions-page/answer-questions';
 
 // comment this out if you not connected to the server before you run
-import openSocket from 'socket.io-client';
-import Chat from './components/chat/chat.js';
-const socket = openSocket('http://localhost:3001/');
-const room = '1234';
+// import openSocket from 'socket.io-client';
+// import Chat from './components/chat/chat.js';
+// const socket = openSocket('http://localhost:3001/');
+// const room = '1234';
 
 class App extends Component {
   render() {
@@ -24,10 +24,10 @@ class App extends Component {
             <Route exact path="/" component={LandingPage}/>
             <Route path="/ask" component={AskQuestions}/>
             <Route path="/question-posted" component={QuestionPosted}/>
-            <Route
+            {/* <Route
             path='/chat'
             render={(props) => <Chat {...props} socket={socket} room={room}/>}
-            />
+            /> */}
         </Router>
       </div>
     );
