@@ -13,9 +13,9 @@ class LandingPage extends Component {
     return (
       <div>
         LOGO HERE
-        <form>
+        <form className="searchTerm-form">
           <input id="searchTerm" type="text" placeholder="What do you need help with?"/>
-          <button onClick={this.handleClick.bind(this)}>?</button>
+          <button className="searchTerm-button" onClick={this.handleClick.bind(this)}>?</button>
         </form>
         For when Stack Overflow and the Internet just aren't enough.
         <br/>
