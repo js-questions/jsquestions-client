@@ -8,19 +8,19 @@ import QuestionPosted from './components/question-posted-page/question-posted';
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-// import openSocket from 'socket.io-client';
+import openSocket from 'socket.io-client';
 
-// import Chat from './components/chat/chat.js';
+import Chat from './components/chat/chat.js';
 
-// const socket = openSocket('http://localhost:3001/');
-// const room = '1234'
+const socket = openSocket('http://localhost:4000/');
+const room = '1234'
 
 class App extends Component {
   render() {
     return (
       <div>
         <Router>
-        <Navbar/>
+        <Navbar socket={socket}/>
             <Route exact path="/" component={LandingPage}/>
             <Route path="/ask" component={AskQuestions}/>
             <Route path="/question-posted" component={QuestionPosted}/>
