@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './my-questions.scss';
-import QuestionPosted from './../question-posted-page/question-posted';
+import Question from './../question/question';
 
 class MyQuestions extends Component {
   constructor(props) {
@@ -26,27 +26,16 @@ class MyQuestions extends Component {
   }
 
   renderQuestions = () => {
-    if(this.state.questions.length > 0){
+    if (this.state.questions.length > 0) {
       return this.state.questions.map((question, index) => {
-        console.log(question)
         return (
           <div key={index}>
-            <Link to={{
-              pathname: `/question-posted`,
-              state: { 
-                title: question.title,
-                description: question.description,
-                questionId: question.questionId
-              }
-            }}>
-              <p>{question.title}</p>
-              <p>{question.description}</p>
-              {/* <question-component with needed props question={question}/> */}
+            <Link to={{pathname: `/question/${question.questionId}`}} >
+              <Question question={question}/>
             </Link>
           </div>
-        );
-    });
-    } else {
+    )})} 
+    else {
       return (
         <div>
           <p>You don't have questions</p>
