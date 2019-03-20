@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.scss';
 import Navbar from './components/navbar/navbar';
-import LandingPage from './components/landing-page/landing-page';
 import AskQuestions from './components/ask-questions-page/ask-questions';
+import LandingPage from './components/landing-page/landing-page';
 import QuestionPosted from './components/question-posted-page/question-posted';
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
