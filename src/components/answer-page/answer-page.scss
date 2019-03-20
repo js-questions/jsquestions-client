@@ -16,6 +16,11 @@ $border-grey-color: rgb(150, 150, 150);
   padding: 20px 0;
 }
 
+.answer-filter {
+  display: flex;
+  flex-direction: row;
+}
+
 .answer-text {
   color: $border-grey-color;
   margin-right: 30px;

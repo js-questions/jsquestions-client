@@ -14,18 +14,12 @@ class AnswerPage extends Component {
       <h1 className="answer-title">Help learners</h1>
       <h3 className="answer-subtitle">Here are the latests questions</h3>
       <div className="answer-filters">
-        <div className="answer-dropdown">
-          <div className="dropdown">
-            <div className="dropbtn">
-              <div>View open</div>
-              <FontAwesomeIcon icon={faChevronDown} className="icon-style"/>
-            </div>
-            <div className="dropdown-content">
-              <div>View open</div>
-              <div>View pending</div>
-              <div>View all</div>
-            </div>
-          </div>
+        <div className="answer-filter">
+          <div className="answer-text">Filter:</div>
+          <div className="filterButton">All</div>
+          <div className="filterButton">Open</div>
+          <div className="filterButton">Pending</div>
+          <div className="filterButton">Closed</div>
         </div>
         <div className="answer-dropdown">
           <div className="answer-text">Sort by:</div>
