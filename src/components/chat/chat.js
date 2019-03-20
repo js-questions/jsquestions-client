@@ -12,7 +12,8 @@ class Chat extends React.Component {
   textArea = React.createRef();
 
   state = {
-    keepChangeEditor: ''
+    keepChangeEditor: '',
+    roomId: this.props.location.state.roomId
   }
 
   shouldComponentUpdate() {
@@ -40,7 +41,7 @@ class Chat extends React.Component {
       date: dateNowFormatted,
       id: this.props.socket.id,
       value: this.message.value,
-      room: this.props.room
+      room: this.state.roomId
     };
     this.props.socket.emit('chat message', msgToSend);
     this.message.value = '';
@@ -76,8 +77,8 @@ class Chat extends React.Component {
 
   componentDidMount() {
 
-    const room = this.props.room;
-    this.props.socket.emit('join room', room)
+    //const room = this.props.room; //Amber removed this ... TTD to refractor 
+    this.props.socket.emit('join room', this.state.roomId)
 
 
     // CHAT

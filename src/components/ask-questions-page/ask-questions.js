@@ -8,7 +8,8 @@ class AskQuestions extends Component {
       describeProblem : '',
       relatedResources : '',
       codeLink : '',
-      showSignup: false 
+      showSignup: false,
+      storedQuestion: null
     }
 
   handleClick = (e) => {
@@ -25,9 +26,9 @@ class AskQuestions extends Component {
     }
   }
 
-  postQuestion = (token) => {
+  postQuestion = async (token) => {
       //sends question to post to database
-      fetch(`${process.env.REACT_APP_END_POINT_URL}/questions`, {
+      await fetch(`${process.env.REACT_APP_END_POINT_URL}/questions`, {
         method: 'post', 
         headers : { 
           'Authorization' : 'Bearer ' + token,
@@ -41,6 +42,7 @@ class AskQuestions extends Component {
           "code": this.state.codeLink }
       )})
       .then(res => res.json())
+      .then(res=> this.setState({storedQuestion: res}))
   }
 
   showSignupModal = () => {
@@ -56,7 +58,8 @@ class AskQuestions extends Component {
   signedIn = async (token) => {
     //sends question to database and then sends user to question posted page 
     await this.postQuestion(token);
-    this.props.history.push('/question-posted');
+    console.log(this.state.storedQuestion)
+    this.props.history.push('/question-posted', this.state.storedQuestion);
   }
 
   componentDidMount() {
