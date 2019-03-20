@@ -28,6 +28,7 @@ class App extends Component {
             path='/chat'
             render={(props) => <Chat {...props} socket={socket} room={room}/>}
             />
+            <Route path="/my-questions" component={MyQuestions}/>
         </Router>
       </div>
     );

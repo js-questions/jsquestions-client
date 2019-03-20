@@ -5,7 +5,7 @@ const toDELETETutorId = 123456;
 
 class QuestionPosted extends Component {
   state = {
-    questionid: this.props.location.state.userId
+    questionid: this.props.location.state.questionId
   }
 
   handleClick = (e) => {

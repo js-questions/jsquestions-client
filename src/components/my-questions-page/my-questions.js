@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import './my-questions.scss';
+import QuestionPosted from './../question-posted-page/question-posted';
 
 class MyQuestions extends Component {
   constructor(props) {
@@ -8,7 +9,6 @@ class MyQuestions extends Component {
     this.state = {
       questions: []
     }
-   
   }
 
   componentWillMount (){
@@ -28,9 +28,17 @@ class MyQuestions extends Component {
   renderQuestions = () => {
     if(this.state.questions.length > 0){
       return this.state.questions.map((question, index) => {
+        console.log(question)
         return (
-          <div key={index+'a'}>
-            <Link to={`/questions/${question.questionId}`}>
+          <div key={index}>
+            <Link to={{
+              pathname: `/question-posted`,
+              state: { 
+                title: question.title,
+                description: question.description,
+                questionId: question.questionId
+              }
+            }}>
               <p>{question.title}</p>
               <p>{question.description}</p>
               {/* <question-component with needed props question={question}/> */}
@@ -48,7 +56,6 @@ class MyQuestions extends Component {
   }
 
   render() {
-    console.log(this.state.questions)
     return (
       <div>
         MY QUESTIONS
@@ -59,8 +66,4 @@ class MyQuestions extends Component {
 }
 
 export default MyQuestions;
-
-//But the below in each rendered question
-//<Link to={`${match.url}/rendering`}>Rendering with React</Link> 
-//-> to route to /question-posted/:questionid
 
