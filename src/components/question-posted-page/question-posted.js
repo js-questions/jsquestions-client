@@ -1,11 +1,22 @@
 import React, { Component } from 'react';
 import './question-posted.scss';
+import { connect } from 'react-redux';
+import { fetchQuestionAndOffers } from '../../redux/actions.js';
 
 const toDELETETutorId = 123456;
 
 class QuestionPosted extends Component {
   state = {
+<<<<<<< HEAD
     questionid: this.props.location.state.questionId
+=======
+    // we changed userId to questionId
+    questionid: this.props.location.state.questionId
+  }
+
+  componentDidMount() {
+    this.props.fetchQuestionAndOffers(this.state.questionid);
+>>>>>>> develop
   }
 
   handleClick = (e) => {
@@ -59,17 +70,14 @@ class QuestionPosted extends Component {
   }
 }
 
-export default QuestionPosted;
+const mapStateToProps = (state) => ({
+  user: state.user
+})
 
+const mapDispatchToProps = { fetchQuestionAndOffers };
 
-// answered: false
-// answeredBy: "null"
-// code: "Code?"
-// createdAt: "2017-01-08T21:00:11.620Z"
-// description: "I have trouble with English. Is this the correct website?"
-// learner: 1234567
-// resources: "www.merriam-webster.com"
-// roomId: "b7619275-1184-48b5-bcd5-63efbc9c0699"
-// title: "My question"
-// updatedAt: "2017-01-08T21:00:11.620Z"
-// userId: 18374874
+// const mapDispatchToProps = (dispatch) => ({
+//   fetchOffers: (questionid) => dispatch(fetchOffers(questionid))
+// })
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionPosted);
