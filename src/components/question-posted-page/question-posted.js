@@ -36,7 +36,7 @@ class QuestionPosted extends Component {
       },
       body: JSON.stringify(
         {
-          "answeredBy": toDELETETutorId
+          "answered_by": toDELETETutorId
         }
     )})
 }

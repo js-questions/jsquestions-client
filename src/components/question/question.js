@@ -1,39 +1,33 @@
-// import React, { Component } from 'react';
-// import './question.scss';
+import React, { Component } from 'react';
+import './question.scss';
 
-// class Question extends Component {
-//   render() {
-//     return (
-//       <div className="question-container">
-//         <div className="question-avatar">
-//           <div>Avatar</div>
-//           <div>Status</div>
-//         </div>
-//         <div className="question-body">
-//           <div>Date</div>
-//           <div>Question title</div>
-//           <div>More details</div>
-//         </div>
-//         <div className="queston-action">
-//           <div>Button</div>
-//         </div>
-//       </div>
-//     )
+class Question extends Component {
+  state = {
+    buttonAlreadyClicked: false
+  }
 
-//   }
-// }
+  renderOfferButton = () => {
+    let btn_class = this.state.buttonAlreadyClicked ? "offerSent" : "offerNotSent";
+    let btn_text = this.state.buttonAlreadyClicked ? "Sent" : "Offer Help";
+    //Amber TTD: needs 3 if statement to change if person is not online
+    return <button className={btn_class} onClick={() => {this.changeColor(); this.props.sendOffer(this.props.question.question_id, this.state.buttonAlreadyClicked)}}>{btn_text}</button>
+  }
 
-// export default Question;
+  changeColor = () => {
+    this.setState({buttonAlreadyClicked: true})
+  }
+  //Amber TTD: there needs to be a way on page refresh that these will stay the same
 
-import React from 'react';
-
-function Question(props) {
-  return (
-    <div>
-      <p>{props.question.title}</p>
-      <p>{props.question.description}</p>
-    </div>
-  );
+  render() {
+    const offerButtonExists = this.props.sendOffer ? this.renderOfferButton() : null ;
+    return (
+      <div>
+        <p>{this.props.question.title}</p>
+        <p>{this.props.question.description}</p>
+        {offerButtonExists}
+      </div>
+    );
+  }
 }
 
 export default Question; 

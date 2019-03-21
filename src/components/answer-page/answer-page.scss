@@ -21,10 +21,11 @@ $border-grey-color: rgb(150, 150, 150);
   flex-direction: row;
 }
 
-.answer-text {
+.answer-filters h4 {
   color: $border-grey-color;
   margin-right: 30px;
   font-weight: bold;
+  margin:0;
 }
 
 .answer-dropdown {
@@ -75,3 +76,4 @@ $border-grey-color: rgb(150, 150, 150);
 .icon-style {
   margin-left: 10px;
 }
+

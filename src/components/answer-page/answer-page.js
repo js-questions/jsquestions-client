@@ -28,16 +28,41 @@ class AnswerPage extends Component {
     }))
   }
 
-  renderAnswers = () => {
+  sendOffer = (questionid, buttonAlreadyClicked) => {
+    //Will only send offer once
+
+    if(!buttonAlreadyClicked){
+      const token = localStorage.getItem('token');
+      fetch(`${process.env.REACT_APP_END_POINT_URL}/questions/${questionid}/offers`, {
+        method: 'POST', 
+        headers : { 
+          'Authorization' : 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: {
+          'message': 'i Kinda know english, need help?',
+          'linked_question': questionid,
+          'expiration': "2017-01-08T21:00:11.620Z"
+          //Amber TTD: this needs to be filled out in a popup modal
+        }
+      })
+        .then(res => res.json())
+        .then(res=> console.log("WORKS", res))
+        //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
+    }   
+  }
+
+  
+
+  renderQuestions = () => {
     if (this.state.questions.length > 0) {
       return this.state.questions.map((question, index) => {
         return (
-          <div key={index}>
-            <Question question={question}/>
-            {/* <card-component will go here/> */}
+          <div className="question-container" key={index} >
+            <Question question={question} sendOffer={this.sendOffer} />
           </div>
-    )})} 
-    else {
+    )})} else {
       return (
         <div>
           <p>There aren't any questions being asked right now :(</p>
@@ -49,42 +74,40 @@ class AnswerPage extends Component {
   componentWillMount() {
     this.getQuestions();
   }
+
   render() {
-    if (this.state.questions !== null) {
-      return (
-        <div className="answer-container">
-          <h1 className="answer-title">Help learners</h1>
-          <h3 className="answer-subtitle">Here are the latests questions</h3>
-          <div className="answer-filters">
-            <div className="answer-filter">
-              <div className="answer-text">Filter:</div>
-              <div className="filterButton">All</div>
-              <div className="filterButton">Open</div>
-              <div className="filterButton">Pending</div>
-              <div className="filterButton">Closed</div>
-            </div>
-            <div className="answer-dropdown">
-              <div className="answer-text">Sort by:</div>
-              <div className="dropdown">
-                <div className="dropbtn">
-                  <div>Newest</div>
-                  <FontAwesomeIcon icon={faChevronDown} className="icon-style"/>
-                </div>
-                <div className="dropdown-content">
-                  <div>Newest</div>
-                  <div>Oldest</div>
-                </div>
+    const questionsOrLoading = this.state.questions !== null ? this.renderQuestions() : <div> LOADING </div>;
+
+    return (
+      <div className="answer-container">
+        <h1>Help learners</h1>
+        <h3>Here are the latests questions</h3>
+        <div className="answer-filters">
+          <div className="answer-filter">
+            <h4>Filter:</h4>
+            <div>All</div>
+            <div>Open</div>
+            <div>Pending</div>
+            <div>Closed</div>
+          </div>
+          <div className="answer-dropdown">
+            <h4>Sort by:</h4>
+            <div className="dropdown">
+              <div className="dropbtn">
+                <div>Newest</div>
+                <FontAwesomeIcon icon={faChevronDown} className="icon-style"/>
+              </div>
+              <div className="dropdown-content">
+                <div>Newest</div>
+                <div>Oldest</div>
               </div>
             </div>
           </div>
-          {this.renderAnswers()}
         </div>
-      )
-    } 
-    else {
-      return <div>LOADING</div>
-    }
-    
+
+        {questionsOrLoading}
+      </div>
+    )
   }
 }
 

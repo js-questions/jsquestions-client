@@ -20,7 +20,7 @@ class QuestionAbout extends Component {
     .then(res => 
       this.setState({
         question: res.filter(ele => {
-          if (ele.questionId.toString() === window.location.pathname.replace(/\D/g, "")) {
+          if (ele.question_id.toString() === window.location.pathname.replace(/\D/g, "")) {
             return ele
           }})[0]
           //Amber TTD: need to refractor above & move to redux function

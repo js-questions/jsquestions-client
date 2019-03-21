@@ -1,32 +1,21 @@
 $bg-color: rgb(33, 35, 51);
 $border-grey-color: rgb(150, 150, 150);
 
+.offerNotSent {
+  border: 2px solid greenyellow;
+}
+
+.offerSent {
+  border: 2px solid yellow;
+}
+
 .question-container {
   display: flex;
   flex-direction: row;
-  border: 1px solid $border-grey-color;
-  width: 90%;
-  margin: 20px 0;
-}
-
-.question-avatar {
-  width: 30%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.question-body {
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-}
-
-.queston-action {
-  width: 20%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  min-width: 80vw;
+  margin: 5px;
+  border: 1px solid gray;
+  border-radius: 3px;
+  padding: 10px;
 }
