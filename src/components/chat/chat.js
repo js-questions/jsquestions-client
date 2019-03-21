@@ -16,6 +16,44 @@ class Chat extends React.Component {
     // roomId: this.props.location.state.roomId
     roomId: this.props.location.pathname.split('/chat/')[1]
   }
+  
+  componentDidMount() {
+    //const room = this.props.room; //Amber removed this ... TTD to refractor 
+    this.props.socket.emit('join room', this.state.roomId)
+
+    // CHAT
+    this.props.socket.on('chat message', (msg) => {
+      let currentId = this.props.socket.id;
+      let oneMessage = document.createElement('div');
+      let messages = document.getElementById('messages').appendChild(oneMessage);
+      oneMessage.className += ' oneMessage';
+      let messageText = document.createElement('div');
+      let messageDate = document.createElement('div');
+      oneMessage.appendChild(messageText);
+      messageText.innerHTML = msg.value;
+      oneMessage.appendChild(messageDate);
+      messageDate.innerHTML = msg.date;
+      messageDate.className += ' messageDate';
+      if (currentId === msg.id) messages.className += ' myMessage';
+      else messages.className += ' elseMessage';
+    });
+
+    // CODE EDITOR
+    this.codemirror =  CodeMirror.fromTextArea(this.textArea.current, {
+      mode: "javascript",
+      theme: "default",
+      lineNumbers: true,
+      content: this.textArea.current,
+    })
+    this.codemirror.on('blur', this.textChanged);
+    this.props.socket.on('editor', (data) => this.codemirror.getDoc().setValue(data.text)); // handles received text
+    // this.props.socket.on('editor', this.handleReceivedText);
+    this.props.socket.on('newUser', this.updateText);
+  }
+
+  // handleReceivedText = (data) => {
+  //   this.codemirror.getDoc().setValue(data.text);
+  // }
 
   shouldComponentUpdate() {
     return false;
@@ -73,43 +111,8 @@ class Chat extends React.Component {
     this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()})
   }
 
-  handleReceivedText = (data) => {
-      this.codemirror.getDoc().setValue(data.text);
-  }
+ 
 
-  componentDidMount() {
-    //const room = this.props.room; //Amber removed this ... TTD to refractor 
-    this.props.socket.emit('join room', this.state.roomId)
-
-    // CHAT
-    this.props.socket.on('chat message', (msg) => {
-      let currentId = this.props.socket.id;
-      let oneMessage = document.createElement('div');
-      let messages = document.getElementById('messages').appendChild(oneMessage);
-      oneMessage.className += ' oneMessage';
-      let messageText = document.createElement('div');
-      let messageDate = document.createElement('div');
-      oneMessage.appendChild(messageText);
-      messageText.innerHTML = msg.value;
-      oneMessage.appendChild(messageDate);
-      messageDate.innerHTML = msg.date;
-      messageDate.className += ' messageDate';
-      if (currentId === msg.id) messages.className += ' myMessage';
-      else messages.className += ' elseMessage';
-    });
-
-    // CODE EDITOR
-    this.codemirror =  CodeMirror.fromTextArea(this.textArea.current, {
-      mode: "javascript",
-      theme: "default",
-      lineNumbers: true,
-      content: this.textArea.current,
-    })
-    this.codemirror.on('blur', this.textChanged);
-    this.props.socket.on('editor', this.handleReceivedText);
-    this.props.socket.on('newUser', this.updateText);
-
-  }
 
   render() {
     return(

@@ -22,12 +22,10 @@ class App extends Component {
         <Navbar socket={socket}/>
             <Route exact path="/" component={LandingPage}/>
             <Route path="/ask" component={AskQuestions}/>
-            <Route path="/question-posted/:questionid" component={QuestionPosted}/>
+            <Route path="/question-posted/:questionid" render={(props) => <QuestionPosted {...props} socket={socket} />}/>
             <Route path="/question/:questionid" component={QuestionAbout}/>
             <Route path="/answer" component={AnswerPage}/>
-            <Route
-            path='/chat'
-            render={(props) => <Chat {...props} socket={socket} />}
+            <Route path='/chat' render={(props) => <Chat {...props} socket={socket} />}
             />
             <Route path="/my-questions" component={MyQuestions}/>
         </Router>

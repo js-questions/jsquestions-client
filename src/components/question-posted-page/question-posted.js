@@ -24,9 +24,7 @@ class QuestionPosted extends Component {
   }
 
   alertTutor = async (token, tutorId) => {
-    //sends info to backend so that tutor will be alerted
     await fetch(`http://localhost:4000/questions/${this.state.questionid}`, {
-    // await fetch(`${process.env.REACT_APP_END_POINT_URL}/questions/${this.state.questionid}`, {
       method: 'PUT', 
       headers : { 
         'Authorization' : 'Bearer ' + token,
@@ -38,7 +36,8 @@ class QuestionPosted extends Component {
           "answered_by": tutorId
         }
     )})
-    .then(res => console.log(res))
+    .then(res => res.json())
+    .then(question => this.props.socket.emit('chat now', question))
   }
 
   renderOffers = () => {

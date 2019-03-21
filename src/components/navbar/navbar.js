@@ -16,12 +16,22 @@ class Navbar extends React.Component {
       showSignup: false,
       openModal: true,
       showMenu: false,
-      showTutorNotification: false
+      showTutorNotification: false,
+      socketQuestion: '',
     }
   }
 
   componentDidMount = () => {
     this.checkToken();
+    this.props.socket.on('push tutor', (question) => this.setState({socketQuestion: question}));
+  }
+
+  tutorNotification = () => {
+    if (this.state.socketQuestion !== '') {
+      return <Modal question={this.state.socketQuestion} props={this.props}/>
+    } else {
+      return '';
+    }
   }
 
   toggleSignUp = () => {
@@ -65,16 +75,6 @@ class Navbar extends React.Component {
     }
   }
 
-  fakeEmitter = () => {
-    this.setState({showTutorNotification: true});
-  }
-
-  notifyTutor = () => {
-    if (this.state.showTutorNotification) {
-      return <Modal props={this.props}/>
-    }
-  }
-
 
   render() {
     // Sending token on user refresh
@@ -93,7 +93,7 @@ class Navbar extends React.Component {
             {this.loginProcess()}
           </div>
           {this.showSignupModal()}
-          {this.notifyTutor()}
+          {this.tutorNotification()}
         </div>
         {this.showMenu()}
       </div>
