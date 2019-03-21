@@ -12,8 +12,8 @@ class Login extends Component {
       username: '',
       email: '',
       password: '',
-      url: process.env.REACT_APP_END_POINT_URL,
-      //  url: 'http://localhost:4000',
+      // url: process.env.REACT_APP_END_POINT_URL,
+      url: 'http://localhost:4000',
       userExists: false,
       loginError: '',
       signUpError: ''

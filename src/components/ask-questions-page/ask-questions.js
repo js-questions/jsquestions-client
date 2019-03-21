@@ -28,7 +28,8 @@ class AskQuestions extends Component {
 
   postQuestion = async (token) => {
       //sends question to post to database
-      await fetch(`${process.env.REACT_APP_END_POINT_URL}/questions`, {
+      await fetch(`http://localhost:4000/questions`, {
+      // await fetch(`${process.env.REACT_APP_END_POINT_URL}/questions`, {
         method: 'post', 
         headers : { 
           'Authorization' : 'Bearer ' + token,
