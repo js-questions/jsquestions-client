@@ -13,7 +13,8 @@ class Chat extends React.Component {
 
   state = {
     keepChangeEditor: '',
-    roomId: this.props.location.state.roomId
+    // roomId: this.props.location.state.roomId
+    roomId: this.props.location.pathname.split('/chat/')[1]
   }
 
   shouldComponentUpdate() {
@@ -59,7 +60,8 @@ class Chat extends React.Component {
       // var endPosition = myElement.selectionEnd;
       // console.log('startPosition ', startPosition)
       // console.log('endPosition ', endPosition)
-    if (this.codemirror.getDoc().getValue()!==this.state.keepChangeEditor) {
+
+    if (editorContent!==this.state.keepChangeEditor) {
       this.props.socket.emit('editor', data);
       this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()});
     }
@@ -78,7 +80,6 @@ class Chat extends React.Component {
   componentDidMount() {
     //const room = this.props.room; //Amber removed this ... TTD to refractor 
     this.props.socket.emit('join room', this.state.roomId)
-
 
     // CHAT
     this.props.socket.on('chat message', (msg) => {
@@ -114,7 +115,9 @@ class Chat extends React.Component {
     return(
       <div className="chat-component">
         <div className="chat-header">
-          <div className="title">Question: How do I... blah blah blah</div>
+          {/* <div className="title">{this.props.location.state.title} </div> */}
+          <div className="title">Title to Replace</div>
+
           <div className="hang-up">Hang Up</div>
         </div>
         <div className="chat-body">

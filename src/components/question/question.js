@@ -22,8 +22,7 @@ class Question extends Component {
     const offerButtonExists = this.props.sendOffer ? this.renderOfferButton() : null ;
     return (
       <div>
-        <p>{this.props.question.title}</p>
-        <p>{this.props.question.description}</p>
+        <p>Question: {this.props.question.title} Description: {this.props.question.description}</p>
         {offerButtonExists}
       </div>
     );

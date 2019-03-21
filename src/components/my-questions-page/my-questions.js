@@ -30,7 +30,10 @@ class MyQuestions extends Component {
       return this.state.questions.map((question, index) => {
         return (
           <div key={index}>
-            <Link to={{pathname: `/question/${question.question_id}`}} >
+            <Link to={{pathname: `/question-posted/${index + 1}`}} >
+          
+            {/* TTD: recomment out when the real endpoint is working */} 
+            {/* <Link to={{pathname: `/question/${question.question_id}`}} > */ }
               <Question question={question}/>
             </Link>
           </div>

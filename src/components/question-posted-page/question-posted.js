@@ -4,25 +4,26 @@ import { connect } from 'react-redux';
 import { fetchQuestionAndOffers } from '../../redux/actions.js';
 import Card from '../card/card.js';
 
-const toDELETETutorId = 2;
-
 class QuestionPosted extends Component {
   state = {
-    questionid: this.props.location.state.questionId
+    questionid: window.location.pathname.replace(/\D/g, "")
   }
 
   componentDidMount() {
     this.props.fetchQuestionAndOffers(this.state.questionid);
   }
 
-  handleClick = (e) => {
+  handleClick = (e, tutorId) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    this.alertTutor(token);
-    this.props.history.push('/chat', this.props.location.state);
+    this.alertTutor(token, tutorId);
+    this.props.history.push({
+      pathname: `/chat/${this.props.question.room_id}`,
+      state: {question: this.props.question}
+    }) 
   }
 
-  alertTutor = async (token) => {
+  alertTutor = async (token, tutorId) => {
     //sends info to backend so that tutor will be alerted
     await fetch(`http://localhost:4000/questions/${this.state.questionid}`, {
     // await fetch(`${process.env.REACT_APP_END_POINT_URL}/questions/${this.state.questionid}`, {
@@ -34,7 +35,7 @@ class QuestionPosted extends Component {
       },
       body: JSON.stringify(
         {
-          "answered_by": toDELETETutorId
+          "answered_by": tutorId
         }
     )})
     .then(res => console.log(res))
@@ -43,10 +44,9 @@ class QuestionPosted extends Component {
   renderOffers = () => {
     const offers = this.props.offers;
     const tutors = this.props.tutors;
-    console.log('render Offers reached')
       return offers.map((offer, index) => {
         if (tutors[index]) {
-          return <div key={offer.offerId}><Card tutor={tutors[index]} offer={offer} chatNow={this.handleClick} /></div>
+          return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} chatNow={(e) => this.handleClick(e, tutors[index].user_id)} /></div>
         } else {
           return '';
         }
@@ -70,7 +70,8 @@ class QuestionPosted extends Component {
 const mapStateToProps = (state) => ({
   user: state.user,
   offers: state.offers,
-  tutors: state.tutors
+  tutors: state.tutors,
+  question: state.question
 })
 
 const mapDispatchToProps = { fetchQuestionAndOffers };
