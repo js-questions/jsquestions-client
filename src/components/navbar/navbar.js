@@ -26,7 +26,6 @@ class Navbar extends React.Component {
   }
 
   tutorNotification = () => {
-    console.log('notify tutor');
     if (this.state.socketQuestion !== '') {
       return <Modal question={this.state.socketQuestion} />
     } else {

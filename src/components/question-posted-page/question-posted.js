@@ -62,6 +62,8 @@ class QuestionPosted extends Component {
 
     return (
       <div>
+        <h1>Question: {this.props.question.title}</h1>
+        <h2>Description: {this.props.question.description}</h2>
         <div>
           {this.renderOffers()}
         </div>
