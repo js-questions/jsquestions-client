@@ -7,6 +7,7 @@ import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
 import { Link } from "react-router-dom";
 import ProfileMenu from './profile-menu';
+import Modal from '../modal/modal.js';
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -14,7 +15,8 @@ class Navbar extends React.Component {
     this.state = {
       showSignup: false,
       openModal: true,
-      showMenu: false
+      showMenu: false,
+      showTutorNotification: false
     }
   }
 
@@ -63,6 +65,17 @@ class Navbar extends React.Component {
     }
   }
 
+  fakeEmitter = () => {
+    this.setState({showTutorNotification: true});
+  }
+
+  notifyTutor = () => {
+    if (this.state.showTutorNotification) {
+      return <Modal props={this.props}/>
+    }
+  }
+
+
   render() {
     // Sending token on user refresh
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
@@ -75,10 +88,12 @@ class Navbar extends React.Component {
               <div className="navbar-item"><Link to='/'><img src={logo} width="55px" alt="logo"/></Link></div>
               <div className="navbar-item"><Link to='/ask'>Ask for help.</Link></div>
               <div className="navbar-item"><Link to='/answer'>Help others.</Link></div>
+              <div className="navbar-item"><div onClick={this.fakeEmitter}>Notify Tutor</div></div>
             </div>
             {this.loginProcess()}
           </div>
           {this.showSignupModal()}
+          {this.notifyTutor()}
         </div>
         {this.showMenu()}
       </div>
