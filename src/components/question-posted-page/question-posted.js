@@ -23,7 +23,7 @@ class QuestionPosted extends Component {
     }) 
   }
 
-  alertTutor = async (token, tutorId) => {
+  alertTutor = async (token, tutorId) => { // this should NOT be tutorId - this is actually the OFFER id
     await fetch(`http://localhost:4000/questions/${this.state.questionid}`, {
       method: 'PUT', 
       headers : { 
@@ -33,11 +33,15 @@ class QuestionPosted extends Component {
       },
       body: JSON.stringify(
         {
-          "answered_by": tutorId
+          "answered_by": tutorId // this is NOT a userId of the tutor, it SHOULD be the offerID of the offer the user just clicked
         }
     )})
     .then(res => res.json())
-    .then(question => this.props.socket.emit('chat now', question))
+    .then(question => {
+      question.tutor = tutorId; // adding the tutorId to the question
+      this.props.socket.emit('chat now', question)
+    })
+
   }
 
   renderOffers = () => {

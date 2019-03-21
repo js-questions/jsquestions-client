@@ -16,19 +16,19 @@ class Navbar extends React.Component {
       showSignup: false,
       openModal: true,
       showMenu: false,
-      showTutorNotification: false,
       socketQuestion: '',
     }
   }
 
   componentDidMount = () => {
     this.checkToken();
-    this.props.socket.on('push tutor', (question) => this.setState({socketQuestion: question}));
+    this.props.socket.on('push tutor', (question) => this.setState({socketQuestion: question}, () => this.tutorNotification()));
   }
 
   tutorNotification = () => {
+    console.log('notify tutor');
     if (this.state.socketQuestion !== '') {
-      return <Modal question={this.state.socketQuestion} props={this.props}/>
+      return <Modal question={this.state.socketQuestion} />
     } else {
       return '';
     }
@@ -88,7 +88,6 @@ class Navbar extends React.Component {
               <div className="navbar-item"><Link to='/'><img src={logo} width="55px" alt="logo"/></Link></div>
               <div className="navbar-item"><Link to='/ask'>Ask for help.</Link></div>
               <div className="navbar-item"><Link to='/answer'>Help others.</Link></div>
-              <div className="navbar-item"><div onClick={this.fakeEmitter}>Notify Tutor</div></div>
             </div>
             {this.loginProcess()}
           </div>

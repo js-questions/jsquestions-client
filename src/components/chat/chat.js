@@ -5,7 +5,7 @@ import CodeMirror from 'codemirror';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
-
+import Modal from '../modal/modal.js';
 
 class Chat extends React.Component {
 
@@ -13,11 +13,11 @@ class Chat extends React.Component {
 
   state = {
     keepChangeEditor: '',
-    // roomId: this.props.location.state.roomId
-    roomId: this.props.location.pathname.split('/chat/')[1]
+    roomId: this.props.location.pathname.split('/chat/')[1],
   }
-  
+ 
   componentDidMount() {
+
     //const room = this.props.room; //Amber removed this ... TTD to refractor 
     this.props.socket.emit('join room', this.state.roomId)
 
@@ -50,10 +50,6 @@ class Chat extends React.Component {
     // this.props.socket.on('editor', this.handleReceivedText);
     this.props.socket.on('newUser', this.updateText);
   }
-
-  // handleReceivedText = (data) => {
-  //   this.codemirror.getDoc().setValue(data.text);
-  // }
 
   shouldComponentUpdate() {
     return false;
@@ -112,9 +108,11 @@ class Chat extends React.Component {
   }
 
  
-
-
   render() {
+
+    // notify that user is online
+    this.props.socket.emit('user online', {token: localStorage.getItem('token')});
+
     return(
       <div className="chat-component">
         <div className="chat-header">
@@ -142,7 +140,6 @@ class Chat extends React.Component {
           </div>
         </div>
       </div>
-
     )
   }
 }
