@@ -12,7 +12,6 @@ class AnswerPage extends Component {
     questions: null
   }
 
-
   getQuestions = () => {
     const token = localStorage.getItem('token');
 
@@ -35,6 +34,7 @@ class AnswerPage extends Component {
         return (
           <div key={index}>
             <Question question={question}/>
+            {/* <card-component will go here/> */}
           </div>
     )})} 
     else {
@@ -46,7 +46,7 @@ class AnswerPage extends Component {
     }
   }
 
-  componentWillMount(){
+  componentWillMount() {
     this.getQuestions();
   }
   render() {
@@ -79,7 +79,7 @@ class AnswerPage extends Component {
           </div>
           {this.renderAnswers()}
         </div>
-        )
+      )
     } 
     else {
       return <div>LOADING</div>
