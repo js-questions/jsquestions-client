@@ -30,7 +30,8 @@ class MyQuestions extends Component {
       return this.state.questions.map((question, index) => {
         return (
           <div key={index}>
-            <Link to={{pathname: `/question/${question.questionId}`}} >
+            <Link to={{pathname: `/question-posted/${index + 1}`}} >
+            {/* <Link to={{pathname: `/question-posted/${question.questionId}`}} > */}
               <Question question={question}/>
             </Link>
           </div>

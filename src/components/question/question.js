@@ -3,8 +3,7 @@ import React from 'react';
 function Question(props) {
   return (
     <div>
-      <p>{props.question.title}</p>
-      <p>{props.question.description}</p>
+      <p>{props.question.title} : {props.question.description}</p>
     </div>
   );
 }

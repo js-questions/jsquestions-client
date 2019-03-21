@@ -8,21 +8,21 @@ const toDELETETutorId = 2;
 
 class QuestionPosted extends Component {
   state = {
-    questionid: this.props.location.state.questionId
+    questionid: window.location.pathname.replace(/\D/g, "")
   }
 
   componentDidMount() {
     this.props.fetchQuestionAndOffers(this.state.questionid);
   }
 
-  handleClick = (e) => {
+  handleClick = (e, tutorId) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    this.alertTutor(token);
+    this.alertTutor(token, tutorId);
     this.props.history.push('/chat', this.props.location.state);
   }
 
-  alertTutor = async (token) => {
+  alertTutor = async (token, tutorId) => {
     //sends info to backend so that tutor will be alerted
     await fetch(`http://localhost:4000/questions/${this.state.questionid}`, {
     // await fetch(`${process.env.REACT_APP_END_POINT_URL}/questions/${this.state.questionid}`, {
@@ -34,7 +34,7 @@ class QuestionPosted extends Component {
       },
       body: JSON.stringify(
         {
-          "answeredBy": toDELETETutorId
+          "answeredBy": tutorId
         }
     )})
     .then(res => console.log(res))
@@ -43,10 +43,9 @@ class QuestionPosted extends Component {
   renderOffers = () => {
     const offers = this.props.offers;
     const tutors = this.props.tutors;
-    console.log('render Offers reached')
       return offers.map((offer, index) => {
         if (tutors[index]) {
-          return <div key={offer.offerId}><Card tutor={tutors[index]} offer={offer} chatNow={this.handleClick} /></div>
+          return <div key={offer.offerId}><Card tutor={tutors[index]} offer={offer} chatNow={(e) => this.handleClick(e, tutors[index].userId)} /></div>
         } else {
           return '';
         }
