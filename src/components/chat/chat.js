@@ -13,7 +13,8 @@ class Chat extends React.Component {
 
   state = {
     keepChangeEditor: '',
-    roomId: this.props.location.state.roomId
+    // roomId: this.props.location.state.roomId
+    roomId: this.props.location.pathname.split('/chat/')[1]
   }
 
   shouldComponentUpdate() {
@@ -111,10 +112,13 @@ class Chat extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     return(
       <div className="chat-component">
         <div className="chat-header">
-          <div className="title">Question: How do I... blah blah blah</div>
+          {/* <div className="title">{this.props.location.state.title} </div> */}
+          <div className="title">Title to Replace</div>
+
           <div className="hang-up">Hang Up</div>
         </div>
         <div className="chat-body">

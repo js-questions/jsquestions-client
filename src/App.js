@@ -12,7 +12,6 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Chat from './components/chat/chat.js';
 import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:4000/');
-const room = '1234'
 
 class App extends Component {
   render() {
@@ -26,7 +25,7 @@ class App extends Component {
             <Route path="/question/:questionid" component={QuestionAbout}/>
             <Route
             path='/chat'
-            render={(props) => <Chat {...props} socket={socket} room={room}/>}
+            render={(props) => <Chat {...props} socket={socket} />}
             />
             <Route path="/my-questions" component={MyQuestions}/>
         </Router>

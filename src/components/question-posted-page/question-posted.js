@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import { fetchQuestionAndOffers } from '../../redux/actions.js';
 import Card from '../card/card.js';
 
-const toDELETETutorId = 2;
-
 class QuestionPosted extends Component {
   state = {
     questionid: window.location.pathname.replace(/\D/g, "")
@@ -19,7 +17,10 @@ class QuestionPosted extends Component {
     e.preventDefault();
     const token = localStorage.getItem('token');
     this.alertTutor(token, tutorId);
-    this.props.history.push('/chat', this.props.location.state);
+    this.props.history.push({
+      pathname: `/chat/${this.props.question.roomId}`,
+      state: {question: this.props.question}
+    }) 
   }
 
   alertTutor = async (token, tutorId) => {
@@ -69,7 +70,8 @@ class QuestionPosted extends Component {
 const mapStateToProps = (state) => ({
   user: state.user,
   offers: state.offers,
-  tutors: state.tutors
+  tutors: state.tutors,
+  question: state.question
 })
 
 const mapDispatchToProps = { fetchQuestionAndOffers };
