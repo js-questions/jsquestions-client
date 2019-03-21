@@ -18,7 +18,7 @@ class QuestionPosted extends Component {
     const token = localStorage.getItem('token');
     this.alertTutor(token, tutorId);
     this.props.history.push({
-      pathname: `/chat/${this.props.question.roomId}`,
+      pathname: `/chat/${this.props.question.room_id}`,
       state: {question: this.props.question}
     }) 
   }
@@ -35,7 +35,7 @@ class QuestionPosted extends Component {
       },
       body: JSON.stringify(
         {
-          "answeredBy": tutorId
+          "answered_by": tutorId
         }
     )})
     .then(res => console.log(res))
@@ -46,7 +46,7 @@ class QuestionPosted extends Component {
     const tutors = this.props.tutors;
       return offers.map((offer, index) => {
         if (tutors[index]) {
-          return <div key={offer.offerId}><Card tutor={tutors[index]} offer={offer} chatNow={(e) => this.handleClick(e, tutors[index].userId)} /></div>
+          return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} chatNow={(e) => this.handleClick(e, tutors[index].user_id)} /></div>
         } else {
           return '';
         }

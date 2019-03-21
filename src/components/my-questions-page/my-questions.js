@@ -31,7 +31,9 @@ class MyQuestions extends Component {
         return (
           <div key={index}>
             <Link to={{pathname: `/question-posted/${index + 1}`}} >
-            {/* <Link to={{pathname: `/question-posted/${question.questionId}`}} > */}
+          
+            {/* TTD: recomment out when the real endpoint is working */} 
+            {/* <Link to={{pathname: `/question/${question.question_id}`}} > */ }
               <Question question={question}/>
             </Link>
           </div>
