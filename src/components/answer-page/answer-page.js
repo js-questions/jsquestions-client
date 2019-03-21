@@ -4,11 +4,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 import Question from '../question/question';
+import Modal from './../modal/modal';
 
 class AnswerPage extends Component {
   state = {
     questions: null,
-    loggedIn: false
+    loggedIn: false,
+    showModal: true,
+    modalRef: {
+      title: 'Offer help to [name]',
+      description: null,
+      forms: <form><input type='text' placeholder='omgggg'/></form>,
+      button: 'Send chat invitation',
+      subbutton: null
+    }
   }
 
   getQuestions = () => {
@@ -32,6 +41,7 @@ class AnswerPage extends Component {
   sendOffer = (questionid, buttonAlreadyClicked) => {
     //Amber TTD: Needs to have a way if they click and aren't siged in they need to sign in
     //Will only send offer once
+    console.log(questionid)
     if (!buttonAlreadyClicked) {
       const token = localStorage.getItem('token');
       fetch(`${process.env.REACT_APP_END_POINT_URL}/questions/${questionid}/offers`, {
@@ -43,8 +53,8 @@ class AnswerPage extends Component {
         },
         body: {
           'message': 'i Kinda know english, need help?',
-          'linked_question': questionid,
-          'expiration': "2017-01-08T21:00:11.620Z"
+          'expiration': new Date()
+          //Amber TTD: MAKE SURE EXPIRATION IS A NUMBER...number of seconds until not available
           //Amber TTD: this needs to be filled out in a popup modal
         }
       })
@@ -52,6 +62,14 @@ class AnswerPage extends Component {
         .then(res=> console.log('offer sent to BE', res))
         //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
     }   
+  }
+
+  openOfferModal = () => {
+    console.log('jsdfjlsdf')
+    if (this.state.showModal){
+      return <Modal modalRef={this.state.modalRef}/>
+    }
+
   }
 
   
@@ -85,6 +103,7 @@ class AnswerPage extends Component {
 
   render() {
     return (
+
       <div className="answer-container">
         <h1>Help learners</h1>
         <h3>Here are the latests questions</h3>
@@ -110,7 +129,7 @@ class AnswerPage extends Component {
             </div>
           </div>
         </div>
-
+        {this.openOfferModal()}
         {this.renderQuestions()}
       </div>
     )
