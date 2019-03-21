@@ -24,6 +24,15 @@ const offers = (state = [], action) => {
   }
 }
 
+const tutors = (state = [], action) => {
+  switch(action.type) {
+    case 'UPDATE_TUTORS':
+      return [...state, action.tutor]
+    default:
+      return state;
+  }
+}
+
 const question = (state = [], action) => {
   switch(action.type) {
     case 'UPDATE_QUESTION':
@@ -36,7 +45,8 @@ const question = (state = [], action) => {
 const reducers = combineReducers({
   user,
   question,
-  offers
+  offers,
+  tutors
 });
 
 export default reducers;
