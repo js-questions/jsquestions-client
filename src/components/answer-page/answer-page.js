@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './answer-page.scss';
-
-// import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -9,12 +7,15 @@ import Question from '../question/question';
 
 class AnswerPage extends Component {
   state = {
-    questions: null
+    questions: null,
+    loggedIn: false
   }
 
   getQuestions = () => {
     const token = localStorage.getItem('token');
-
+    if (token) {
+      this.setState({loggedIn: true})
+    }
     fetch(`${process.env.REACT_APP_END_POINT_URL}/questions`, {
       method: 'GET', 
       headers : { 
@@ -29,9 +30,9 @@ class AnswerPage extends Component {
   }
 
   sendOffer = (questionid, buttonAlreadyClicked) => {
+    //Amber TTD: Needs to have a way if they click and aren't siged in they need to sign in
     //Will only send offer once
-
-    if(!buttonAlreadyClicked){
+    if (!buttonAlreadyClicked) {
       const token = localStorage.getItem('token');
       fetch(`${process.env.REACT_APP_END_POINT_URL}/questions/${questionid}/offers`, {
         method: 'POST', 
@@ -48,7 +49,7 @@ class AnswerPage extends Component {
         }
       })
         .then(res => res.json())
-        .then(res=> console.log("WORKS", res))
+        .then(res=> console.log('offer sent to BE', res))
         //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
     }   
   }
@@ -56,18 +57,25 @@ class AnswerPage extends Component {
   
 
   renderQuestions = () => {
-    if (this.state.questions.length > 0) {
+    //User is not logged in
+    if (!this.state.loggedIn) {
+      return <div>You must be logged in to see active questions</div>
+    } 
+    //Questions being loaded
+    else if (this.state.questions === null) {
+      return <div>LOADING</div>
+    }
+    //Renders questions
+    else if (this.state.questions.length > 0) {
       return this.state.questions.map((question, index) => {
         return (
           <div className="question-container" key={index} >
             <Question question={question} sendOffer={this.sendOffer} />
           </div>
-    )})} else {
-      return (
-        <div>
-          <p>There aren't any questions being asked right now :(</p>
-        </div>
-      )
+    )})} 
+    //No questions to render
+    else {
+      return  <div>There aren't any questions being asked right now :( </div>
     }
   }
 
@@ -76,8 +84,6 @@ class AnswerPage extends Component {
   }
 
   render() {
-    const questionsOrLoading = this.state.questions !== null ? this.renderQuestions() : <div> LOADING </div>;
-
     return (
       <div className="answer-container">
         <h1>Help learners</h1>
@@ -105,7 +111,7 @@ class AnswerPage extends Component {
           </div>
         </div>
 
-        {questionsOrLoading}
+        {this.renderQuestions()}
       </div>
     )
   }

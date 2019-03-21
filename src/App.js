@@ -26,10 +26,10 @@ class App extends Component {
             <Route path="/question-posted/:questionid" component={QuestionPosted}/>
             <Route path="/question/:questionid" component={QuestionAbout}/>
             <Route path="/answer" component={AnswerPage}/>
-            {/* <Route
+            <Route
             path='/chat'
             render={(props) => <Chat {...props} socket={socket} room={room}/>}
-            /> */}
+            />
             <Route path="/my-questions" component={MyQuestions}/>
         </Router>
       </div>
