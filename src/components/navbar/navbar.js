@@ -1,7 +1,7 @@
 import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
-import { setToken, logout } from '../../redux/actions.js';
+import { setToken } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
@@ -64,7 +64,9 @@ class Navbar extends React.Component {
   }
 
   render() {
-   
+    // Sending token on user refresh
+    this.props.socket.emit('user online', {token: localStorage.getItem('token')});
+
     return(
       <div>
         <div>

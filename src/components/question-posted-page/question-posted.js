@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { fetchQuestionAndOffers } from '../../redux/actions.js';
 import Card from '../card/card.js';
 
-const toDELETETutorId = 123456;
+const toDELETETutorId = 2;
 
 class QuestionPosted extends Component {
   state = {
@@ -24,7 +24,8 @@ class QuestionPosted extends Component {
 
   alertTutor = async (token) => {
     //sends info to backend so that tutor will be alerted
-    await fetch(`${process.env.REACT_APP_END_POINT_URL}/questions/${this.state.questionid}`, {
+    await fetch(`http://localhost:4000/questions/${this.state.questionid}`, {
+    // await fetch(`${process.env.REACT_APP_END_POINT_URL}/questions/${this.state.questionid}`, {
       method: 'PUT', 
       headers : { 
         'Authorization' : 'Bearer ' + token,
@@ -36,13 +37,13 @@ class QuestionPosted extends Component {
           "answeredBy": toDELETETutorId
         }
     )})
-    .then(res => res.json())
-    .then(res=> console.log("here", res)) //I don't need a response back here
+    .then(res => console.log(res))
   }
 
   renderOffers = () => {
     const offers = this.props.offers;
     const tutors = this.props.tutors;
+    console.log('render Offers reached')
       return offers.map((offer, index) => {
         if (tutors[index]) {
           return <div key={offer.offerId}><Card tutor={tutors[index]} offer={offer} chatNow={this.handleClick} /></div>
@@ -52,22 +53,12 @@ class QuestionPosted extends Component {
       });
   }
 
+
 //Amber TTD: Check how user is being sent to backend in the chat component into socket...COMPLETED need to talk to Natalia about requests
   render() {
 
     return (
       <div>
-        Question was Posted
-        <br/>
-        <div>
-          Your question: 
-          <b>
-            {this.props.location.state.title}
-            {this.props.location.state.description}
-          </b>
-          <br/>
-          <br/>
-        </div>
         <div>
           {this.renderOffers()}
         </div>

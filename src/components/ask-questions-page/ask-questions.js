@@ -28,7 +28,8 @@ class AskQuestions extends Component {
 
   postQuestion = async (token) => {
       //sends question to post to database
-      await fetch(`${process.env.REACT_APP_END_POINT_URL}/questions`, {
+      await fetch(`http://localhost:4000/questions`, {
+      // await fetch(`${process.env.REACT_APP_END_POINT_URL}/questions`, {
         method: 'post', 
         headers : { 
           'Authorization' : 'Bearer ' + token,
@@ -58,8 +59,7 @@ class AskQuestions extends Component {
   signedIn = async (token) => {
     //sends question to database and then sends user to question posted page 
     await this.postQuestion(token);
-    console.log(this.state.storedQuestion)
-    this.props.history.push('/question-posted', this.state.storedQuestion);
+    this.props.history.push(`/question-posted/${this.state.storedQuestion.questionId}`, this.state.storedQuestion);
   }
 
   componentDidMount() {
