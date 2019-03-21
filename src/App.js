@@ -4,6 +4,7 @@ import Navbar from './components/navbar/navbar';
 import AskQuestions from './components/ask-questions-page/ask-questions';
 import LandingPage from './components/landing-page/landing-page';
 import QuestionPosted from './components/question-posted-page/question-posted';
+import AnswerPage from './components/answer-page/answer-page';
 import QuestionAbout from './components/question-posted-page/question-about';
 import MyQuestions from './components/my-questions-page/my-questions';
 
@@ -24,6 +25,7 @@ class App extends Component {
             <Route path="/ask" component={AskQuestions}/>
             <Route path="/question-posted/:questionid" component={QuestionPosted}/>
             <Route path="/question/:questionid" component={QuestionAbout}/>
+            <Route path="/answer" component={AnswerPage}/>
             <Route
             path='/chat'
             render={(props) => <Chat {...props} socket={socket} room={room}/>}

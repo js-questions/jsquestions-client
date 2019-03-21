@@ -34,7 +34,7 @@ class QuestionPosted extends Component {
       },
       body: JSON.stringify(
         {
-          "answeredBy": toDELETETutorId
+          "answered_by": toDELETETutorId
         }
     )})
     .then(res => console.log(res))
