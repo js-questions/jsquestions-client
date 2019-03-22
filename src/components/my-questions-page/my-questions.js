@@ -13,9 +13,9 @@ class MyQuestions extends Component {
 
   componentWillMount (){
     const token = localStorage.getItem('token');
-    fetch(`${process.env.REACT_APP_END_POINT_URL}/questions/asked`, {
-      method: 'GET', 
-      headers : { 
+    fetch(`http://localhost:4000/questions/asked`, {
+      method: 'GET',
+      headers : {
         'Authorization' : 'Bearer ' + token,
         'Content-Type': 'application/json'
       }})
@@ -31,13 +31,13 @@ class MyQuestions extends Component {
         return (
           <div key={index}>
             <Link to={{pathname: `/question-posted/${index + 1}`}} >
-          
-            {/* TTD: recomment out when the real endpoint is working */} 
+
+            {/* TTD: recomment out when the real endpoint is working */}
             {/* <Link to={{pathname: `/question/${question.question_id}`}} > */ }
               <Question question={question}/>
             </Link>
           </div>
-    )})} 
+    )})}
     else {
       return (
         <div>
