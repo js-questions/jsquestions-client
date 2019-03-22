@@ -26,8 +26,8 @@ class AnswerPage extends Component {
       this.setState({loggedIn: true})
     }
     fetch(`http://localhost:4000/questions`, {
-      method: 'GET', 
-      headers : { 
+      method: 'GET',
+      headers : {
         'Authorization' : 'Bearer ' + token,
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -46,8 +46,8 @@ class AnswerPage extends Component {
     //Amber TTD: Needs to have a way if they click and aren't siged in they need to sign in
       const token = localStorage.getItem('token');
       fetch(`http://localhost:4000/questions/${details.questionid}/offers`, {
-        method: 'POST', 
-        headers: { 
+        method: 'POST',
+        headers: {
           'Authorization' : 'Bearer ' + token,
           'Content-Type': 'application/json'
         },
@@ -86,13 +86,13 @@ class AnswerPage extends Component {
     //Amber TTD: need a way to cancel offer help sent question comonent button change
   }
 
-  
+
 
   renderQuestions = () => {
     //User is not logged in
     if (!this.state.loggedIn) {
       return <div>You must be logged in to see active questions</div>
-    } 
+    }
     //Questions being loaded
     else if (this.state.questions === null) {
       return <div>LOADING</div>
@@ -102,9 +102,9 @@ class AnswerPage extends Component {
       return this.state.questions.map((question, index) => {
         return (
           <div className="question-container" key={index} >
-            <Question question={question} openOfferModal={this.openOfferModal} /> 
+            <Question question={question} openOfferModal={this.openOfferModal} />
           </div>
-    )})} 
+    )})}
     //No questions to render
     else {
       return  <div>There aren't any questions being asked right now :( </div>
@@ -117,25 +117,25 @@ class AnswerPage extends Component {
 
   render() {
     return (
-      <div className="answer-container">
-        <h1>Help learners</h1>
+      <div className="answer-page__container">
+        <h1 className="answer-page__title">Help learners</h1>
         <h3>Here are the latests questions</h3>
-        <div className="answer-filters">
-          <div className="answer-filter">
-            <h4>Filter:</h4>
+        <div className="answer-page__filters">
+          <div className="answer-page__filter">
+            <h4 className="answer-page__h4"> Filter:</h4>
             <div>All</div>
             <div>Open</div>
             <div>Pending</div>
             <div>Closed</div>
           </div>
-          <div className="answer-dropdown">
-            <h4>Sort by:</h4>
-            <div className="dropdown">
-              <div className="dropbtn">
+          <div className="answer-page__dropdown-box">
+            <h4 className="answer-page__h4">Sort by:</h4>
+            <div className="answer-page__dropdown">
+              <div className="answer-page__dropbtn">
                 <div>Newest</div>
-                <FontAwesomeIcon icon={faChevronDown} className="icon-style"/>
+                <FontAwesomeIcon icon={faChevronDown} className="answer-page__icon"/>
               </div>
-              <div className="dropdown-content">
+              <div className="answer-page__dropdown__content">
                 <div>Newest</div>
                 <div>Oldest</div>
               </div>

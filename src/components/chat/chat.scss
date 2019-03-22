@@ -1,6 +1,4 @@
-$background-white-color: white;
-$background-grey-color: rgb(216, 216, 216);
-$border-grey-color: rgb(150, 150, 150);
+@import '../../colors.scss';
 
 .chat-component {
   display: flex;
@@ -35,7 +33,7 @@ $border-grey-color: rgb(150, 150, 150);
 .chat-body {
   display: flex;
   flex-direction: row;
-  background-color: $background-white-color;
+  background-color: $white-color;
   height: 90vh;
 }
 
@@ -111,7 +109,7 @@ form button:hover {
 
 .elseMessage {
   align-self: flex-start;
-  background-color: white;
+  background-color: $white-color;
 }
 
 .messageDate {
