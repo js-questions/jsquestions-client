@@ -44,17 +44,17 @@ class Chat extends React.Component {
       lineNumbers: true,
       content: this.textArea.current,
     })
-    this.codemirror.on('blur', this.textChanged);
-    this.props.socket.on('editor', (data) => this.codemirror.getDoc().setValue(data.text)); // handles received text
-    this.props.socket.on('newUser', this.updateText);
+    this.codemirror.on('blur', this.codeChanged);
+    this.props.socket.on('editor', (data) => this.codemirror.getDoc().setValue(data.code)); // handles received text
+    this.props.socket.on('newUser', this.updateCode); // this code is not working - what was its purpose?
   }
 
   shouldComponentUpdate() {
     return false;
   }
 
-  updateText = (data) => {
-    this.codemirror.getDoc().setValue(data.text);
+  updateCode = (data) => {
+    this.codemirror.getDoc().setValue(data.code);
     this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()})
   }
 
@@ -84,9 +84,9 @@ class Chat extends React.Component {
     this.message.value = '';
   }
 
-  textChanged = () => {
+  codeChanged = () => {
     const editorContent = this.codemirror.getDoc().getValue();
-    const data = { text: editorContent, room: this.state.roomId }
+    const data = { code: editorContent, room: this.state.roomId } // changed property 'text' to 'code' to be more explicit
     if (editorContent !== this.state.keepChangeEditor) {
       this.props.socket.emit('editor', data);
       this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()});
@@ -111,14 +111,13 @@ class Chat extends React.Component {
     return(
       <div className="chat-component">
         <div className="chat-header">
-          {/* <div className="title">{this.props.location.state.title} </div> */}
-          <div className="title">Title to Replace</div>
-
-          <div className="hang-up">Hang Up</div>
+          <div className="title">Question Title</div>
+          {/* <div className="title">{this.props.location.state.question.title}: {this.props.location.state.question.description} <div>Related Resources: {this.props.location.state.question.resources}</div></div> */}
+          <div className="hang-up">End Call</div>
         </div>
         <div className="chat-body">
           <div className="editor">
-            <textarea id="txtArea" name="txtArea" ref={this.textArea} onChange={(e)=> console.log('text editor entered', e)}></textarea>
+            <textarea id="txtArea" name="txtArea" ref={this.textArea} value={this.state.textEditor} onChange={()=> console.log('text editor entered')}/>
           </div>
           <div className="chat-box">
             <div id="messages"></div>
