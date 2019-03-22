@@ -38,6 +38,7 @@ class QuestionPosted extends Component {
     )})
     .then(res => res.json())
     .then(question => {
+      console.log('updateQ question', question);
       question.tutor = tutorId; // adding the tutorId to the question
       this.props.socket.emit('chat now', question)
     })
