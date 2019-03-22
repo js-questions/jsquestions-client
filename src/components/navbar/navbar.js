@@ -22,7 +22,12 @@ class Navbar extends React.Component {
 
   componentDidMount = () => {
     this.checkToken();
-    this.props.socket.on('push tutor', (question) => this.setState({socketQuestion: question}, () => this.tutorNotification()));
+    this.props.socket.on('push tutor', (question) => {
+      console.log("works");
+      this.setState({socketQuestion: question}, () => this.tutorNotification() );
+  })
+    
+    
   }
 
   tutorNotification = () => {

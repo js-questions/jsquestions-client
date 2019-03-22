@@ -17,8 +17,7 @@ class Chat extends React.Component {
  
   componentDidMount() {
 
-    //const room = this.props.room; //Amber removed this ... TTD to refractor 
-    this.props.socket.emit('join room', this.state.roomId)
+    this.props.socket.emit('join room', this.state.roomId);
 
     // CHAT
     this.props.socket.on('chat message', (msg) => {
@@ -47,6 +46,12 @@ class Chat extends React.Component {
     this.codemirror.on('blur', this.codeChanged);
     this.props.socket.on('editor', (data) => this.codemirror.getDoc().setValue(data.code)); // handles received text
     this.props.socket.on('newUser', this.updateCode); // this code is not working - what was its purpose?
+
+    //HANG-UP
+    this.props.socket.on('hang up', () => {
+      console.log('BE to FE')
+      this.props.history.push('/');
+    })
   }
 
   shouldComponentUpdate() {
@@ -100,11 +105,13 @@ class Chat extends React.Component {
     // console.log('endPosition ', endPosition)
   }
 
+  hangUp = () => {
+    console.log('sent to BE')
+    this.props.socket.emit('hang up', {roomId: this.state.roomId});
+  }
+
   
   render() {
-
-    console.log('props', this.props)
-
     // notify that user is online
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
 
@@ -113,7 +120,7 @@ class Chat extends React.Component {
         <div className="chat-header">
           <div className="title">Question Title</div>
           {/* <div className="title">{this.props.location.state.question.title}: {this.props.location.state.question.description} <div>Related Resources: {this.props.location.state.question.resources}</div></div> */}
-          <div className="hang-up">End Call</div>
+          <div className="hang-up" onClick={this.hangUp}>End Call</div>
         </div>
         <div className="chat-body">
           <div className="editor">
