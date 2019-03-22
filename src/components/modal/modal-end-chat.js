@@ -4,23 +4,25 @@ import { Link } from "react-router-dom";
 
 class ModalEndChat extends Component {
   state = {
-    feedback: null,
+    feedback: 0,
     // questionid: this.props.modalRef.questionid,
     // expiration: Date.now() + 30
   }
 
   closesQuestion = () => {
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:4000/questions/${this.props.questionId}/feedback'`, {
+    const body = {
+      "karma": this.state.feedback,
+      "credits": 50
+    }
+
+    fetch(`http://localhost:4000/questions/${this.props.questionId}/feedback`, {
       method: 'PUT', 
       headers: { 
         'Authorization' : 'Bearer ' + token,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        "karma": this.state.feedback,
-        "credits": 50
-      })
+      body: JSON.stringify(body)
     })
       .then(res => res.json())
       .then(res=> console.log('question CLOSED', res))
@@ -30,8 +32,15 @@ class ModalEndChat extends Component {
     e.preventDefault();
     // this.props.sendOffer(this.state) //Amber TTD: put feedback in here
     this.props.closeChatModal()
+    console.log(this.state.feedback, "HEREeeee")
     this.closesQuestion();
     this.props.history.push('/');
+  }
+
+  setFeedback = (e, num) => {
+    e.preventDefault();
+    this.setState({feedback: num})
+    console.log(e, this.state.feedback)
   }
 
   render() {
@@ -57,9 +66,9 @@ class ModalEndChat extends Component {
             <div>Feel free to ask more questions or heck help out others if you feel confident!</div>
             <div>Please vote below on how you feel your Tutor did, Karma helps Tutors differencate themselves apart from others.</div>
             <form>
-              <button onClick={() => this.setState({feedback: 0})}>0 karma</button>
-              <button onClick={(event) => this.setState({feedback: 1})}>1 karma</button>
-              <button onClick={(event) => this.setState({feedback: 3})}>3 karma</button>
+              <button onClick={(e) => this.setFeedback(e, 0)}>0 karma</button>
+              <button onClick={(e) => this.setFeedback(e, 1)}>1 karma</button>
+              <button onClick={(e) => this.setFeedback(e, 3)}>3 karma</button>
               <button onClick={(e)=> this.chatFeedback(e)}>SUBMIT</button>
             </form>
           </div>
