@@ -14,18 +14,18 @@
 }
 
 .title {
-  background-color: $background-grey-color;
+  background-color: $grey-color-light;
   margin: 20px 10px 20px 20px;
   padding: 20px;
   width: 80%;
-  border: solid 1px $border-grey-color;
+  border: solid 1px $grey-color;
 }
 
 .hang-up {
-  background-color: $background-grey-color;
+  background-color: $grey-color-light;
   margin: 20px 20px 20px 10px;
   padding: 20px;
-  border: solid 1px $border-grey-color;
+  border: solid 1px $grey-color;
   width: 100px;
   text-align: center;
 }
@@ -40,9 +40,9 @@
 .editor {
   width: 48%;
   height: 100%;
-  background-color: $background-grey-color;
+  background-color: $grey-color-light;
   margin: 20px 10px 20px 20px;
-  border: solid 1px $border-grey-color;
+  border: solid 1px $grey-color;
 }
 
 #txtArea {
@@ -53,9 +53,9 @@
 
 .chat-box {
   width: 48%;
-  background-color: $background-grey-color;
+  background-color: $grey-color-light;
   margin: 20px 10px 20px 20px;
-  border: solid 1px $border-grey-color;
+  border: solid 1px $grey-color;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

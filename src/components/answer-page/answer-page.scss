@@ -10,18 +10,64 @@
   margin: 5% 0 2% 0;
 }
 
+.answer-page__subtitle {
+  margin-bottom: 5%;
+}
+
 .answer-page__filters {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: 80%;
-  padding: 20px 0;
+  margin-bottom: 5%;
 }
 
 .answer-page__filter {
   display: flex;
   flex-direction: row;
+  align-items: center;
+}
+
+.answer-page__filter-selected {
+  border: 1px solid $yellow-color;
+  background-color: $yellow-color;
+  border-radius: 15px;
+  padding: 8px;
+  margin-right: 5px;
+  cursor: pointer;
+  box-shadow: 0 3px $grey-color;
+}
+
+.answer-page__filter-unselected {
+  border: 1px solid $grey-color-light;
+  border-radius: 15px;
+  padding: 8px;
+  margin-right: 5px;
+  cursor: pointer;
+  box-shadow: 0 3px $grey-color;
+}
+
+.answer-page__filter-unselected:hover{
+  background-color: $grey-color-light;
+  border: 1px solid $grey-color-light;
+}
+
+.answer-page__filter-selected:hover{
+  background-color: $grey-color-light;
+  border: 1px solid $grey-color-light;
+}
+
+.answer-page__filter-unselected:active {
+  background-color: $yellow-dark-color;
+  box-shadow: 0 2px $grey-color;
+  transform: translateY(2px);
+}
+
+.answer-page__filter-selected:active {
+  background-color: $yellow-dark-color;
+  box-shadow: 0 2px $grey-color;
+  transform: translateY(2px);
 }
 
 .answer-page__h4 {
@@ -29,7 +75,7 @@
 }
 
 .answer-page__filters h4 {
-  color: $border-grey-color;
+  color: $grey-color;
   margin-right: 30px;
   font-weight: bold;
   margin:0;
@@ -43,7 +89,7 @@
 }
 
 .answer-page__dropbtn {
-  border: 1px solid $border-grey-color;
+  border: 1px solid $grey-color;
   cursor: pointer;
   padding: 12px 16px;
   display: flex;
@@ -75,7 +121,7 @@
 
 .answer-page__dropdown__content div:hover {background-color: #f1f1f1}
 
-.answer-page__dropdown:hover .dropdown-content {
+.answer-page__dropdown:hover .answer-page__dropdown__content  {
   display: block;
 }
 
@@ -83,4 +129,5 @@
 .answer-page__icon {
   margin-left: 10px;
 }
+
 

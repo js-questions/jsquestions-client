@@ -27,14 +27,14 @@ code {
 }
 
 input {
-  border: solid 0.5px $background-grey-color;
+  border: solid 0.5px $grey-color-light;
   border-radius: 4px;
   padding: 10px;
   font-size: 1.25rem;
 }
 
 textarea {
-  border: solid 0.5px $background-grey-color;
+  border: solid 0.5px $grey-color-light;
   border-radius: 4px;
   padding: 10px;
   font-size: 1.25rem;
@@ -51,6 +51,8 @@ button {
   font-family: -apple-system, 'Montserrat', "Roboto", "Helvetica Neue", sans-serif;
   font-size: 1.5rem;
   border: none;
+  box-shadow: 0 3px $grey-color;
+  outline:none;
 }
 
 button:hover {
@@ -58,4 +60,9 @@ button:hover {
   background-color: $yellow-dark-color;
 }
 
+button:active {
+  background-color: $yellow-dark-color;
+  box-shadow: 0 2px $grey-color;
+  transform: translateY(2px);
+}
 

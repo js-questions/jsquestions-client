@@ -114,19 +114,25 @@ class AnswerPage extends Component {
   componentWillMount() {
     this.getQuestions();
   }
+  toggleButton = (e, id) => {
+    if (e.currentTarget.className==='answer-page__filter-unselected') {
+      e.currentTarget.className='answer-page__filter-selected';
+    } else {
+      e.currentTarget.className='answer-page__filter-unselected';
+    }
+  }
 
   render() {
     return (
       <div className="answer-page__container">
         <h1 className="answer-page__title">Help learners</h1>
-        <h3>Here are the latests questions</h3>
+        <h3 className="answer-page__subtitle">Here are the latests questions</h3>
         <div className="answer-page__filters">
           <div className="answer-page__filter">
             <h4 className="answer-page__h4"> Filter:</h4>
-            <div>All</div>
-            <div>Open</div>
-            <div>Pending</div>
-            <div>Closed</div>
+            <div id="filter-2" className="answer-page__filter-unselected" onClick={this.toggleButton}>Open</div>
+            <div id="filter-3" className="answer-page__filter-unselected" onClick={this.toggleButton}>Pending</div>
+            <div id="filter-4" className="answer-page__filter-unselected" onClick={this.toggleButton}>Closed</div>
           </div>
           <div className="answer-page__dropdown-box">
             <h4 className="answer-page__h4">Sort by:</h4>
