@@ -6,7 +6,7 @@ class ModalOfferHelp extends Component {
   state = {
     message: null,
     questionid: this.props.modalRef.questionid,
-    expiration: 30
+    expiration: Date.now() + 30
   }
 
   offerHelp = (e) => {

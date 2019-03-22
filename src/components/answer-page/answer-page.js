@@ -25,33 +25,36 @@ class AnswerPage extends Component {
     if (token) {
       this.setState({loggedIn: true})
     }
-    fetch(`${process.env.REACT_APP_END_POINT_URL}/questions`, {
+    fetch(`http://localhost:4000/questions`, {
       method: 'GET', 
       headers : { 
         'Authorization' : 'Bearer ' + token,
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }})
-    .then(res => res.json())
+    .then(res => {
+      console.log('res ', res)
+      return res.json()
+    })
     .then(res=> this.setState({
       questions: res
     }))
   }
 
   sendOffer = (details) => {
+    console.log("details", details)
     //Amber TTD: Needs to have a way if they click and aren't siged in they need to sign in
       const token = localStorage.getItem('token');
-      fetch(`${process.env.REACT_APP_END_POINT_URL}/questions/${details.questionid}/offers`, {
+      fetch(`http://localhost:4000/questions/${details.questionid}/offers`, {
         method: 'POST', 
-        headers : { 
+        headers: { 
           'Authorization' : 'Bearer ' + token,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Content-Type': 'application/json'
         },
-        body: {
-          'message': details.message,
-          'expiration': details.expiration
-        }
+        body: JSON.stringify({
+          "message": details.message,
+          "expiration": details.expiration
+        })
       })
         .then(res => res.json())
         .then(res=> console.log('offer sent to BE', res))
