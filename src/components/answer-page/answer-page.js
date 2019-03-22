@@ -4,17 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 import Question from '../question/question';
-import Modal from './../modal/modal';
+import ModalOfferHelp from './../modal/modal-offer-help';
 
 class AnswerPage extends Component {
   state = {
     questions: null,
     loggedIn: false,
-    showModal: true,
+    showModal: false,
     modalRef: {
       title: 'Offer help to [name]',
       description: null,
-      forms: <form><input type='text' placeholder='omgggg'/></form>,
       button: 'Send chat invitation',
       subbutton: null
     }
@@ -64,12 +63,25 @@ class AnswerPage extends Component {
     }   
   }
 
-  openOfferModal = () => {
+  offerModal = () => {
     console.log('jsdfjlsdf')
     if (this.state.showModal){
-      return <Modal modalRef={this.state.modalRef}/>
+      return <ModalOfferHelp modalRef={this.state.modalRef} closeOfferModal={this.closeOfferModal}/>
     }
+  }
 
+  openOfferModal = () => {
+    this.setState({
+      showModal: true
+    })
+  }
+
+  closeOfferModal = () => {
+    //close it here
+    this.setState({
+      showModal: false
+    })
+    //Amber TTD: need a way to cancel offer help sent question comonent button change
   }
 
   
@@ -88,7 +100,8 @@ class AnswerPage extends Component {
       return this.state.questions.map((question, index) => {
         return (
           <div className="question-container" key={index} >
-            <Question question={question} sendOffer={this.sendOffer} />
+            <Question question={question} openOfferModal={this.openOfferModal} sendOffer={this.sendOffer} /> 
+            {/*TASSSSSK //need function to make modal popup */}
           </div>
     )})} 
     //No questions to render
@@ -103,7 +116,6 @@ class AnswerPage extends Component {
 
   render() {
     return (
-
       <div className="answer-container">
         <h1>Help learners</h1>
         <h3>Here are the latests questions</h3>
@@ -129,7 +141,7 @@ class AnswerPage extends Component {
             </div>
           </div>
         </div>
-        {this.openOfferModal()}
+        {this.offerModal()}
         {this.renderQuestions()}
       </div>
     )
