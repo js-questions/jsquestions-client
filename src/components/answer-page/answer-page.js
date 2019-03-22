@@ -4,11 +4,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 import Question from '../question/question';
+import ModalOfferHelp from './../modal/modal-offer-help';
 
 class AnswerPage extends Component {
   state = {
     questions: null,
-    loggedIn: false
+    loggedIn: false,
+    showModal: false,
+    modalRef: {
+      //Amber TTD: Need to refractor this
+      title: 'Offer help to [name]',
+      description: null,
+      button: 'Send chat invitation',
+      questionid: null
+    }
   }
 
   getQuestions = () => {
@@ -16,42 +25,65 @@ class AnswerPage extends Component {
     if (token) {
       this.setState({loggedIn: true})
     }
-    fetch(`${process.env.REACT_APP_END_POINT_URL}/questions`, {
+    fetch(`http://localhost:4000/questions`, {
       method: 'GET', 
       headers : { 
         'Authorization' : 'Bearer ' + token,
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }})
-    .then(res => res.json())
+    .then(res => {
+      console.log('res ', res)
+      return res.json()
+    })
     .then(res=> this.setState({
       questions: res
     }))
   }
 
-  sendOffer = (questionid, buttonAlreadyClicked) => {
+  sendOffer = (details) => {
+    console.log("details", details)
     //Amber TTD: Needs to have a way if they click and aren't siged in they need to sign in
-    //Will only send offer once
-    if (!buttonAlreadyClicked) {
       const token = localStorage.getItem('token');
-      fetch(`${process.env.REACT_APP_END_POINT_URL}/questions/${questionid}/offers`, {
+      fetch(`http://localhost:4000/questions/${details.questionid}/offers`, {
         method: 'POST', 
-        headers : { 
+        headers: { 
           'Authorization' : 'Bearer ' + token,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Content-Type': 'application/json'
         },
-        body: {
-          'message': 'i Kinda know english, need help?',
-          'linked_question': questionid,
-          'expiration': "2017-01-08T21:00:11.620Z"
-          //Amber TTD: this needs to be filled out in a popup modal
-        }
+        body: JSON.stringify({
+          "message": details.message,
+          "expiration": details.expiration
+        })
       })
         .then(res => res.json())
         .then(res=> console.log('offer sent to BE', res))
         //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
-    }   
+  }
+
+  showOfferModal = () => {
+    if (this.state.showModal){
+      return <ModalOfferHelp modalRef={this.state.modalRef} closeOfferModal={this.closeOfferModal} sendOffer={this.sendOffer}/>
+    }
+  }
+
+  openOfferModal = (questionid) => {
+    this.setState( state => {
+      // state.showModal = true
+      state.modalRef.questionid = questionid
+    })
+    this.setState({
+      showModal: true
+    })
+    //TTD DEBUG: The state is not changing when inside the first state change, this is why the other is nessessary
+  }
+
+  closeOfferModal = () => {
+    //close it here
+    this.setState({
+      showModal: false
+    })
+    //Amber TTD: need a way to cancel offer help sent question comonent button change
   }
 
   
@@ -70,7 +102,7 @@ class AnswerPage extends Component {
       return this.state.questions.map((question, index) => {
         return (
           <div className="question-container" key={index} >
-            <Question question={question} sendOffer={this.sendOffer} />
+            <Question question={question} openOfferModal={this.openOfferModal} /> 
           </div>
     )})} 
     //No questions to render
@@ -110,7 +142,7 @@ class AnswerPage extends Component {
             </div>
           </div>
         </div>
-
+        {this.showOfferModal()}
         {this.renderQuestions()}
       </div>
     )
