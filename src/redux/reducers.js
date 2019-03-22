@@ -18,7 +18,7 @@ const offers = (state = [], action) => {
     case 'REQUEST_OFFERS':
       return [ ...state ];
     case 'UPDATE_OFFERS':
-      return action.offers;
+      return action.offers; // check that the offers are always up to date
     default:
       return state;
   }
