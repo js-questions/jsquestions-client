@@ -117,7 +117,7 @@ class Chat extends React.Component {
         </div>
         <div className="chat-body">
           <div className="editor">
-            <textarea id="txtArea" name="txtArea" ref={this.textArea} value={this.state.textEditor} onChange={()=> console.log('text editor entered')}/>
+            <textarea id="txtArea" name="txtArea" ref={this.textArea}/>
           </div>
           <div className="chat-box">
             <div id="messages"></div>

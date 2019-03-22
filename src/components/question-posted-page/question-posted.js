@@ -13,17 +13,17 @@ class QuestionPosted extends Component {
     this.props.fetchQuestionAndOffers(this.state.questionid);
   }
 
-  handleClick = (e, tutorId) => {
+  handleClick = (e, tutorId, offerId) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    this.alertTutor(token, tutorId);
+    this.alertTutor(token, tutorId, offerId);
     this.props.history.push({
       pathname: `/chat/${this.props.question.room_id}`,
       state: {question: this.props.question}
     }) 
   }
 
-  alertTutor = async (token, tutorId) => { // this should NOT be tutorId - this is actually the OFFER id
+  alertTutor = async (token, tutorId, offerId) => { // also sending offerId
     await fetch(`http://localhost:4000/questions/${this.state.questionid}`, {
       method: 'PUT', 
       headers : { 
@@ -33,7 +33,7 @@ class QuestionPosted extends Component {
       },
       body: JSON.stringify(
         {
-          "answered_by": tutorId // this is NOT a userId of the tutor, it SHOULD be the offerID of the offer the user just clicked
+          "answered_by": offerId // sending offerId instead of tutorId
         }
     )})
     .then(res => res.json())
@@ -49,7 +49,7 @@ class QuestionPosted extends Component {
     const tutors = this.props.tutors;
       return offers.map((offer, index) => {
         if (tutors[index]) {
-          return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} chatNow={(e) => this.handleClick(e, tutors[index].user_id)} /></div>
+          return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} chatNow={(e) => this.handleClick(e, tutors[index].user_id, offer.offer_id)}/></div>
         } else {
           return '';
         }
