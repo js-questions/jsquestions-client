@@ -5,7 +5,6 @@ import CodeMirror from 'codemirror';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
-import Modal from '../modal/modal.js';
 
 class Chat extends React.Component {
 
@@ -47,12 +46,16 @@ class Chat extends React.Component {
     })
     this.codemirror.on('blur', this.textChanged);
     this.props.socket.on('editor', (data) => this.codemirror.getDoc().setValue(data.text)); // handles received text
-    // this.props.socket.on('editor', this.handleReceivedText);
     this.props.socket.on('newUser', this.updateText);
   }
 
   shouldComponentUpdate() {
     return false;
+  }
+
+  updateText = (data) => {
+    this.codemirror.getDoc().setValue(data.text);
+    this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()})
   }
 
   clickButton = (e) => {
@@ -83,32 +86,24 @@ class Chat extends React.Component {
 
   textChanged = () => {
     const editorContent = this.codemirror.getDoc().getValue();
-    const data = {
-        text: editorContent,
-        room: this.state.roomId
-    };
-
-      // var myElement = document.getElementById('txtArea');
-      // myElement.focus();
-      // var startPosition = myElement.selectionStart;
-      // var endPosition = myElement.selectionEnd;
-      // console.log('startPosition ', startPosition)
-      // console.log('endPosition ', endPosition)
-
-    if (editorContent!==this.state.keepChangeEditor) {
+    const data = { text: editorContent, room: this.state.roomId }
+    if (editorContent !== this.state.keepChangeEditor) {
       this.props.socket.emit('editor', data);
       this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()});
     }
-
+    // todo: update the chatmirror so it updates during typing, not just on clicking outside of the box
+    // var myElement = document.getElementById('txtArea');
+    // myElement.focus();
+    // var startPosition = myElement.selectionStart;
+    // var endPosition = myElement.selectionEnd;
+    // console.log('startPosition ', startPosition)
+    // console.log('endPosition ', endPosition)
   }
 
-  updateText = (data) => {
-    this.codemirror.getDoc().setValue(data.text);
-    this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()})
-  }
-
- 
+  
   render() {
+
+    console.log('props', this.props)
 
     // notify that user is online
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
@@ -123,7 +118,7 @@ class Chat extends React.Component {
         </div>
         <div className="chat-body">
           <div className="editor">
-            <textarea  id="txtArea" name="txtArea" ref={this.textArea}></textarea>
+            <textarea id="txtArea" name="txtArea" ref={this.textArea} onChange={(e)=> console.log('text editor entered', e)}></textarea>
           </div>
           <div className="chat-box">
             <div id="messages"></div>
