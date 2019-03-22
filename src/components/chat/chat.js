@@ -6,17 +6,23 @@ import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
 
+import ModalEndChat from './../modal/modal-end-chat';
+
 class Chat extends React.Component {
 
   textArea = React.createRef();
 
   state = {
     keepChangeEditor: '',
-    roomId: this.props.location.pathname.split('/chat/')[1],
+    roomId: this.props.location.pathname.split('/')[2],
+    questionId: this.props.location.pathname.split('/')[3],
+    tutorOrLearner: this.props.location.pathname.split('/')[4],
+    showModal: false,
+
   }
  
   componentDidMount() {
-
+    console.log(this.state)
     this.props.socket.emit('join room', this.state.roomId);
 
     // CHAT
@@ -49,14 +55,15 @@ class Chat extends React.Component {
 
     //HANG-UP
     this.props.socket.on('hang up', () => {
-      console.log('BE to FE')
-      this.props.history.push('/');
+      //this.props.history.push('/');
+      this.openChatModal()
     })
   }
 
-  shouldComponentUpdate() {
-    return false;
-  }
+  //WHY WAS THIS HERE?
+  // shouldComponentUpdate() {
+  //   return false;
+  // }
 
   updateCode = (data) => {
     this.codemirror.getDoc().setValue(data.code);
@@ -106,8 +113,28 @@ class Chat extends React.Component {
   }
 
   hangUp = () => {
-    console.log('sent to BE')
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
+    this.setState({
+      showModal: true
+    })
+  }
+
+  showEndChatModal = () => {
+    if (this.state.showModal) {
+      return <ModalEndChat closeChatModal={this.closeChatModal} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
+    }
+  }
+
+  openChatModal = () => {
+    this.setState({
+      showModal: true
+    })
+  }
+
+  closeChatModal = () => {
+    this.setState({
+      showModal: false
+    })
   }
 
   
@@ -119,7 +146,6 @@ class Chat extends React.Component {
       <div className="chat-component">
         <div className="chat-header">
           <div className="title">Question Title</div>
-          {/* <div className="title">{this.props.location.state.question.title}: {this.props.location.state.question.description} <div>Related Resources: {this.props.location.state.question.resources}</div></div> */}
           <div className="hang-up" onClick={this.hangUp}>End Call</div>
         </div>
         <div className="chat-body">
@@ -140,6 +166,7 @@ class Chat extends React.Component {
             </form>
           </div>
         </div>
+        {this.showEndChatModal()}
       </div>
     )
   }

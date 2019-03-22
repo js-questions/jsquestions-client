@@ -32,17 +32,13 @@ class AnswerPage extends Component {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }})
-    .then(res => {
-      console.log('res ', res)
-      return res.json()
-    })
+    .then(res => res.json())
     .then(res=> this.setState({
       questions: res
     }))
   }
 
   sendOffer = (details) => {
-    console.log("details", details)
     //Amber TTD: Needs to have a way if they click and aren't siged in they need to sign in
       const token = localStorage.getItem('token');
       fetch(`http://localhost:4000/questions/${details.questionid}/offers`, {
@@ -62,7 +58,7 @@ class AnswerPage extends Component {
   }
 
   showOfferModal = () => {
-    if (this.state.showModal){
+    if (this.state.showModal) {
       return <ModalOfferHelp modalRef={this.state.modalRef} closeOfferModal={this.closeOfferModal} sendOffer={this.sendOffer}/>
     }
   }
