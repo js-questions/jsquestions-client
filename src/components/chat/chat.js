@@ -5,6 +5,7 @@ import CodeMirror from 'codemirror';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
+import Overlay from './overlay';
 
 class Chat extends React.Component {
 
@@ -13,13 +14,14 @@ class Chat extends React.Component {
   state = {
     keepChangeEditor: '',
     roomId: this.props.location.pathname.split('/chat/')[1],
+    showTimer: true
   }
  
   componentDidMount() {
 
     //const room = this.props.room; //Amber removed this ... TTD to refractor 
-    this.props.socket.emit('join room', this.state.roomId)
-
+    this.props.socket.emit('join room', this.state.roomId)  
+    
     // CHAT
     this.props.socket.on('chat message', (msg) => {
       let currentId = this.props.socket.id;
@@ -49,9 +51,10 @@ class Chat extends React.Component {
     this.props.socket.on('newUser', this.updateCode); // this code is not working - what was its purpose?
   }
 
-  shouldComponentUpdate() {
-    return false;
-  }
+  // this should be un-commented. it is currently commented so the timer can work.
+  // shouldComponentUpdate() {
+  //   return false;
+  // }
 
   updateCode = (data) => {
     this.codemirror.getDoc().setValue(data.code);
@@ -100,16 +103,29 @@ class Chat extends React.Component {
     // console.log('endPosition ', endPosition)
   }
 
-  
-  render() {
+  closeOverlay = () => {
+    this.setState({showTimer: false})
+  }
 
-    console.log('props', this.props)
+  showOverlay = () => {
+    console.log('show overlay', this.state.showTimer)
+    if (this.state.showTimer) {
+      return <Overlay closeOverlay={this.closeOverlay}/>
+    } else {
+      return '';
+    }
+  }
+
+  render() {
 
     // notify that user is online
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
 
     return(
       <div className="chat-component">
+    
+        {this.showOverlay()}
+
         <div className="chat-header">
           <div className="title">Question Title</div>
           {/* <div className="title">{this.props.location.state.question.title}: {this.props.location.state.question.description} <div>Related Resources: {this.props.location.state.question.resources}</div></div> */}

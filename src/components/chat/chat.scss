@@ -47,6 +47,10 @@ $border-grey-color: rgb(150, 150, 150);
   border: solid 1px $border-grey-color;
 }
 
+.CodeMirror {
+  z-index: 0
+}
+
 #txtArea {
   width: 95%;
   height: 100%;
