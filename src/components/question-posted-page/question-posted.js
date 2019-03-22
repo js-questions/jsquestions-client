@@ -13,20 +13,18 @@ class QuestionPosted extends Component {
     this.props.fetchQuestionAndOffers(this.state.questionid);
   }
 
-  handleClick = (e, tutorId) => {
+  handleClick = (e, tutorId, offerId) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    this.alertTutor(token, tutorId);
+    this.alertTutor(token, tutorId, offerId);
     this.props.history.push({
       pathname: `/chat/${this.props.question.room_id}`,
       state: {question: this.props.question}
     }) 
   }
 
-  alertTutor = async (token, tutorId) => {
-    //sends info to backend so that tutor will be alerted
+  alertTutor = async (token, tutorId, offerId) => { // also sending offerId
     await fetch(`http://localhost:4000/questions/${this.state.questionid}`, {
-    // await fetch(`${process.env.REACT_APP_END_POINT_URL}/questions/${this.state.questionid}`, {
       method: 'PUT', 
       headers : { 
         'Authorization' : 'Bearer ' + token,
@@ -35,10 +33,15 @@ class QuestionPosted extends Component {
       },
       body: JSON.stringify(
         {
-          "answered_by": tutorId
+          "answered_by": offerId // sending offerId instead of tutorId
         }
     )})
-    .then(res => console.log(res))
+    .then(res => res.json())
+    .then(question => {
+      question.tutor = tutorId; // adding the tutorId to the question
+      this.props.socket.emit('chat now', question)
+    })
+
   }
 
   renderOffers = () => {
@@ -46,7 +49,7 @@ class QuestionPosted extends Component {
     const tutors = this.props.tutors;
       return offers.map((offer, index) => {
         if (tutors[index]) {
-          return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} chatNow={(e) => this.handleClick(e, tutors[index].user_id)} /></div>
+          return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} chatNow={(e) => this.handleClick(e, tutors[index].user_id, offer.offer_id)}/></div>
         } else {
           return '';
         }
@@ -59,6 +62,8 @@ class QuestionPosted extends Component {
 
     return (
       <div>
+        <h1>Question: {this.props.question.title}</h1>
+        <h2>Description: {this.props.question.description}</h2>
         <div>
           {this.renderOffers()}
         </div>
