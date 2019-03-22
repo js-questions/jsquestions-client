@@ -22,7 +22,6 @@ class Chat extends React.Component {
   }
  
   componentDidMount() {
-    console.log(this.state)
     this.props.socket.emit('join room', this.state.roomId);
 
     // CHAT

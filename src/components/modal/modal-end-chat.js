@@ -32,7 +32,6 @@ class ModalEndChat extends Component {
     e.preventDefault();
     // this.props.sendOffer(this.state) //Amber TTD: put feedback in here
     this.props.closeChatModal()
-    console.log(this.state.feedback, "HEREeeee")
     this.closesQuestion();
     this.props.history.push('/');
   }
