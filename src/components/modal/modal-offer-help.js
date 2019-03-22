@@ -4,17 +4,18 @@ import { Link } from "react-router-dom";
 
 class ModalOfferHelp extends Component {
   state = {
-    explain: null
+    message: null,
+    questionid: this.props.modalRef.questionid,
+    expiration: 30
   }
 
   offerHelp = (e) => {
     e.preventDefault();
-    console.log('lol')
-
+    this.props.sendOffer(this.state)
+    this.props.closeOfferModal()
   }
 
   render() {
-    console.log('modal props', this.props);
     return (
       <div className="backdrop">
         <div className="modal">
@@ -22,11 +23,10 @@ class ModalOfferHelp extends Component {
           <div>{this.props.modalRef.title}</div>
           <div>{this.props.modalRef.description}</div>
           <form>
-            <input type='text' placeholder='Explain how you can help' onChange={(event) => this.setState({explain: event.target.value})} />
+            <input type='text' placeholder='Explain how you can help' onChange={(event) => this.setState({message: event.target.value})} />
             <input type='text' value='30'/>
             <button onClick={(e)=> this.offerHelp(e)}>{this.props.modalRef.button}</button>
           </form>
-          {/* <button>{this.props.modalRef.subbutton}</button> */}
         </div>
       </div>
     )

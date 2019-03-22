@@ -12,10 +12,11 @@ class AnswerPage extends Component {
     loggedIn: false,
     showModal: false,
     modalRef: {
+      //Amber TTD: Need to refractor this
       title: 'Offer help to [name]',
       description: null,
       button: 'Send chat invitation',
-      subbutton: null
+      questionid: null
     }
   }
 
@@ -37,13 +38,10 @@ class AnswerPage extends Component {
     }))
   }
 
-  sendOffer = (questionid, buttonAlreadyClicked) => {
+  sendOffer = (details) => {
     //Amber TTD: Needs to have a way if they click and aren't siged in they need to sign in
-    //Will only send offer once
-    console.log(questionid)
-    if (!buttonAlreadyClicked) {
       const token = localStorage.getItem('token');
-      fetch(`${process.env.REACT_APP_END_POINT_URL}/questions/${questionid}/offers`, {
+      fetch(`${process.env.REACT_APP_END_POINT_URL}/questions/${details.questionid}/offers`, {
         method: 'POST', 
         headers : { 
           'Authorization' : 'Bearer ' + token,
@@ -51,29 +49,30 @@ class AnswerPage extends Component {
           'Accept': 'application/json'
         },
         body: {
-          'message': 'i Kinda know english, need help?',
-          'expiration': new Date()
-          //Amber TTD: MAKE SURE EXPIRATION IS A NUMBER...number of seconds until not available
-          //Amber TTD: this needs to be filled out in a popup modal
+          'message': details.message,
+          'expiration': details.expiration
         }
       })
         .then(res => res.json())
         .then(res=> console.log('offer sent to BE', res))
         //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
-    }   
   }
 
-  offerModal = () => {
-    console.log('jsdfjlsdf')
+  showOfferModal = () => {
     if (this.state.showModal){
-      return <ModalOfferHelp modalRef={this.state.modalRef} closeOfferModal={this.closeOfferModal}/>
+      return <ModalOfferHelp modalRef={this.state.modalRef} closeOfferModal={this.closeOfferModal} sendOffer={this.sendOffer}/>
     }
   }
 
-  openOfferModal = () => {
+  openOfferModal = (questionid) => {
+    this.setState( state => {
+      // state.showModal = true
+      state.modalRef.questionid = questionid
+    })
     this.setState({
       showModal: true
     })
+    //TTD DEBUG: The state is not changing when inside the first state change, this is why the other is nessessary
   }
 
   closeOfferModal = () => {
@@ -100,8 +99,7 @@ class AnswerPage extends Component {
       return this.state.questions.map((question, index) => {
         return (
           <div className="question-container" key={index} >
-            <Question question={question} openOfferModal={this.openOfferModal} sendOffer={this.sendOffer} /> 
-            {/*TASSSSSK //need function to make modal popup */}
+            <Question question={question} openOfferModal={this.openOfferModal} /> 
           </div>
     )})} 
     //No questions to render
@@ -141,7 +139,7 @@ class AnswerPage extends Component {
             </div>
           </div>
         </div>
-        {this.offerModal()}
+        {this.showOfferModal()}
         {this.renderQuestions()}
       </div>
     )
