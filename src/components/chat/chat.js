@@ -14,10 +14,12 @@ class Chat extends React.Component {
   state = {
     keepChangeEditor: '',
     roomId: this.props.location.pathname.split('/chat/')[1],
-    showTimer: true
+    tutorJoined: false,
   }
  
   componentDidMount() {
+
+    this.props.socket.on('join room', () => this.setState({tutorJoined: true}));
 
     //const room = this.props.room; //Amber removed this ... TTD to refractor 
     this.props.socket.emit('join room', this.state.roomId)  
@@ -103,16 +105,9 @@ class Chat extends React.Component {
     // console.log('endPosition ', endPosition)
   }
 
-  closeOverlay = () => {
-    this.setState({showTimer: false})
-  }
-
-  showOverlay = () => {
-    console.log('show overlay', this.state.showTimer)
-    if (this.state.showTimer) {
-      return <Overlay closeOverlay={this.closeOverlay}/>
-    } else {
-      return '';
+  toggleOverlay = () => {
+    if (!this.state.tutorJoined) {
+      return <Overlay closeOverlay={() => this.setState({tutorJoined: true}, () => this.props.history.goBack())}/>
     }
   }
 
@@ -124,7 +119,7 @@ class Chat extends React.Component {
     return(
       <div className="chat-component">
     
-        {this.showOverlay()}
+        {this.toggleOverlay()}
 
         <div className="chat-header">
           <div className="title">Question Title</div>
