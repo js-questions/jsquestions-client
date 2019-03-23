@@ -13,12 +13,16 @@ class Overlay extends Component {
 
   count = () => {
     const counter = setInterval(() => {
-      this.setState({startTime: this.state.startTime - 1});
+      this.setState({startTime: this.state.startTime - 1, counter: counter});
       if (this.state.startTime === 0) {
-        this.props.closeOverlay();
         clearInterval(counter);
+        this.props.closeOverlay(this.state.counter);
       }
     }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.counter);
   }
  
   render() {

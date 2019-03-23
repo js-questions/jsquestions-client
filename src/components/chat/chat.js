@@ -27,10 +27,15 @@ class Chat extends React.Component {
 
   componentDidMount() {
 
-    this.props.socket.on('join room', () => this.setState({tutorJoined: true}, () => this.startTimer()));
+    // this.props.socket.on('join room', () => this.setState({tutorJoined: true}, () => this.startTimer()));
 
     //const room = this.props.room; //Amber removed this ... TTD to refractor
     this.props.socket.emit('join room', this.state.roomId)
+
+    this.props.socket.on('join room', (participants) => {
+      if (participants === 2) this.setState({tutorJoined: true}, () => this.startTimer());
+      else this.setState({tutorJoined: false});
+    });
 
     // CHAT
     this.props.socket.on('chat message', (msg) => {
@@ -125,6 +130,16 @@ class Chat extends React.Component {
       return <Overlay closeOverlay={() => this.props.history.goBack()}/>
     }
   }
+    
+  renderOverlay = () => {
+    if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
+      return <Overlay closeOverlay={(counter) => {
+        clearInterval(counter);
+        this.props.history.goBack()
+      }
+      }/>
+    }
+  }
 
   hangUp = () => {
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
@@ -168,15 +183,17 @@ class Chat extends React.Component {
     }, 1000)
   }
 
-  render() {
 
-    // notify that user is online
+  render() {
+    // Notify that user is online (since navbar is not render)
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
 
     return(
       <div className="chat-component">
 
         {this.toggleOverlay()}
+    
+        {this.state.tutorJoined ? null : this.renderOverlay()}
 
         <div className="chat-header">
           <h1>Question Title</h1>
@@ -206,6 +223,7 @@ class Chat extends React.Component {
     )
   }
 }
+
 
 
 export default Chat;
