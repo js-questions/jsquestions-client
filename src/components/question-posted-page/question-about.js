@@ -7,7 +7,7 @@ class QuestionAbout extends Component {
     question: null
   }
 
-  componentWillMount(){
+  componentWillMount() {
     //Sets question state to question matching the pararameters given
     const token = localStorage.getItem('token');
     fetch(`http://localhost:4000/questions/asked`, {
