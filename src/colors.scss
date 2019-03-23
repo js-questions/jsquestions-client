@@ -3,4 +3,4 @@ $primary-dark: darken($primary,15%);
 $secondary: rgb(33, 35, 51);
 $white: rgb(255, 255, 255);
 $grey: rgb(150, 150, 150);
-$grey-light: rgb(216, 216, 216);
+$grey-light: lighten($grey,25%);
