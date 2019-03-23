@@ -12,23 +12,24 @@ $border-grey-color: rgb(150, 150, 150);
 .chat-header {
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
+  height: 10vh;
 }
 
-.title {
+.chat-header h1 {
   background-color: $background-grey-color;
-  margin: 20px 10px 20px 20px;
+  margin: 20px;
   padding: 20px;
   width: 80%;
-  border: solid 1px $border-grey-color;
+  font-size: 1em;
 }
 
-.hang-up {
+.chat-header button {
   background-color: $background-grey-color;
-  margin: 20px 20px 20px 10px;
+  margin: 20px;
   padding: 20px;
-  border: solid 1px $border-grey-color;
-  width: 100px;
+  width: 120px;
   text-align: center;
 }
 
@@ -36,14 +37,25 @@ $border-grey-color: rgb(150, 150, 150);
   display: flex;
   flex-direction: row;
   background-color: $background-white-color;
-  height: 90vh;
+}
+
+.chat-box {
+  width: 30%;
+  height: 80vh;
+  background-color: $background-grey-color;
+  margin: 20px;
+  border: solid 1px $border-grey-color;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
 }
 
 .editor {
-  width: 48%;
-  height: 100%;
+  width: 70%;
+  height: 80vh;
   background-color: $background-grey-color;
-  margin: 20px 10px 20px 20px;
+  margin: 20px 0px 20px 20px;
   border: solid 1px $border-grey-color;
 }
 
@@ -55,17 +67,6 @@ $border-grey-color: rgb(150, 150, 150);
   width: 95%;
   height: 100%;
   min-height: 500px;
-}
-
-.chat-box {
-  width: 48%;
-  background-color: $background-grey-color;
-  margin: 20px 10px 20px 20px;
-  border: solid 1px $border-grey-color;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
 }
 
 form {

@@ -8,6 +8,7 @@ import 'codemirror/lib/codemirror.css';
 import Overlay from './overlay';
 
 import ModalEndChat from './../modal/modal-end-chat';
+import { timeout } from 'q';
 
 class Chat extends React.Component {
 
@@ -21,9 +22,12 @@ class Chat extends React.Component {
     tutorOrLearner: this.props.location.pathname.split('/')[4],
     showModal: false,
     tutorJoined: false,
+    minutes: 0,
+    seconds: 0
   }
  
   componentDidMount() {
+    this.startTimer();
 
     this.props.socket.on('join room', () => this.setState({tutorJoined: true}));
 
@@ -120,7 +124,7 @@ class Chat extends React.Component {
 
   toggleOverlay = () => {
     if (!this.state.tutorJoined) {
-      return <Overlay closeOverlay={() => this.setState({tutorJoined: true}, () => this.props.history.goBack())}/>
+      return <Overlay closeOverlay={() => this.props.history.goBack()}/>
     }
   }
 
@@ -148,6 +152,21 @@ class Chat extends React.Component {
       showModal: false
     })
   }
+
+  startTimer = () => {
+    
+    setInterval(async () => {
+      this.setState({seconds: this.state.seconds + 1})
+      if (this.state.seconds === 5) {
+        await this.setState({ seconds: 0, minutes: this.state.minutes + 1})
+      }
+    }, 1000)
+
+    if (this.state.minutes === 15) {
+      console.log('should turn red')
+    } 
+
+  }
   
   render() {
 
@@ -160,8 +179,9 @@ class Chat extends React.Component {
         {this.toggleOverlay()}
 
         <div className="chat-header">
-          <div className="title">Question Title</div>
-          <div className="hang-up" onClick={this.hangUp}>End Call</div>
+          <h1>Question Title</h1>
+          <h3>{this.state.minutes}:{this.state.seconds < 10 ? 0 + this.state.seconds : this.state.seconds}</h3>
+          <button onClick={this.hangUp}>End Call</button>
         </div>
         <div className="chat-body">
           <div className="editor">
