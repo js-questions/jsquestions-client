@@ -23,10 +23,10 @@ class Question extends Component {
     const offerButtonExists = this.props.openOfferModal ? this.renderOfferButton() : null ;
     return (
       <div className="question__container">
-        <div className="question__user">Avatar</div>
+        <p className="question__user">Avatar</p>
         <div className="question__body">
-          <p className="question__title">Question: {this.props.question.title}</p>
-          <p className="question__description">Description: {this.props.question.description}</p>
+          <p>Question: {this.props.question.title}</p>
+          <p>Description: {this.props.question.description}</p>
         </div>
         {offerButtonExists}
       </div>
