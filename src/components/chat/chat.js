@@ -16,16 +16,18 @@ class Chat extends React.Component {
   state = {
     keepChangeEditor: '',
     roomId: this.props.location.pathname.split('/')[2],
-    // roomId: this.props.location.pathname.split('/chat/')[1], why is this duplicated?
     questionId: this.props.location.pathname.split('/')[3],
     tutorOrLearner: this.props.location.pathname.split('/')[4],
     showModal: false,
-    tutorJoined: false,
+    tutorJoined: true,
   }
  
   componentDidMount() {
 
-    this.props.socket.on('join room', () => this.setState({tutorJoined: true}));
+    this.props.socket.on('join room', (participants) => {
+      if (participants === 2) this.setState({tutorJoined: true});
+      else this.setState({tutorJoined: false});
+    });
 
     //const room = this.props.room; //Amber removed this ... TTD to refractor 
     this.props.socket.emit('join room', this.state.roomId)  
@@ -118,9 +120,13 @@ class Chat extends React.Component {
   }
 
 
-  toggleOverlay = () => {
-    if (!this.state.tutorJoined) {
-      return <Overlay closeOverlay={() => this.setState({tutorJoined: true}, () => this.props.history.goBack())}/>
+  renderOverlay = () => {
+    if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
+      return <Overlay closeOverlay={(counter) => {
+        clearInterval(counter);
+        this.props.history.goBack()
+      }
+      }/>
     }
   }
 
@@ -150,14 +156,13 @@ class Chat extends React.Component {
   }
   
   render() {
-
-    // notify that user is online
+    // Notify that user is online (since navbar is not render)
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
 
     return(
       <div className="chat-component">
     
-        {this.toggleOverlay()}
+        {this.state.tutorJoined ? null : this.renderOverlay()}
 
         <div className="chat-header">
           <div className="title">Question Title</div>
