@@ -16,7 +16,7 @@ class Navbar extends React.Component {
       showSignup: false,
       openModal: true,
       showMenu: false,
-      socketQuestion: '',
+      socketQuestion: ''
     }
   }
 
@@ -25,8 +25,7 @@ class Navbar extends React.Component {
     this.props.socket.on('push tutor', (question) => {
       console.log("works");
       this.setState({socketQuestion: question}, () => this.tutorNotification() );
-  })
-
+    })
 
   }
 
@@ -85,15 +84,25 @@ class Navbar extends React.Component {
     }
   }
 
+  landingPageCheck = () => {
+
+  }
+
 
   render() {
     // Sending token on user refresh
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
 
+    // Apply different class depending if we are in the landing page or not
+    let classNavbar='';
+    if (this.props.landingPage) classNavbar='navbar';
+    else classNavbar='navbar';
+
     return(
+
       <div>
         <div>
-          <div className="navbar">
+          <div className={classNavbar}>
             <div className="navbar__component">
               <div className="navbar-item"><Link to='/'><img src={logo} width="55px" alt="logo"/></Link></div>
               <div className="navbar-item"><Link className="navbar__link" to='/ask'>Ask for help.</Link></div>
