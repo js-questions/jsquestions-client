@@ -18,15 +18,15 @@ class AnswerPage extends Component {
       button: 'Send chat invitation',
       questionid: null
     },
-    usersOnline: null
+    users: null
   }
 
-  getQuestions = () => {
+  getQuestions = async () => {
     const token = localStorage.getItem('token');
     if (token) {
       this.setState({loggedIn: true})
     }
-    fetch(`http://localhost:4000/questions`, {
+    await fetch(`http://localhost:4000/questions`, {
       method: 'GET', 
       headers : { 
         'Authorization' : 'Bearer ' + token,
@@ -36,19 +36,23 @@ class AnswerPage extends Component {
     .then(res=> this.setState({
       questions: res
     }))
+    console.log(this.state.questions)
   }
 
   getUsers = () => {
-    //STATE & REDUX
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:4000/users`, {
+
+    fetch(`http://localhost:4000/users/`, {
       method: 'GET', 
       headers : { 
         'Authorization' : 'Bearer ' + token,
         'Content-Type': 'application/json'
       }})
     .then(res => res.json())
-    .then(res => console.log('sdfasdfsdfasdf'))
+    .then(res=> this.setState({
+      users: res
+    }))
+    console.log("All Users", this.state.users)
   }
 
   sendOffer = (details) => {
@@ -57,7 +61,7 @@ class AnswerPage extends Component {
       fetch(`http://localhost:4000/questions/${details.questionid}/offers`, {
         method: 'POST', 
         headers: { 
-          'Authorization' : 'Bearer ' + token,
+          'Authorization': 'Bearer ' + token,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -65,6 +69,7 @@ class AnswerPage extends Component {
           "expiration": details.expiration
         })
       })
+
         //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
   }
 
@@ -106,12 +111,22 @@ class AnswerPage extends Component {
     }
     //Renders questions
     else if (this.state.questions.length > 0) {
-      return this.state.questions.map((question, index) => {
+
+      //////
+      const onlineUsers = this.state.users.filter(user => {
+        return user.available !== null;
+      })
+      console.log("Online Users", onlineUsers )
+
+      return this.state.questions
+        .filter(o => {return onlineUsers.find(o2 => o.learner === o2.user_id)})
+        ///////////
+        .map((question, index) => {
         return (
           <div className="question-container" key={index} >
             <Question question={question} openOfferModal={this.openOfferModal} /> 
           </div>
-    )})} 
+      )})} 
     //No questions to render
     else {
       return  <div>There aren't any questions being asked right now :( </div>
@@ -119,8 +134,9 @@ class AnswerPage extends Component {
   }
 
   componentWillMount() {
-    this.getQuestions();
     this.getUsers();
+    this.getQuestions();
+
   }
 
   render() {
