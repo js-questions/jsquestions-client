@@ -17,7 +17,7 @@ body {
   font-family: -apple-system, 'Montserrat', "Roboto", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: $bg-color;
+  color: $secondary;
   font-size: 1.5rem;
 }
 
@@ -27,22 +27,22 @@ code {
 }
 
 input {
-  border: solid 0.5px $grey-color-light;
+  border: solid 0.5px $grey-light;
   border-radius: 4px;
   padding: 10px;
   font-size: 1.25rem;
 }
 
 textarea {
-  border: solid 0.5px $grey-color-light;
+  border: solid 0.5px $grey-light;
   border-radius: 4px;
   padding: 10px;
   font-size: 1.25rem;
   min-height: 10rem;
 }
 
-button {
-  background-color: $yellow-color;
+.button-primary {
+  background-color: $primary;
   border-radius: 40px;
   padding: 10px 0;
   min-width: 150px;
@@ -51,18 +51,18 @@ button {
   font-family: -apple-system, 'Montserrat', "Roboto", "Helvetica Neue", sans-serif;
   font-size: 1.5rem;
   border: none;
-  box-shadow: 0 3px $grey-color;
+  box-shadow: 0 3px $grey;
   outline:none;
 }
 
-button:hover {
+.button-primary:hover {
   cursor: pointer;
-  background-color: $yellow-dark-color;
+  background-color: $primary-dark;
 }
 
-button:active {
-  background-color: $yellow-dark-color;
-  box-shadow: 0 2px $grey-color;
+.button-primary:active {
+  background-color: $primary-dark;
+  box-shadow: 0 2px $grey;
   transform: translateY(2px);
 }
 

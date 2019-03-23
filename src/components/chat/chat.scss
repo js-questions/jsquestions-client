@@ -14,18 +14,18 @@
 }
 
 .title {
-  background-color: $grey-color-light;
+  background-color: $grey-light;
   margin: 20px 10px 20px 20px;
   padding: 20px;
   width: 80%;
-  border: solid 1px $grey-color;
+  border: solid 1px $grey;
 }
 
 .hang-up {
-  background-color: $grey-color-light;
+  background-color: $grey-light;
   margin: 20px 20px 20px 10px;
   padding: 20px;
-  border: solid 1px $grey-color;
+  border: solid 1px $grey;
   width: 100px;
   text-align: center;
 }
@@ -33,16 +33,16 @@
 .chat-body {
   display: flex;
   flex-direction: row;
-  background-color: $white-color;
+  background-color: $white;
   height: 90vh;
 }
 
 .editor {
   width: 48%;
   height: 100%;
-  background-color: $grey-color-light;
+  background-color: $grey-light;
   margin: 20px 10px 20px 20px;
-  border: solid 1px $grey-color;
+  border: solid 1px $grey;
 }
 
 .CodeMirror {
@@ -57,9 +57,9 @@
 
 .chat-box {
   width: 48%;
-  background-color: $grey-color-light;
+  background-color: $grey-light;
   margin: 20px 10px 20px 20px;
-  border: solid 1px $grey-color;
+  border: solid 1px $grey;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -113,7 +113,7 @@ form button:hover {
 
 .elseMessage {
   align-self: flex-start;
-  background-color: $white-color;
+  background-color: $white;
 }
 
 .messageDate {

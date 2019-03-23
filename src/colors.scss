@@ -1,6 +1,6 @@
-$bg-color: rgb(33, 35, 51);
-$yellow-color: rgb(255, 216, 102);
-$yellow-dark-color: rgb(255, 206, 59);
-$white-color: rgb(255, 255, 255);
-$grey-color: rgb(150, 150, 150);
-$grey-color-light: rgb(216, 216, 216);
+$primary: rgb(255, 216, 102);
+$primary-dark: darken($primary,15%);
+$secondary: rgb(33, 35, 51);
+$white: rgb(255, 255, 255);
+$grey: rgb(150, 150, 150);
+$grey-light: rgb(216, 216, 216);
