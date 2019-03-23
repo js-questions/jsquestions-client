@@ -26,8 +26,8 @@ class Navbar extends React.Component {
       console.log("works");
       this.setState({socketQuestion: question}, () => this.tutorNotification() );
   })
-    
-    
+
+
   }
 
   tutorNotification = () => {
@@ -46,7 +46,7 @@ class Navbar extends React.Component {
     const checkToken = localStorage.getItem('token');
     if (checkToken) {
       return this.props.setToken(checkToken);
-    } 
+    }
   }
 
   loginProcess = () => {
@@ -60,7 +60,7 @@ class Navbar extends React.Component {
           <div className="navbar-item">{this.props.user.credits}<img src={token} className="navbar-icon" width="18px" alt="tokens"/></div>
           <div className="navbar-item">
             <img src={this.props.user.profileBadge} width="50px" alt="profile-badge" onClick={() => this.setState({showMenu: !this.state.showMenu})}/>
-            <p id="username">{this.props.user.username}</p>  
+            <p id="username">{this.props.user.username}</p>
           </div>
         </div>
       )
