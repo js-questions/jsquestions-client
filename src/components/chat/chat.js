@@ -5,6 +5,7 @@ import CodeMirror from 'codemirror';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
+import Overlay from './overlay';
 
 class Chat extends React.Component {
 
@@ -13,12 +14,19 @@ class Chat extends React.Component {
   state = {
     keepChangeEditor: '',
     roomId: this.props.location.pathname.split('/chat/')[1],
+    tutorJoined: false,
   }
  
   componentDidMount() {
 
+
+    this.props.socket.on('join room', () => this.setState({tutorJoined: true}));
+
     this.props.socket.emit('join room', this.state.roomId);
 
+    //const room = this.props.room; //Amber removed this ... TTD to refractor 
+    this.props.socket.emit('join room', this.state.roomId)  
+    
     // CHAT
     this.props.socket.on('chat message', (msg) => {
       let currentId = this.props.socket.id;
@@ -54,9 +62,10 @@ class Chat extends React.Component {
     })
   }
 
-  shouldComponentUpdate() {
-    return false;
-  }
+  // this should be un-commented. it is currently commented so the timer can work.
+  // shouldComponentUpdate() {
+  //   return false;
+  // }
 
   updateCode = (data) => {
     this.codemirror.getDoc().setValue(data.code);
@@ -105,18 +114,28 @@ class Chat extends React.Component {
     // console.log('endPosition ', endPosition)
   }
 
+
+  toggleOverlay = () => {
+    if (!this.state.tutorJoined) {
+      return <Overlay closeOverlay={() => this.setState({tutorJoined: true}, () => this.props.history.goBack())}/>
+    }
+  }
+
   hangUp = () => {
     console.log('sent to BE')
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
   }
-
   
   render() {
+
     // notify that user is online
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
 
     return(
       <div className="chat-component">
+    
+        {this.toggleOverlay()}
+
         <div className="chat-header">
           <div className="title">Question Title</div>
           {/* <div className="title">{this.props.location.state.question.title}: {this.props.location.state.question.description} <div>Related Resources: {this.props.location.state.question.resources}</div></div> */}
