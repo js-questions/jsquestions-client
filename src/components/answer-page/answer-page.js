@@ -113,18 +113,14 @@ class AnswerPage extends Component {
     else if (this.state.questions.length > 0) {
 
       //////
-      const onlineUsers = this.state.users.filter(user => {
-        return user.available !== null;
+      const offlineUsers = this.state.users.filter(user => {
+        return user.available === null;
       })
-      console.log("Online Users", onlineUsers )
 
-      return this.state.questions
-        .filter(o => {return onlineUsers.find(o2 => o.learner === o2.user_id)})
-        ///////////
-        .map((question, index) => {
+      return this.state.questions.map((question, index) => {
         return (
           <div className="question-container" key={index} >
-            <Question question={question} openOfferModal={this.openOfferModal} /> 
+            <Question question={question} openOfferModal={this.openOfferModal} offlineUsers={offlineUsers}/> 
           </div>
       )})} 
     //No questions to render
