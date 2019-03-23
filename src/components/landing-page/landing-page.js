@@ -12,13 +12,7 @@ class LandingPage extends Component {
   render() {
     return (
       <div>
-        LOGO HERE
-        <form className="searchTerm-form">
-          <input id="searchTerm" type="text" placeholder="What do you need help with?"/>
-          <button className="searchTerm-button" onClick={this.handleClick.bind(this)}>?</button>
-        </form>
-        For when Stack Overflow and the Internet just aren't enough.
-        <br/>
+
         ...rest page content here
       </div>
     )

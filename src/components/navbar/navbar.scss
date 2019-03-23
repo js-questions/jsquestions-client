@@ -1,10 +1,32 @@
 @import '../../colors.scss';
+$searchSize :  45px;
+
+.navbar-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: $secondary;
+  height: 100px;
+  padding-top: 20px;
+}
+
+.navbar-box__landingPage {
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  background-image:linear-gradient(
+    to right bottom,
+    $secondary-transparent,
+    $secondary-transparent),
+    url("../../assets/pairProgramming3.jpeg");
+  background-size: cover;
+  background-position: bottom;
+  padding-top: 20px;
+}
 
 .navbar {
   display: flex;
   flex-direction: row;
-  background-color: $secondary;
-  height: 100px;
   justify-content: space-between;
   align-items: center;
   padding: 0 10%;
@@ -43,8 +65,6 @@
   align-items: center;
 }
 
-
-
 #username {
   font-size: .8em;
   margin: 0;
@@ -63,4 +83,57 @@
 
 .menu-item {
   padding: 2px;
+}
+
+.landing-page-body {
+  display: flex;
+  flex-direction: column;
+  color: $white;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-page-body form {
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-page-body h4 {
+  margin-top: 50px;
+}
+
+
+
+#searchTerm {
+  height: $searchSize;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-bottom-left-radius: $searchSize;
+  border-top-left-radius: $searchSize;
+  background-color: rgba(254, 255, 255, 0.8);
+  padding: 0 0 0 22px;
+  width: 200px;
+}
+
+#searchTerm::placeholder {
+  color:rgba(0, 0, 0, 0.4);
+}
+
+.searchTerm-button{
+  background-color: $primary;
+  transition: all 0.3s;
+  border: none;
+  border-bottom-right-radius: $searchSize;
+  border-top-right-radius: $searchSize;
+  height: $searchSize;
+  width: $searchSize;
+  padding: 0 15px;
+}
+
+.searchTerm-button:hover {
+  background-color: darken($primary, 5%);
+  box-shadow: inset 2px 2px 2px darken($primary, 40%);
 }
