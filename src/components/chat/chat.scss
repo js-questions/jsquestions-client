@@ -1,6 +1,4 @@
-$background-white-color: white;
-$background-grey-color: rgb(216, 216, 216);
-$border-grey-color: rgb(150, 150, 150);
+@import '../../colors.scss';
 
 .chat-component {
   display: flex;
@@ -16,18 +14,18 @@ $border-grey-color: rgb(150, 150, 150);
 }
 
 .title {
-  background-color: $background-grey-color;
+  background-color: $grey-light;
   margin: 20px 10px 20px 20px;
   padding: 20px;
   width: 80%;
-  border: solid 1px $border-grey-color;
+  border: solid 1px $grey;
 }
 
 .hang-up {
-  background-color: $background-grey-color;
+  background-color: $grey-light;
   margin: 20px 20px 20px 10px;
   padding: 20px;
-  border: solid 1px $border-grey-color;
+  border: solid 1px $grey;
   width: 100px;
   text-align: center;
 }
@@ -35,16 +33,16 @@ $border-grey-color: rgb(150, 150, 150);
 .chat-body {
   display: flex;
   flex-direction: row;
-  background-color: $background-white-color;
+  background-color: $white;
   height: 90vh;
 }
 
 .editor {
   width: 48%;
   height: 100%;
-  background-color: $background-grey-color;
+  background-color: $grey-light;
   margin: 20px 10px 20px 20px;
-  border: solid 1px $border-grey-color;
+  border: solid 1px $grey;
 }
 
 .CodeMirror {
@@ -59,9 +57,9 @@ $border-grey-color: rgb(150, 150, 150);
 
 .chat-box {
   width: 48%;
-  background-color: $background-grey-color;
+  background-color: $grey-light;
   margin: 20px 10px 20px 20px;
-  border: solid 1px $border-grey-color;
+  border: solid 1px $grey;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -115,7 +113,7 @@ form button:hover {
 
 .elseMessage {
   align-self: flex-start;
-  background-color: white;
+  background-color: $white;
 }
 
 .messageDate {

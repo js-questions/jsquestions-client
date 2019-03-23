@@ -1,5 +1,4 @@
-$bg-color: rgb(33, 35, 51);
-$border-grey-color: rgb(150, 150, 150);
+@import '../../colors.scss';
 
 .offerNotSent {
   border: 2px solid greenyellow;
@@ -9,13 +8,22 @@ $border-grey-color: rgb(150, 150, 150);
   border: 2px solid yellow;
 }
 
-.question-container {
+.question__container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  align-items: center;
   min-width: 80vw;
-  margin: 5px;
+  margin: 10px;
   border: 1px solid gray;
   border-radius: 3px;
   padding: 10px;
+}
+
+.question__user {
+  width: 20%;
+  margin-left: 2%;
+}
+
+.question__body {
+  width: 60%;
 }
