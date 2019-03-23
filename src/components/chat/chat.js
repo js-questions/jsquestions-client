@@ -6,9 +6,7 @@ import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
 import Overlay from './overlay';
-
 import ModalEndChat from './../modal/modal-end-chat';
-import { timeout } from 'q';
 
 class Chat extends React.Component {
 
@@ -17,7 +15,6 @@ class Chat extends React.Component {
   state = {
     keepChangeEditor: '',
     roomId: this.props.location.pathname.split('/')[2],
-    // roomId: this.props.location.pathname.split('/chat/')[1], why is this duplicated?
     questionId: this.props.location.pathname.split('/')[3],
     tutorOrLearner: this.props.location.pathname.split('/')[4],
     showModal: false,
@@ -66,7 +63,6 @@ class Chat extends React.Component {
 
     //HANG-UP
     this.props.socket.on('hang up', () => {
-      //this.props.history.push('/');
       this.openChatModal()
     })
   }
