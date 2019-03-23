@@ -8,6 +8,7 @@ import token from '../../assets/token.png';
 import { Link } from "react-router-dom";
 import ProfileMenu from './profile-menu';
 import Modal from '../modal/modal.js';
+import titleImage from '../../assets/hero-logo.png';
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -87,13 +88,15 @@ class Navbar extends React.Component {
   landingPageNavbar = () => {
     if (this.props.landingPage) {
       return(
-        <div class="landing-page-body">
+        <div className="landing-page-body">
+
+          <img src={titleImage} alt="JS QUESTIONS"/>
           <form>
             <input id="searchTerm" type="text" placeholder="What do you need help with?"/>
             <div className="navbar-item searchTerm-button"><Link className="navbar__link" to='/answer'>?</Link></div>
           </form>
-          <p>For when Stack Overflow and the Internet just aren't enough.</p>
-          <h4>Want to help others?</h4>
+          <h5>For when Stack Overflow and the Internet just aren't enough.</h5>
+          <h3>Want to help others?</h3>
         </div>
       )
 

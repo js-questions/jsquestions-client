@@ -13,14 +13,14 @@ $searchSize :  45px;
 .navbar-box__landingPage {
   display: flex;
   flex-direction: column;
-  height: 400px;
+  height: 450px;
   background-image:linear-gradient(
     to right bottom,
     $secondary-transparent,
     $secondary-transparent),
-    url("../../assets/pairProgramming3.jpeg");
+    url("../../assets/pairProgramming4.jpeg");
   background-size: cover;
-  background-position: bottom;
+  background-position: 0 35%;
   padding-top: 20px;
 }
 
@@ -100,8 +100,17 @@ $searchSize :  45px;
   align-items: center;
 }
 
-.landing-page-body h4 {
+.landing-page-body h5 {
+  font-size: 1.2rem;
+}
+
+.landing-page-body h3 {
   margin-top: 50px;
+}
+
+.landing-page-body img {
+  width: 250px;
+  margin-top: 25px;
 }
 
 
@@ -115,7 +124,7 @@ $searchSize :  45px;
   border-top-left-radius: $searchSize;
   background-color: rgba(254, 255, 255, 0.8);
   padding: 0 0 0 22px;
-  width: 200px;
+  width: 300px;
 }
 
 #searchTerm::placeholder {
