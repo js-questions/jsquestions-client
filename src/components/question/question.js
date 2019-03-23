@@ -26,7 +26,6 @@ class Question extends Component {
 
     //disable offerbutton on user offline
     const learnerOffline = this.props.offlineUsers.find(o2 => this.props.question.learner === o2.user_id);
-    console.log('mom', learnerOffline)
     const test = true;
 
     const offerButtonExists = learnerOffline ? this.renderOfflineButton() : 

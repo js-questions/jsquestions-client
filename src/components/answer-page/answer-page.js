@@ -52,7 +52,6 @@ class AnswerPage extends Component {
     .then(res=> this.setState({
       users: res
     }))
-    console.log("All Users", this.state.users)
   }
 
   sendOffer = (details) => {
@@ -132,7 +131,6 @@ class AnswerPage extends Component {
   componentWillMount() {
     this.getUsers();
     this.getQuestions();
-
   }
 
   render() {
