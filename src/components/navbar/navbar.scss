@@ -57,6 +57,12 @@ $searchSize :  45px;
   font-weight: bold;
 }
 
+.profile-menu__link {
+  text-decoration: none;
+  color: $secondary;
+  font-weight: 700;
+}
+
 .navbar__userInfo {
   display: flex;
   flex-direction: column;
@@ -72,17 +78,19 @@ $searchSize :  45px;
 }
 
 .profile-menu {
-  background-color: lightgray;
+  background-color: $primary;
   width: 140px;
-  height: 100px;
+  height: 90px;
   position: absolute;
-  right: 0;
-  top: 50;
+  right: 3%;
+  top: 100px;
   padding: 10px;
 }
 
 .menu-item {
   padding: 2px;
+  color: $secondary;
+  font-weight: 700;
 }
 
 .landing-page-body {
@@ -146,3 +154,6 @@ $searchSize :  45px;
   background-color: darken($primary, 5%);
   box-shadow: inset 2px 2px 2px darken($primary, 40%);
 }
+
+
+
