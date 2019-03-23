@@ -5,6 +5,7 @@ import CodeMirror from 'codemirror';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
+import Overlay from './overlay';
 
 import ModalEndChat from './../modal/modal-end-chat';
 
@@ -15,15 +16,20 @@ class Chat extends React.Component {
   state = {
     keepChangeEditor: '',
     roomId: this.props.location.pathname.split('/')[2],
+    // roomId: this.props.location.pathname.split('/chat/')[1], why is this duplicated?
     questionId: this.props.location.pathname.split('/')[3],
     tutorOrLearner: this.props.location.pathname.split('/')[4],
     showModal: false,
-
+    tutorJoined: false,
   }
  
   componentDidMount() {
-    this.props.socket.emit('join room', this.state.roomId);
 
+    this.props.socket.on('join room', () => this.setState({tutorJoined: true}));
+
+    //const room = this.props.room; //Amber removed this ... TTD to refractor 
+    this.props.socket.emit('join room', this.state.roomId)  
+    
     // CHAT
     this.props.socket.on('chat message', (msg) => {
       let currentId = this.props.socket.id;
@@ -59,7 +65,7 @@ class Chat extends React.Component {
     })
   }
 
-  //WHY WAS THIS HERE?
+  //WHY WAS THIS HERE? -- This was added by Arol to prevent the editor from continuously re-rendering
   // shouldComponentUpdate() {
   //   return false;
   // }
@@ -111,6 +117,13 @@ class Chat extends React.Component {
     // console.log('endPosition ', endPosition)
   }
 
+
+  toggleOverlay = () => {
+    if (!this.state.tutorJoined) {
+      return <Overlay closeOverlay={() => this.setState({tutorJoined: true}, () => this.props.history.goBack())}/>
+    }
+  }
+
   hangUp = () => {
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
     this.setState({
@@ -135,14 +148,17 @@ class Chat extends React.Component {
       showModal: false
     })
   }
-
   
   render() {
+
     // notify that user is online
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
 
     return(
       <div className="chat-component">
+    
+        {this.toggleOverlay()}
+
         <div className="chat-header">
           <div className="title">Question Title</div>
           <div className="hang-up" onClick={this.hangUp}>End Call</div>
