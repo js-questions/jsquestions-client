@@ -17,7 +17,8 @@ class AnswerPage extends Component {
       description: null,
       button: 'Send chat invitation',
       questionid: null
-    }
+    },
+    usersOnline: null
   }
 
   getQuestions = () => {
@@ -29,13 +30,25 @@ class AnswerPage extends Component {
       method: 'GET', 
       headers : { 
         'Authorization' : 'Bearer ' + token,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Content-Type': 'application/json'
       }})
     .then(res => res.json())
     .then(res=> this.setState({
       questions: res
     }))
+  }
+
+  getUsers = () => {
+    //STATE & REDUX
+    const token = localStorage.getItem('token');
+    fetch(`http://localhost:4000/users`, {
+      method: 'GET', 
+      headers : { 
+        'Authorization' : 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      }})
+    .then(res => res.json())
+    .then(res => console.log('sdfasdfsdfasdf'))
   }
 
   sendOffer = (details) => {
@@ -52,8 +65,6 @@ class AnswerPage extends Component {
           "expiration": details.expiration
         })
       })
-        .then(res => res.json())
-        .then(res=> console.log('offer sent to BE', res))
         //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
   }
 
@@ -109,6 +120,7 @@ class AnswerPage extends Component {
 
   componentWillMount() {
     this.getQuestions();
+    this.getUsers();
   }
 
   render() {
