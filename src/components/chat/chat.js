@@ -123,13 +123,6 @@ class Chat extends React.Component {
     // console.log('startPosition ', startPosition)
     // console.log('endPosition ', endPosition)
   }
-
-
-  toggleOverlay = () => {
-    if (!this.state.tutorJoined) {
-      return <Overlay closeOverlay={() => this.props.history.goBack()}/>
-    }
-  }
     
   renderOverlay = () => {
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
@@ -190,8 +183,6 @@ class Chat extends React.Component {
 
     return(
       <div className="chat-component">
-
-        {this.toggleOverlay()}
     
         {this.state.tutorJoined ? null : this.renderOverlay()}
 
