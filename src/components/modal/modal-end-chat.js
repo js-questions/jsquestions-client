@@ -33,7 +33,12 @@ class ModalEndChat extends Component {
     // this.props.sendOffer(this.state) //Amber TTD: put feedback in here
     this.props.closeChatModal()
     this.closesQuestion();
-    this.props.history.push('/');
+    if (this.props.tutorOrLearner === 'tutor'){
+      this.props.history.push('/answer');
+    } else {
+      this.props.history.push('/my-questions');
+    }
+
   }
 
   setFeedback = (e, num) => {
