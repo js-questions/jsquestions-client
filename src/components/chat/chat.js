@@ -24,13 +24,13 @@ class Chat extends React.Component {
     tutorJoined: false,
     minutes: 0,
     seconds: 0,
-    secondsString: '00'
+    secondsString: '00',
+    overTime: 'black'
   }
 
   componentDidMount() {
-    this.startTimer();
 
-    this.props.socket.on('join room', () => this.setState({tutorJoined: true}));
+    this.props.socket.on('join room', () => this.setState({tutorJoined: true}, () => this.startTimer()));
 
     //const room = this.props.room; //Amber removed this ... TTD to refractor
     this.props.socket.emit('join room', this.state.roomId)
@@ -156,7 +156,6 @@ class Chat extends React.Component {
   }
 
   startTimer = () => {
-
     setInterval(async () => {
       this.setState({seconds: this.state.seconds + 1})
       if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
@@ -165,12 +164,12 @@ class Chat extends React.Component {
       if (this.state.seconds === 60) {
         await this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
       }
+
+      if (this.state.minutes === 15) {
+        this.setState({ overTime: 'red'});
+      }
+  
     }, 1000)
-
-    if (this.state.minutes === 15) {
-      console.log('should turn red')
-    }
-
   }
 
   render() {
@@ -185,7 +184,7 @@ class Chat extends React.Component {
 
         <div className="chat-header">
           <h1>Question Title</h1>
-          <h3>{this.state.minutes}:{this.state.secondsString}</h3>
+          <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
           <button onClick={this.hangUp}>End Call</button>
         </div>
         <div className="chat-body">
