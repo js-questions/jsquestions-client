@@ -23,17 +23,18 @@ class Chat extends React.Component {
     showModal: false,
     tutorJoined: false,
     minutes: 0,
-    seconds: 0
+    seconds: 0,
+    secondsString: '00'
   }
- 
+
   componentDidMount() {
     this.startTimer();
 
     this.props.socket.on('join room', () => this.setState({tutorJoined: true}));
 
-    //const room = this.props.room; //Amber removed this ... TTD to refractor 
-    this.props.socket.emit('join room', this.state.roomId)  
-    
+    //const room = this.props.room; //Amber removed this ... TTD to refractor
+    this.props.socket.emit('join room', this.state.roomId)
+
     // CHAT
     this.props.socket.on('chat message', (msg) => {
       let currentId = this.props.socket.id;
@@ -58,6 +59,7 @@ class Chat extends React.Component {
       lineNumbers: true,
       content: this.textArea.current,
     })
+    this.codemirror.setSize(null, '80vh');
     this.codemirror.on('blur', this.codeChanged);
     this.props.socket.on('editor', (data) => this.codemirror.getDoc().setValue(data.code)); // handles received text
     this.props.socket.on('newUser', this.updateCode); // this code is not working - what was its purpose?
@@ -154,20 +156,23 @@ class Chat extends React.Component {
   }
 
   startTimer = () => {
-    
+
     setInterval(async () => {
       this.setState({seconds: this.state.seconds + 1})
-      if (this.state.seconds === 5) {
-        await this.setState({ seconds: 0, minutes: this.state.minutes + 1})
+      if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
+      else this.setState({secondsString: this.state.seconds})
+
+      if (this.state.seconds === 60) {
+        await this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
       }
     }, 1000)
 
     if (this.state.minutes === 15) {
       console.log('should turn red')
-    } 
+    }
 
   }
-  
+
   render() {
 
     // notify that user is online
@@ -175,12 +180,12 @@ class Chat extends React.Component {
 
     return(
       <div className="chat-component">
-    
+
         {this.toggleOverlay()}
 
         <div className="chat-header">
           <h1>Question Title</h1>
-          <h3>{this.state.minutes}:{this.state.seconds < 10 ? 0 + this.state.seconds : this.state.seconds}</h3>
+          <h3>{this.state.minutes}:{this.state.secondsString}</h3>
           <button onClick={this.hangUp}>End Call</button>
         </div>
         <div className="chat-body">
