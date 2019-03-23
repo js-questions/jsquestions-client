@@ -18,7 +18,7 @@ class QuestionPosted extends Component {
     const token = localStorage.getItem('token');
     this.alertTutor(token, tutorId, offerId);
     this.props.history.push({
-      pathname: `/chat/${this.props.question.room_id}`,
+      pathname: `/chat/${this.props.question.room_id}/${this.props.question.question_id}/learner`,
       state: {question: this.props.question}
     }) 
   }

@@ -7,22 +7,25 @@ import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
 import Overlay from './overlay';
 
+import ModalEndChat from './../modal/modal-end-chat';
+
 class Chat extends React.Component {
 
   textArea = React.createRef();
 
   state = {
     keepChangeEditor: '',
-    roomId: this.props.location.pathname.split('/chat/')[1],
+    roomId: this.props.location.pathname.split('/')[2],
+    // roomId: this.props.location.pathname.split('/chat/')[1], why is this duplicated?
+    questionId: this.props.location.pathname.split('/')[3],
+    tutorOrLearner: this.props.location.pathname.split('/')[4],
+    showModal: false,
     tutorJoined: false,
   }
  
   componentDidMount() {
 
-
     this.props.socket.on('join room', () => this.setState({tutorJoined: true}));
-
-    this.props.socket.emit('join room', this.state.roomId);
 
     //const room = this.props.room; //Amber removed this ... TTD to refractor 
     this.props.socket.emit('join room', this.state.roomId)  
@@ -57,12 +60,12 @@ class Chat extends React.Component {
 
     //HANG-UP
     this.props.socket.on('hang up', () => {
-      console.log('BE to FE')
-      this.props.history.push('/');
+      //this.props.history.push('/');
+      this.openChatModal()
     })
   }
 
-  // this should be un-commented. it is currently commented so the timer can work.
+  //WHY WAS THIS HERE? -- This was added by Arol to prevent the editor from continuously re-rendering
   // shouldComponentUpdate() {
   //   return false;
   // }
@@ -122,8 +125,28 @@ class Chat extends React.Component {
   }
 
   hangUp = () => {
-    console.log('sent to BE')
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
+    this.setState({
+      showModal: true
+    })
+  }
+
+  showEndChatModal = () => {
+    if (this.state.showModal) {
+      return <ModalEndChat closeChatModal={this.closeChatModal} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
+    }
+  }
+
+  openChatModal = () => {
+    this.setState({
+      showModal: true
+    })
+  }
+
+  closeChatModal = () => {
+    this.setState({
+      showModal: false
+    })
   }
   
   render() {
@@ -138,7 +161,6 @@ class Chat extends React.Component {
 
         <div className="chat-header">
           <div className="title">Question Title</div>
-          {/* <div className="title">{this.props.location.state.question.title}: {this.props.location.state.question.description} <div>Related Resources: {this.props.location.state.question.resources}</div></div> */}
           <div className="hang-up" onClick={this.hangUp}>End Call</div>
         </div>
         <div className="chat-body">
@@ -159,6 +181,7 @@ class Chat extends React.Component {
             </form>
           </div>
         </div>
+        {this.showEndChatModal()}
       </div>
     )
   }
