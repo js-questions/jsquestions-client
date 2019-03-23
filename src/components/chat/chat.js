@@ -6,7 +6,6 @@ import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
 import Overlay from './overlay';
-
 import ModalEndChat from './../modal/modal-end-chat';
 
 class Chat extends React.Component {
@@ -19,19 +18,25 @@ class Chat extends React.Component {
     questionId: this.props.location.pathname.split('/')[3],
     tutorOrLearner: this.props.location.pathname.split('/')[4],
     showModal: false,
-    tutorJoined: true,
+    tutorJoined: false,
+    minutes: 0,
+    seconds: 0,
+    secondsString: '00',
+    overTime: 'black'
   }
- 
+
   componentDidMount() {
 
+    // this.props.socket.on('join room', () => this.setState({tutorJoined: true}, () => this.startTimer()));
+
+    //const room = this.props.room; //Amber removed this ... TTD to refractor
+    this.props.socket.emit('join room', this.state.roomId)
+
     this.props.socket.on('join room', (participants) => {
-      if (participants === 2) this.setState({tutorJoined: true});
+      if (participants === 2) this.setState({tutorJoined: true}, () => this.startTimer());
       else this.setState({tutorJoined: false});
     });
 
-    //const room = this.props.room; //Amber removed this ... TTD to refractor 
-    this.props.socket.emit('join room', this.state.roomId)  
-    
     // CHAT
     this.props.socket.on('chat message', (msg) => {
       let currentId = this.props.socket.id;
@@ -56,13 +61,13 @@ class Chat extends React.Component {
       lineNumbers: true,
       content: this.textArea.current,
     })
+    this.codemirror.setSize(null, '80vh');
     this.codemirror.on('blur', this.codeChanged);
     this.props.socket.on('editor', (data) => this.codemirror.getDoc().setValue(data.code)); // handles received text
     this.props.socket.on('newUser', this.updateCode); // this code is not working - what was its purpose?
 
     //HANG-UP
     this.props.socket.on('hang up', () => {
-      //this.props.history.push('/');
       this.openChatModal()
     })
   }
@@ -118,8 +123,7 @@ class Chat extends React.Component {
     // console.log('startPosition ', startPosition)
     // console.log('endPosition ', endPosition)
   }
-
-
+    
   renderOverlay = () => {
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
       return <Overlay closeOverlay={(counter) => {
@@ -154,7 +158,25 @@ class Chat extends React.Component {
       showModal: false
     })
   }
+
+  startTimer = () => {
+    setInterval(async () => {
+      this.setState({seconds: this.state.seconds + 1})
+      if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
+      else this.setState({secondsString: this.state.seconds})
+
+      if (this.state.seconds === 60) {
+        await this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
+      }
+
+      if (this.state.minutes === 15) {
+        this.setState({ overTime: 'red'});
+      }
   
+    }, 1000)
+  }
+
+
   render() {
     // Notify that user is online (since navbar is not render)
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
@@ -165,8 +187,9 @@ class Chat extends React.Component {
         {this.state.tutorJoined ? null : this.renderOverlay()}
 
         <div className="chat-header">
-          <div className="title">Question Title</div>
-          <div className="hang-up" onClick={this.hangUp}>End Call</div>
+          <h1>Question Title</h1>
+          <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
+          <button onClick={this.hangUp}>End Call</button>
         </div>
         <div className="chat-body">
           <div className="editor">
@@ -191,6 +214,7 @@ class Chat extends React.Component {
     )
   }
 }
+
 
 
 export default Chat;
