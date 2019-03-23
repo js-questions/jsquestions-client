@@ -18,7 +18,7 @@ class AnswerPage extends Component {
       button: 'Send chat invitation',
       questionid: null
     },
-    users: null
+    offlineUsers: null
   }
 
   getQuestions = async () => {
@@ -50,7 +50,9 @@ class AnswerPage extends Component {
       }})
     .then(res => res.json())
     .then(res=> this.setState({
-      users: res
+      offlineUsers: res.filter(user => {
+        return user.available === null;
+      })
     }))
   }
 
@@ -68,8 +70,7 @@ class AnswerPage extends Component {
           "expiration": details.expiration
         })
       })
-
-        //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
+    //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
   }
 
   showOfferModal = () => {
@@ -110,21 +111,15 @@ class AnswerPage extends Component {
     }
     //Renders questions
     else if (this.state.questions.length > 0) {
-
-      //////
-      const offlineUsers = this.state.users.filter(user => {
-        return user.available === null;
-      })
-
       return this.state.questions.map((question, index) => {
         return (
           <div className="question-container" key={index} >
-            <Question question={question} openOfferModal={this.openOfferModal} offlineUsers={offlineUsers}/> 
+            <Question question={question} openOfferModal={this.openOfferModal} offlineUsers={this.state.offlineUsers}/> 
           </div>
       )})} 
     //No questions to render
     else {
-      return  <div>There aren't any questions being asked right now :( </div>
+      return <div>There aren't any questions being asked right now :( </div>
     }
   }
 
