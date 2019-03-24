@@ -45,6 +45,7 @@ $searchSize :  45px;
   margin-right: 15px;
   color: $white;
   font-weight: bold;
+  font-size: 1.7rem;
 }
 
 .navbar-icon {
@@ -69,6 +70,10 @@ $searchSize :  45px;
   color: $white;
   font-weight: bold;
   align-items: center;
+}
+
+.navbar__userInfo {
+  font-size: 1.7rem;
 }
 
 #username {
@@ -112,16 +117,14 @@ $searchSize :  45px;
   font-size: 1.2rem;
 }
 
-.landing-page-body h3 {
+.landing-page-body h2 {
   margin-top: 50px;
 }
 
 .landing-page-body img {
-  width: 250px;
+  width: 350px;
   margin-top: 25px;
 }
-
-
 
 #searchTerm {
   height: $searchSize;
@@ -133,9 +136,24 @@ $searchSize :  45px;
   background-color: rgba(254, 255, 255, 0.8);
   padding: 0 0 0 22px;
   width: 300px;
+  font-size: 1.7rem;
+  font-family: "Montserrat";
 }
 
-#searchTerm::placeholder {
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: $secondary;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: $secondary;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: $secondary;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: $secondary;
+}
+
+#searchTerm::placeholder-shown {
   color:rgba(0, 0, 0, 0.4);
 }
 

@@ -95,8 +95,8 @@ class Navbar extends React.Component {
             <input id="searchTerm" type="text" placeholder="What do you need help with?"/>
             <div className="navbar-item searchTerm-button"><Link className="navbar__link" to='/answer'>?</Link></div>
           </form>
-          <h5>For when Stack Overflow and the Internet just aren't enough.</h5>
-          <h3>Want to help others?</h3>
+          <h3>For when Stack Overflow and the Internet just aren't enough.</h3>
+          <h2>Want to help others?</h2>
         </div>
       )
 
