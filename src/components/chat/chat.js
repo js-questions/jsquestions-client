@@ -27,7 +27,10 @@ class Chat extends Component {
     this.props.socket.emit('join room', this.state.roomId)
 
     this.props.socket.on('join room', (participants) => {
-      if (participants === 2) this.setState({tutorJoined: true}, () => this.startTimer());
+      if (participants === 2) {
+        this.setState({tutorJoined: true}, () => this.startTimer());
+        this.props.socket.emit('question info', this.props.question)
+      }
       else this.setState({tutorJoined: false});
     });
 
