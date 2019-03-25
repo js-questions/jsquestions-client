@@ -1,6 +1,4 @@
-$background-white-color: white;
-$background-grey-color: rgb(216, 216, 216);
-$border-grey-color: rgb(150, 150, 150);
+@import '../../colors.scss';
 
 .chat-component {
   display: flex;
@@ -12,43 +10,56 @@ $border-grey-color: rgb(150, 150, 150);
 .chat-header {
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
+  height: 10vh;
 }
 
-.title {
-  background-color: $background-grey-color;
-  margin: 20px 10px 20px 20px;
+.chat-header h1 {
+  background-color: $grey-light;
+  margin: 20px;
   padding: 20px;
   width: 80%;
-  border: solid 1px $border-grey-color;
+  font-size: 1em;
 }
 
-.hang-up {
-  background-color: $background-grey-color;
-  margin: 20px 20px 20px 10px;
+.chat-header button {
+  background-color: $grey-light;
+  margin: 20px;
   padding: 20px;
-  border: solid 1px $border-grey-color;
-  width: 100px;
+  width: 120px;
   text-align: center;
 }
 
 .chat-body {
   display: flex;
   flex-direction: row;
-  background-color: $background-white-color;
-  height: 90vh;
+  background-color: $white;
+}
+
+.chat-box {
+  width: 30%;
+  height: 80vh;
+  background-color: $grey-light;
+  margin: 20px;
+  border: solid 1px $grey;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
 }
 
 .editor {
-  width: 48%;
-  height: 100%;
-  background-color: $background-grey-color;
-  margin: 20px 10px 20px 20px;
-  border: solid 1px $border-grey-color;
+  width: 70%;
+  max-width: 70%;
+  height: 80vh;
+  background-color: $grey-light;
+  margin: 20px 0px 20px 20px;
+  border: solid 1px $grey;
 }
 
 .CodeMirror {
-  z-index: 0
+  z-index: 0;
 }
 
 #txtArea {
@@ -57,16 +68,6 @@ $border-grey-color: rgb(150, 150, 150);
   min-height: 500px;
 }
 
-.chat-box {
-  width: 48%;
-  background-color: $background-grey-color;
-  margin: 20px 10px 20px 20px;
-  border: solid 1px $border-grey-color;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
-}
 
 form {
   padding: 5px 10px;
@@ -115,7 +116,7 @@ form button:hover {
 
 .elseMessage {
   align-self: flex-start;
-  background-color: white;
+  background-color: $white;
 }
 
 .messageDate {

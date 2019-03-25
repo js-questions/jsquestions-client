@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../log-in/log-in.scss';
 import { Link } from "react-router-dom";
+import '../../phone.scss';
 
 class Modal extends Component {
 
@@ -9,9 +10,10 @@ class Modal extends Component {
     return (
       <div className="backdrop">
         <div className="modal">
-          <div>Modal Title</div>
-          <div>Modal Body</div>
+          <h1>HEYYY</h1>
+          <p>Modal Body</p>
           <Link to={`/chat/${this.props.question.room_id}/${this.props.question.question_id}/tutor`}>Modal Button</Link>
+          <i className="Phone is-animating"></i>
         </div>
       </div>
     )

@@ -7,7 +7,7 @@ class Question extends Component {
   }
 
   renderOfferButton = () => {
-    let btn_class = this.state.buttonAlreadyClicked ? "offerSent" : "offerNotSent";
+    let btn_class = this.state.buttonAlreadyClicked ? "button-primary offerSent" : "button-primary offerNotSent";
     let btn_text = this.state.buttonAlreadyClicked ? "Sent" : "Offer Help";
     //Amber TTD: needs 3 if statement to change if person is not online
       return <button className={btn_class} onClick={() => {this.changeColor(); this.props.openOfferModal(this.props.question.question_id)}}>{btn_text}</button>
@@ -32,8 +32,12 @@ class Question extends Component {
       this.props.openOfferModal ? this.renderOfferButton() : null ;
     
     return (
-      <div>
-        <p>Question: {this.props.question.title} Description: {this.props.question.description}</p>
+      <div className="question__container">
+        <div className="question__user">Avatar</div>
+        <div className="question__body">
+          <p className="question__title">Question: {this.props.question.title}</p>
+          <p className="question__description">Description: {this.props.question.description}</p>
+        </div>
         {offerButtonExists}
       </div>
     );

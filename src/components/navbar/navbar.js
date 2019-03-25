@@ -26,8 +26,8 @@ class Navbar extends React.Component {
       console.log("works");
       this.setState({socketQuestion: question}, () => this.tutorNotification() );
   })
-    
-    
+
+
   }
 
   tutorNotification = () => {
@@ -46,7 +46,7 @@ class Navbar extends React.Component {
     const checkToken = localStorage.getItem('token');
     if (checkToken) {
       return this.props.setToken(checkToken);
-    } 
+    }
   }
 
   loginProcess = () => {
@@ -55,12 +55,18 @@ class Navbar extends React.Component {
     }
     else {
       return (
-        <div className="navbar-component">
-          <div className="navbar-item">{this.props.user.karma}<span role="img" className="navbar-icon" aria-label="karma"> 🙏</span></div>
-          <div className="navbar-item">{this.props.user.credits}<img src={token} className="navbar-icon" width="18px" alt="tokens"/></div>
+        <div className="navbar__component">
           <div className="navbar-item">
+            {this.props.user.karma}
+            <span role="img" className="navbar-icon" aria-label="karma"> 🙏</span>
+          </div>
+          <div className="navbar-item">
+            {this.props.user.credits}
+            <img src={token} className="navbar-icon" width="18px" alt="tokens"/>
+          </div>
+          <div className="navbar__userInfo">
             <img src={this.props.user.profileBadge} width="50px" alt="profile-badge" onClick={() => this.setState({showMenu: !this.state.showMenu})}/>
-            <p id="username">{this.props.user.username}</p>  
+            <p id="username">{this.props.user.username}</p>
           </div>
         </div>
       )
@@ -88,10 +94,10 @@ class Navbar extends React.Component {
       <div>
         <div>
           <div className="navbar">
-            <div className="navbar-component">
+            <div className="navbar__component">
               <div className="navbar-item"><Link to='/'><img src={logo} width="55px" alt="logo"/></Link></div>
-              <div className="navbar-item"><Link to='/ask'>Ask for help.</Link></div>
-              <div className="navbar-item"><Link to='/answer'>Help others.</Link></div>
+              <div className="navbar-item"><Link className="navbar__link" to='/ask'>Ask for help.</Link></div>
+              <div className="navbar-item"><Link className="navbar__link" to='/answer'>Help others.</Link></div>
             </div>
             {this.loginProcess()}
           </div>
