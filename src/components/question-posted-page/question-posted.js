@@ -49,8 +49,9 @@ class QuestionPosted extends Component {
     const offers = this.props.offers;
     const tutors = this.props.tutors;
       return offers.map((offer, index) => {
+        const expirationDate = offer.expiration.split('T')[0]+ ' ' +offer.expiration.split('T')[1].split('.')[0];
         if (tutors[index]) {
-          return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} rejectOffer={() => this.rejectOffer(offer.offer_id)}chatNow={(e) => this.handleClick(e, tutors[index].user_id, offer.offer_id)}/></div>
+          return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} expirationDate={expirationDate} rejectOffer={() => this.rejectOffer(offer.offer_id)}chatNow={(e) => this.handleClick(e, tutors[index].user_id, offer.offer_id)}/></div>
         } else {
           return '';
         }

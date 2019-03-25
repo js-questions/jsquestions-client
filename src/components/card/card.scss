@@ -1,0 +1,60 @@
+@import '../../colors.scss';
+
+.card-container {
+  margin-bottom: 10px;
+  border: 1px solid $grey;
+  border-radius: 3px;
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.card-avatar {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
+
+.card-avatar p {
+  font-weight: 700;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+  width: 80%;
+}
+
+.card-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button-secondary {
+  margin-top: 10px;
+  font-family: Montserrat;
+  font-weight: 700;
+  font-size: 1.3rem;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  color: $secondary;
+}
+
+.button-secondary:hover {
+  color: $grey-dark;
+}
+
+.expiryDate {
+  color: $grey;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+.karmaEarned {
+  font-size: 1.3rem;
+  margin-top: 10px;
+}
