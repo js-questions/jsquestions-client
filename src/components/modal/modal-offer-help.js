@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import '../log-in/log-in.scss';
-import { Link } from "react-router-dom";
+import './modal.scss';
 
 class ModalOfferHelp extends Component {
   state = {
