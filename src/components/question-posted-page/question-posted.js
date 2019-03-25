@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
 import './question-posted.scss';
 import { connect } from 'react-redux';
-import { fetchQuestionAndOffers, updateQuestion, rejectOffer } from '../../redux/actions.js';
+import { fetchQuestionAndOffers, updateQuestion, rejectOffer, getUsers } from '../../redux/actions.js';
 import Card from '../card/card.js';
 
 class QuestionPosted extends Component {
   state = {
-    questionid: window.location.pathname.replace(/\D/g, "")
+    questionid: window.location.pathname.replace(/\D/g, ""),
+    token: localStorage.getItem('token')
   }
 
   componentDidMount() {
-    this.props.fetchQuestionAndOffers(this.state.questionid);
+    if (this.state.token) {      
+      fetch('http://localhost:4000/users', {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Accept': 'application/json'
+          }
+        })
+        .then(res => res.json())
+        .then(users => this.props.fetchQuestionAndOffers(this.state.questionid, users, this.state.token));
+    }  
   }
 
   handleClick = (e, tutorId, offerId) => {
@@ -47,10 +58,9 @@ class QuestionPosted extends Component {
 
   renderOffers = () => {
     const offers = this.props.offers;
-    const tutors = this.props.tutors;
       return offers.map((offer, index) => {
-        if (tutors[index]) {
-          return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} rejectOffer={() => this.rejectOffer(offer.offer_id)}chatNow={(e) => this.handleClick(e, tutors[index].user_id, offer.offer_id)}/></div>
+        if (offers.length > 0) {
+          return <div key={offer.offer_id}><Card tutor={offer.tutor} offer={offer} rejectOffer={() => this.rejectOffer(offer.offer_id)} chatNow={(e) => this.handleClick(e, offer.tutor.user_id, offer.offer_id)}/></div>
         } else {
           return '';
         }
@@ -85,7 +95,7 @@ const mapStateToProps = (state) => ({
   question: state.question
 })
 
-const mapDispatchToProps = { fetchQuestionAndOffers, updateQuestion, rejectOffer };
+const mapDispatchToProps = { fetchQuestionAndOffers, updateQuestion, rejectOffer, getUsers };
 
 // const mapDispatchToProps = (dispatch) => ({
 //   fetchOffers: (questionid) => dispatch(fetchOffers(questionid))
