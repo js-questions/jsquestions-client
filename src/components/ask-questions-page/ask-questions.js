@@ -29,7 +29,6 @@ class AskQuestions extends Component {
   postQuestion = async (token) => {
       //sends question to post to database
       await fetch(`http://localhost:4000/questions`, {
-      // await fetch(`${process.env.REACT_APP_END_POINT_URL}/questions`, {
         method: 'POST',
         headers : {
           'Authorization' : 'Bearer ' + token,
@@ -67,7 +66,7 @@ class AskQuestions extends Component {
     //populates input field on user searched term from landing page
     if (this.props.location.state) {
       this.setState({
-        title: this.props.location.state
+        title: this.props.location.state.title
       })
     }
   }
@@ -80,15 +79,14 @@ class AskQuestions extends Component {
   }
 
   render() {
-    console.log(' this.props.location.state.title  ',  this.props.location.state.title )
-    console.log(' this.props.location.state.title  ',  typeof this.props.location.state.title )
+
     return (
       <div className="ask-questions">
         <h1>Ask a Question</h1>
         <div className="ask-questions__form-box">
           <form className="ask-questions__form">
             <h4>Title (*)</h4>
-            <input value={this.props.location.state ? this.props.location.state.title : this.state.title} onChange={(event) => this.setState({title: event.target.value})} placeholder='My title is...' />
+            <input value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} placeholder='My title is...' />
 
             <h4>Describe your problem</h4>
             <textarea onChange={(event) => this.setState({describeProblem: event.target.value})} placeholder='What problem are you having? What do you want to achieve?'/>
