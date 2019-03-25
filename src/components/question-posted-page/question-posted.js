@@ -11,6 +11,10 @@ class QuestionPosted extends Component {
 
   componentDidMount() {
     this.props.fetchQuestionAndOffers(this.state.questionid);
+
+    //HANG-UP
+    this.props.socket.on('new offer', () => {this.setState({showFeedbackModal: true})})
+
   }
 
   handleClick = (e, tutorId, offerId) => {
@@ -42,7 +46,6 @@ class QuestionPosted extends Component {
       question.tutor = tutorId; // adding the tutorId to the question
       this.props.socket.emit('chat now', question)
     })
-
   }
 
   renderOffers = () => {

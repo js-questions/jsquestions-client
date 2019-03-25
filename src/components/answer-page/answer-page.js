@@ -74,9 +74,9 @@ class AnswerPage extends Component {
   }
 
   showOfferModal = () => {
-    if (this.state.showModal) {
-      return <ModalOfferHelp modalRef={this.state.modalRef} closeOfferModal={this.closeOfferModal} sendOffer={this.sendOffer}/>
-    }
+    // if (this.state.showModal) {
+      return <ModalOfferHelp showModal={this.state.showModal} modalRef={this.state.modalRef} closeOfferModal={this.closeOfferModal} sendOffer={this.sendOffer}/>
+    // }
   }
 
   openOfferModal = (questionid) => {

@@ -17,11 +17,13 @@ function ModalOfferHelp(props) {
     expiration: Date.now() + 30
   })
 
-  const props2 = useSpring({ to: {opacity: 1, width: '600px', height: '600px'}, from: {opacity: 0, width: '0px', height: '0px'}, config: {duration:500}})
-  const props3 = useSpring({ opacity: 1, from: {opacity: 0}, config: {duration:2000}})
-  const props4 = useSpring({ opacity: 1, from: {opacity: 0}, config: {duration:3000}})
+  const backdropAnimation = useSpring({ reverse: !props.showModal, from: {display: 'none'}, to: {display: 'block'}, delay: (_) => !props.showModal ? 500 : 0 })
+  const props2 = useSpring({ reverse: !props.showModal, to: {opacity: 1, width: '600px', height: '600px'}, from: {opacity: 0, width: '0px', height: '0px'}, config: {duration:500}})
+  const props3 = useSpring({ opacity: 1, from: {opacity: 0}, config: {duration:3000}})
+  const props4 = useSpring({ opacity: 1, from: {opacity: 0}, config: {duration:4000}})
 
   return (
+    <animated.div style={backdropAnimation}>
     <div className="backdrop">
       <animated.div style={props2}>
       <div className="modal">
@@ -40,6 +42,7 @@ function ModalOfferHelp(props) {
       </div>
       </animated.div>
     </div>
+    </animated.div>
   )
 }
 
