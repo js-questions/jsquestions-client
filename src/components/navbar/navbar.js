@@ -125,8 +125,8 @@ class Navbar extends React.Component {
         <div className="navbar">
           <div className="navbar__component">
             <div className="navbar-item"><Link to='/'><img src={logo} width="55px" alt="logo"/></Link></div>
-            <div className="navbar-item"><Link className="navbar__link" to='/ask'>Ask for help.</Link></div>
-            <div className="navbar-item"><Link className="navbar__link" to='/answer'>Help others.</Link></div>
+            <div className="navbar-item navbar__underline"><Link className="navbar__link" to='/ask'>Ask for help.</Link></div>
+            <div className="navbar-item navbar__underline"><Link className="navbar__link" to='/answer'>Help others.</Link></div>
           </div>
           {this.loginProcess()}
         </div>
