@@ -5,6 +5,7 @@ const user = (state = [], action) => {
   switch(action.type) {
     case 'SET_TOKEN':
       const decoded = jwt_decode(action.token);
+      console.log("HERE", decoded)
       return decoded;
     case 'LOGOUT':
       return state;    
