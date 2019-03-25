@@ -38,7 +38,6 @@ class AnswerPage extends Component {
     .then(res=> this.setState({
       questions: res
     }))
-    console.log(this.state.questions)
   }
 
   getUsers = () => {
