@@ -18,6 +18,7 @@ class Card extends Component {
           </div>
           <div className="card-action">
           <button onClick={this.props.chatNow}>chat now</button>
+          <button onClick={this.props.rejectOffer}>No thanks!</button>
           </div>
         </div>
       )
