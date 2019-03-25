@@ -13,16 +13,16 @@ import Chat from './components/chat/chat.js';
 import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:4000/');
 
-const EntryPage = (rerender) => (
+const EntryPage = () => (
   <>
-    <Navbar rerender={rerender} socket={socket} landingPage={true}/>
+    <Navbar socket={socket} landingPage={true}/>
     <Route exact path="/" component={LandingPage}/>
   </>
 )
 
-const Platform = (rerender) => (
+const Platform = () => (
   <>
-    <Navbar rerender={rerender} socket={socket} landingPage={false}/>
+    <Navbar socket={socket} landingPage={false}/>
     <Route path="/ask" component={AskQuestions}/>
     <PrivateRoute path="/question-posted/:questionid" render={(props) => <QuestionPosted {...props} socket={socket} />}/>
     <PrivateRoute path="/question/:questionid" component={QuestionAbout}/>
