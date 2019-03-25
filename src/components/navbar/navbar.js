@@ -8,6 +8,8 @@ import token from '../../assets/token.png';
 import { Link } from "react-router-dom";
 import ProfileMenu from './profile-menu';
 import TutorNotification from '../modal/modal-tutor-notification.js';
+// import Modal from '../modal/modal.js'; modal = tutor notification modal. please update to tutor notification
+import titleImage from '../../assets/hero-logo.png';
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -16,7 +18,7 @@ class Navbar extends React.Component {
       showSignup: false,
       openModal: true,
       showMenu: false,
-      socketQuestion: '',
+      socketQuestion: ''
     }
   }
 
@@ -82,25 +84,54 @@ class Navbar extends React.Component {
     }
   }
 
+  landingPageNavbar = () => {
+    if (this.props.landingPage) {
+      return(
+        <div className="landing-page-body">
+
+          <img src={titleImage} alt="JS QUESTIONS"/>
+          <form>
+            <input id="searchTerm" type="text" placeholder="What do you need help with?"/>
+            <div className="navbar-item searchTerm-button"><Link className="navbar__link" to='/answer'>?</Link></div>
+          </form>
+          <h3>For when Stack Overflow and the Internet just aren't enough.</h3>
+          <h2>Want to help others?</h2>
+        </div>
+      )
+
+    }
+  }
+
+  handleClick = (e) => {
+    const searchTerm = document.getElementById("searchTerm").value;
+    e.preventDefault();
+    console.log('searchTerm ', searchTerm)
+    // this.props.history.push('/ask', searchTerm);
+  }
+
 
   render() {
     // Sending token on user refresh
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
 
+    // Apply different class depending if we are in the landing page or not
+    let classNavbarBox = '';
+    if (this.props.landingPage) classNavbarBox='navbar-box__landingPage';
+    else classNavbarBox='navbar-box';
+
     return(
-      <div>
-        <div>
-          <div className="navbar">
-            <div className="navbar__component">
-              <div className="navbar-item"><Link to='/'><img src={logo} width="55px" alt="logo"/></Link></div>
-              <div className="navbar-item"><Link className="navbar__link" to='/ask'>Ask for help.</Link></div>
-              <div className="navbar-item"><Link className="navbar__link" to='/answer'>Help others.</Link></div>
-            </div>
-            {this.loginProcess()}
+      <div className={classNavbarBox}>
+        <div className="navbar">
+          <div className="navbar__component">
+            <div className="navbar-item"><Link to='/'><img src={logo} width="55px" alt="logo"/></Link></div>
+            <div className="navbar-item"><Link className="navbar__link" to='/ask'>Ask for help.</Link></div>
+            <div className="navbar-item"><Link className="navbar__link" to='/answer'>Help others.</Link></div>
           </div>
-          {this.showSignupModal()}
-          {this.tutorNotification()}
+          {this.loginProcess()}
         </div>
+        {this.landingPageNavbar()}
+        {this.showSignupModal()}
+        {this.tutorNotification()}
         {this.showMenu()}
       </div>
     )

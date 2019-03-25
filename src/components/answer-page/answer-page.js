@@ -17,10 +17,11 @@ class AnswerPage extends Component {
       description: null,
       button: 'Send chat invitation',
       questionid: null
-    }
+    },
+    offlineUsers: null
   }
 
-  getQuestions = () => {
+  getQuestions = async () => {
     const token = localStorage.getItem('token');
     if (token) {
       this.setState({loggedIn: true})
@@ -29,12 +30,29 @@ class AnswerPage extends Component {
       method: 'GET',
       headers : {
         'Authorization' : 'Bearer ' + token,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Content-Type': 'application/json'
       }})
     .then(res => res.json())
     .then(res=> this.setState({
       questions: res
+    }))
+    console.log(this.state.questions)
+  }
+
+  getUsers = () => {
+    const token = localStorage.getItem('token');
+
+    fetch(`http://localhost:4000/users/`, {
+      method: 'GET', 
+      headers : { 
+        'Authorization' : 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      }})
+    .then(res => res.json())
+    .then(res=> this.setState({
+      offlineUsers: res.filter(user => {
+        return user.available === null;
+      })
     }))
   }
 
@@ -52,9 +70,7 @@ class AnswerPage extends Component {
           "expiration": details.expiration
         })
       })
-        .then(res => res.json())
-        .then(res=> console.log('offer sent to BE', res))
-        //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
+    //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
   }
 
   showOfferModal = () => {
@@ -98,16 +114,17 @@ class AnswerPage extends Component {
       return this.state.questions.map((question, index) => {
         return (
           <div className="question-container" key={index} >
-            <Question question={question} openOfferModal={this.openOfferModal} />
+            <Question question={question} openOfferModal={this.openOfferModal} offlineUsers={this.state.offlineUsers}/> 
           </div>
-    )})}
+      )})} 
     //No questions to render
     else {
-      return  <div>There aren't any questions being asked right now :( </div>
+      return <div>There aren't any questions being asked right now :( </div>
     }
   }
 
   componentWillMount() {
+    this.getUsers();
     this.getQuestions();
   }
   toggleButton = (e, id) => {

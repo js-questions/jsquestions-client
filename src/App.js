@@ -13,10 +13,16 @@ import Chat from './components/chat/chat.js';
 import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:4000/');
 
-const Platform = () => (
-  <> 
-    <Navbar socket={socket}/>
+const EntryPage = () => (
+  <>
+    <Navbar socket={socket} landingPage={true}/>
     <Route exact path="/" component={LandingPage}/>
+  </>
+)
+
+const Platform = () => (
+  <>
+    <Navbar socket={socket} landingPage={false}/>
     <Route path="/ask" component={AskQuestions}/>
     <Route path="/question-posted/:questionid" render={(props) => <QuestionPosted {...props} socket={socket} />}/>
     <Route path="/question/:questionid" component={QuestionAbout}/>
@@ -32,7 +38,8 @@ class App extends Component {
         <Router>
           <Switch>
             <Route path='/chat' render={(props) => <Chat {...props} socket={socket} />}/>
-            <Route path='/' component={Platform} />
+            <Route exact path='/' component={EntryPage} />
+            <Route component={Platform} />
           </Switch>
         </Router>
       </div>
