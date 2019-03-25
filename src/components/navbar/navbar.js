@@ -27,6 +27,9 @@ class Navbar extends React.Component {
     this.props.socket.on('push tutor', (question) => {
       this.setState({socketQuestion: question}, () => this.tutorNotification() );
     })
+    this.props.socket.on('cancel call', () => {
+      this.setState({socketQuestion: ''}, () => this.tutorNotification() );
+    })
   }
 
   tutorNotification = () => {
