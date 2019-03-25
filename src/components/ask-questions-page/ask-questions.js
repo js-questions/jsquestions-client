@@ -37,7 +37,7 @@ class AskQuestions extends Component {
           'Accept': 'application/json'
         },
         body: JSON.stringify(
-          {"title": this.state.title,
+          {"title": this.props.location.state ? this.props.location.state.title : this.state.title,
           "description": this.state.describeProblem,
           "resources": this.state.relatedResources,
           "code": this.state.codeLink }
@@ -80,6 +80,8 @@ class AskQuestions extends Component {
   }
 
   render() {
+    console.log(' this.props.location.state.title  ',  this.props.location.state.title )
+    console.log(' this.props.location.state.title  ',  typeof this.props.location.state.title )
     return (
       <div className="ask-questions">
         <h1>Ask a Question</h1>
