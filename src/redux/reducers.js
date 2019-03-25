@@ -5,10 +5,18 @@ const user = (state = [], action) => {
   switch(action.type) {
     case 'SET_TOKEN':
       const decoded = jwt_decode(action.token);
-      console.log("HERE", decoded)
       return decoded;
     case 'LOGOUT':
       return state;    
+    default:
+      return state;
+  }
+}
+
+const users = (state = [], action) => {
+  switch(action.type) {
+    case 'GET_USERS':
+      return action.users;
     default:
       return state;
   }
@@ -20,6 +28,8 @@ const offers = (state = [], action) => {
       return [ ...state ];
     case 'UPDATE_OFFERS':
       return action.offers; // check that the offers are always up to date
+    case 'UPDATE_OFFER':
+      return [ ...state, action.offer ]
     case 'REJECT_OFFER':
       let offers = state.filter((offer => offer.offer_id !== action.id));
       return offers;
@@ -46,9 +56,20 @@ const question = (state = [], action) => {
   }
 }
 
+const questions = (state = [], action) => {
+  switch(action.type) {
+    case 'UPDATE_QUESTIONS':
+      return action.questions;
+    default:
+      return state;
+  }
+}
+
 const reducers = combineReducers({
   user,
+  users,
   question,
+  questions,
   offers,
   tutors
 });

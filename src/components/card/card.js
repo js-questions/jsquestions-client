@@ -4,6 +4,7 @@ import './card.scss';
 class Card extends Component {
 
   render() {
+    if (this.props.tutor) {
       return (
         <div className="card-container">
           <div className="card-avatar">
@@ -22,7 +23,10 @@ class Card extends Component {
           </div>
         </div>
       )
-    } 
+    } else {
+      return 'Loading...'
+    }
   }
+}
 
 export default Card;

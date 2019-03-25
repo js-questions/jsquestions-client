@@ -3,6 +3,8 @@ import './answer-page.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
+import { connect } from 'react-redux';
+import { updateQuestions, updateOffer } from '../../redux/actions.js';
 import Question from '../question/question';
 import ModalOfferHelp from './../modal/modal-offer-help';
 
@@ -70,8 +72,13 @@ class AnswerPage extends Component {
           "expiration": details.expiration
         })
       })
+        .then(res => res.json())
+        .then(offer => {
+          this.props.updateOffer(offer);
+          const currentQuestion = this.state.questions.filter(question => question.question_id === offer.linked_question);
+          this.props.socket.emit('offer sent', { offer, learner_id: currentQuestion[0].learner })
+        })
 
-      this.props.socket.emit('offer sent')
     //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
   }
 
@@ -170,4 +177,14 @@ class AnswerPage extends Component {
   }
 }
 
-export default AnswerPage;
+const mapStateToProps = (state) => ({
+  user: state.user,
+  questions: state.questions
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  updateOffer: (offer) => dispatch(updateOffer(offer)),
+  updateQuestions: (questions) => dispatch(updateQuestions(questions)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AnswerPage);

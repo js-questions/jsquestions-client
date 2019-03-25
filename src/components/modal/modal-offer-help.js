@@ -3,7 +3,6 @@ import '../log-in/log-in.scss';
 import './modal.scss';
 import { useSpring, animated } from 'react-spring';
 
-
 const offerHelp = (e, modalInfo, props) => {
   e.preventDefault();
   props.sendOffer(modalInfo)
@@ -14,7 +13,7 @@ function ModalOfferHelp(props) {
   const [modalInfo, setModalInfo ] = React.useState({
     message: null,
     questionid: props.modalRef.questionid,
-    expiration: Date.now() + 30
+    expiration: 0,
   })
 
   const backdropAnimation = useSpring({ reverse: !props.showModal, from: {display: 'none'}, to: {display: 'block'}, delay: (_) => !props.showModal ? 500 : 0 })
@@ -32,8 +31,8 @@ function ModalOfferHelp(props) {
         <div>{props.modalRef.title}</div>
         <div>{props.modalRef.description}</div>
         <form>
-          <input type='text' placeholder='Explain how you can help' onChange={(event) => setModalInfo({message: event.target.value, questionid: props.modalRef.questionid, expiration: Date.now() + 30})} />
-          <input type='text' value='30'/>
+          <input type='text' placeholder='Explain how you can help' onChange={(event) => setModalInfo({...modalInfo, questionid: props.modalRef.questionid, message: event.target.value})} />
+          <input type='number' placeholder='Numbers only please' onChange={(event) => setModalInfo({...modalInfo, questionid: props.modalRef.questionid, expiration: +event.target.value})} />
           <animated.div style={props4}>
           <button onClick={(e)=> offerHelp(e, modalInfo, props)}>{props.modalRef.button}</button>
           </animated.div>
