@@ -4,7 +4,7 @@ import '../log-in/log-in.scss';
 class Overlay extends Component {
 
   state = {
-    startTime: 60
+    startTime: 2
   }
 
   componentDidMount() {
@@ -24,7 +24,7 @@ class Overlay extends Component {
   componentWillUnmount() {
     clearInterval(this.state.counter);
   }
- 
+
   render() {
     return (
       <div className="backdrop">

@@ -1,7 +1,7 @@
 import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
-import { setToken } from '../../redux/actions.js';
+import { setToken, logout } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
@@ -28,6 +28,9 @@ class Navbar extends React.Component {
     this.checkToken();
     this.props.socket.on('push tutor', (question) => {
       this.setState({socketQuestion: question}, () => this.tutorNotification() );
+    })
+    this.props.socket.on('cancel call', () => {
+      this.setState({socketQuestion: ''}, () => this.tutorNotification() );
     })
   }
 
@@ -82,7 +85,7 @@ class Navbar extends React.Component {
 
   showMenu = () => {
     if (this.state.showMenu) {
-      return <ProfileMenu/>
+      return <ProfileMenu logout={this.props.logout}/>
     }
   }
 
@@ -145,6 +148,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setToken: (token) => dispatch(setToken(token)),
+  logout: () => dispatch(logout()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

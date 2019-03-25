@@ -5,9 +5,8 @@ export const setToken = (token) => ({
   token
 })
 
-export const logout = (user) => ({
+export const logout = () => ({
   type: 'LOGOUT',
-  user
 })
 
 export const requestOffers = (questionid) => ({
@@ -40,6 +39,11 @@ export const updateKarma = (karma, user) => ({
   karma,
   user
 });
+
+export const updateChatQuestion = (question) => ({
+  type: 'CHATROOM_QUESTION',
+  question
+})
 
 export const rejectOffer = (id) => {
   return function (dispatch) {
