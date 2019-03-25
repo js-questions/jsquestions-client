@@ -26,7 +26,7 @@ function ModalOfferHelp(props) {
       <animated.div style={props2}>
       <div className="modal">
         <animated.div style={props3}>
-        <button onClick={()=>props.closeOfferModal()}>X</button>
+        <button class="button-close" onClick={()=>props.closeOfferModal()}>X</button>
         <div>{props.modalRef.title}</div>
         <div>{props.modalRef.description}</div>
         <form>
