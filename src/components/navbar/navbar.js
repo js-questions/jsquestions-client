@@ -8,7 +8,6 @@ import token from '../../assets/token.png';
 import { Link } from "react-router-dom";
 import ProfileMenu from './profile-menu';
 import TutorNotification from '../modal/modal-tutor-notification.js';
-// import Modal from '../modal/modal.js'; modal = tutor notification modal. please update to tutor notification
 import titleImage from '../../assets/hero-logo.png';
 
 class Navbar extends React.Component {
