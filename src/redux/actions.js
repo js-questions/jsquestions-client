@@ -40,6 +40,11 @@ export const updateKarma = (karma, user) => ({
   user
 });
 
+export const updateChatQuestion = (question) => ({
+  type: 'CHATROOM_QUESTION',
+  question
+})
+
 export const rejectOffer = (id) => {
   return function (dispatch) {
     const token = localStorage.getItem('token');
