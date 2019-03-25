@@ -5,9 +5,8 @@ export const setToken = (token) => ({
   token
 })
 
-export const logout = (user) => ({
+export const logout = () => ({
   type: 'LOGOUT',
-  user
 })
 
 export const requestOffers = (questionid) => ({
