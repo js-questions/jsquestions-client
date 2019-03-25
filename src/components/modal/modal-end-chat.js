@@ -43,7 +43,6 @@ class ModalEndChat extends Component {
   setFeedback = (e, num) => {
     e.preventDefault();
     this.setState({feedback: num})
-    console.log(e, this.state.feedback)
   }
 
   render() {
@@ -71,8 +70,8 @@ class ModalEndChat extends Component {
             <form>
               <div className="modal-karma">
                 <button className="button-karma" onClick={(e) => this.setFeedback(e, 0)}>No Karma</button>
-                <button className="button-karma" onClick={(e) => this.setFeedback(e, 1)}><span>🙏</span></button>
-                <button className="button-karma" onClick={(e) => this.setFeedback(e, 3)}><span>🙏🙏🙏</span></button>
+                <button className="button-karma" onClick={(e) => this.setFeedback(e, 1)}><span role="img" aria-label="karma">🙏</span></button>
+                <button className="button-karma" onClick={(e) => this.setFeedback(e, 3)}><span role="img" aria-label="karma">🙏🙏🙏</span></button>
               </div>
               <button className="button-primary" onClick={(e)=> this.chatFeedback(e)}>SUBMIT</button>
             </form>

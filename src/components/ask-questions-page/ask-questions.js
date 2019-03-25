@@ -58,7 +58,6 @@ class AskQuestions extends Component {
   signedIn = async (token) => {
     //sends question to database and then sends user to question posted page
     await this.postQuestion(token);
-    console.log('storedquestion', this.state.storedQuestion)
     this.props.history.push(`/question-posted/${this.state.storedQuestion.question_id}`, this.state.storedQuestion);
   }
 
