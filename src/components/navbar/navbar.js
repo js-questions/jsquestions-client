@@ -1,14 +1,13 @@
 import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
-import { setToken, logout } from '../../redux/actions.js';
+import { setToken, logout, updateKarma } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
 import { Link } from "react-router-dom";
 import ProfileMenu from './profile-menu';
 import TutorNotification from '../modal/modal-tutor-notification.js';
-// import Modal from '../modal/modal.js'; modal = tutor notification modal. please update to tutor notification
 import titleImage from '../../assets/hero-logo.png';
 
 class Navbar extends React.Component {
@@ -30,6 +29,9 @@ class Navbar extends React.Component {
     this.props.socket.on('cancel call', () => {
       this.setState({socketQuestion: ''}, () => this.tutorNotification() );
     })
+    // this.props.socket.on('update karma', (data) => {
+    //   this.props.updateKarma(data.karma);
+    // })
   }
 
   tutorNotification = () => {
@@ -117,6 +119,10 @@ class Navbar extends React.Component {
     // Sending token on user refresh
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
 
+    this.props.socket.on('update karma', (data) => {
+      this.props.updateKarma(data.karma);
+    })
+
     // Apply different class depending if we are in the landing page or not
     let classNavbarBox = '';
     if (this.props.landingPage) classNavbarBox='navbar-box__landingPage';
@@ -148,6 +154,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setToken: (token) => dispatch(setToken(token)),
   logout: () => dispatch(logout()),
+  updateKarma: (karma) => dispatch(updateKarma(karma))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

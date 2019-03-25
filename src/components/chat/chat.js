@@ -21,7 +21,8 @@ class Chat extends Component {
     minutes: 0,
     seconds: 0,
     secondsString: '00',
-    overTime: 'black'
+    overTime: 'black',
+    targetTutor: -1
   }
 
   componentDidMount() {
@@ -30,16 +31,17 @@ class Chat extends Component {
 
     this.props.socket.on('join room', (participants) => {
       if (participants === 2) {
-        const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by)
         this.setState({tutorJoined: true}, () => this.startTimer());
         if (this.props.question.learner === this.props.user.user_id) {
           this.props.socket.emit('question info', {
             question: this.props.question,
-            tutor: targetOffer[0].tutor
+            tutor: this.state.targetTutor
           })
         }
+      } else {
+        const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by)
+        this.setState({tutorJoined: false, targetTutor: targetOffer[0].tutor});
       }
-      else this.setState({tutorJoined: false});
     });
 
     // STORE THE QUESTION INFO TO THE REDUX STATE AND THE CHATROOM
@@ -72,8 +74,7 @@ class Chat extends Component {
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
       return <Overlay closeOverlay={(counter) => {
         clearInterval(counter);
-        const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by)
-        this.props.socket.emit('cancel call', targetOffer[0].tutor)
+        this.props.socket.emit('cancel call', this.state.targetTutor)
         this.props.history.goBack()
       }
       }/>
@@ -84,9 +85,13 @@ class Chat extends Component {
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
   }
 
+  updateKarma = (karma) => {
+    this.props.socket.emit('update karma', {tutor: this.state.targetTutor, karma: karma })
+  }
+
   showEndChatModal = () => {
     if (this.state.showFeedbackModal) {
-      return <ModalEndChat closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
+      return <ModalEndChat updateKarma={this.updateKarma} closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
     }
   }
 

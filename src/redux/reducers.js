@@ -7,8 +7,16 @@ const user = (state = {}, action) => {
       const decoded = jwt_decode(action.token);
       console.log("HERE", decoded)
       return decoded;
+    case 'SET_USER':
+      return action.user;
     case 'LOGOUT':
       return {};
+    case 'UPDATE_KARMA':
+      let updated = {
+        ...state,
+        karma: state.karma + action.karma
+      }
+      return updated;
     default:
       return state;
   }

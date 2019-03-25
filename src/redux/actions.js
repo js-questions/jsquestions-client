@@ -5,6 +5,11 @@ export const setToken = (token) => ({
   token
 })
 
+export const setUser = (user) => ({
+  type: 'SET_USER',
+  user
+})
+
 export const logout = () => ({
   type: 'LOGOUT',
 })
@@ -34,10 +39,9 @@ export const updateTutors = (tutor) => ({
   tutor
 })
 
-export const updateKarma = (karma, user) => ({
+export const updateKarma = (karma) => ({
   type: 'UPDATE_KARMA',
-  karma,
-  user
+  karma
 });
 
 export const updateChatQuestion = (question) => ({

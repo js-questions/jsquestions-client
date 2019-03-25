@@ -25,17 +25,18 @@ class ModalEndChat extends Component {
       body: JSON.stringify(body)
     })
       .then(res => res.json())
-      .then(res=> console.log('question CLOSED', res))
+      .then(res => this.props.updateKarma(this.state.feedback));
   }
 
   chatFeedback = (e) => {
     e.preventDefault();
     // this.props.sendOffer(this.state) //Amber TTD: put feedback in here
     this.props.closeChatModal()
-    this.closesQuestion();
+    
     if (this.props.tutorOrLearner === 'tutor'){
       this.props.history.push('/answer');
     } else {
+      this.closesQuestion();
       this.props.history.push('/my-questions');
     }
 
@@ -44,7 +45,6 @@ class ModalEndChat extends Component {
   setFeedback = (e, num) => {
     e.preventDefault();
     this.setState({feedback: num})
-    console.log(e, this.state.feedback)
   }
 
   render() {
