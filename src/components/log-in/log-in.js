@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../modal/modal.scss';
 import './log-in.scss';
 import btoa from 'btoa';
 import { setToken } from '../../redux/actions.js';
@@ -45,9 +46,9 @@ class Login extends Component {
          this.forwardsToQuestionPosted();
          this.props.close();
        } else {
-        this.setState({signUpError: res}, () => console.log(res)); 
+        this.setState({signUpError: res}, () => console.log(res));
        }
-     }) 
+     })
   }
 
   handleLogin = async (e, res) => {
@@ -67,10 +68,10 @@ class Login extends Component {
           this.props.close();
           this.forwardsToQuestionPosted();
         } else {
-          this.setState({loginError: res}, () => console.log(res)); 
+          this.setState({loginError: res}, () => console.log(res));
         }
       })
-      
+
   }
 
   forwardsToQuestionPosted = () => {
@@ -86,15 +87,17 @@ class Login extends Component {
       return(
         <div className="backdrop">
           <div className="modal">
-            <button onClick={this.props.close}>X</button>
-            <form onSubmit={this.handleSignup}>
-            <input type='text' minLength="4" maxLength="12" placeholder='Username' value={this.state.username} onChange={(event) => this.setState({username: event.target.value})} required />
+            <button class="button-close" onClick={this.props.close}>X</button>
+            <h2>Sign Up</h2>
+
+            <form onSubmit={this.handleSignup} class="form-style">
+              <input type='text' minLength="4" maxLength="12" placeholder='Username' value={this.state.username} onChange={(event) => this.setState({username: event.target.value})} required />
               <input type='email' placeholder='E-mail address' value={this.state.email} onChange={(event) => this.setState({email: event.target.value})} required />
               <input type='password' minLength="6" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" title="Please include at least 1 uppercase character, 1 lowercase character, and 1 number" placeholder='Password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value})} required />
-              <button>Sign up</button>
+              <button class="button-primary">Sign up</button>
             </form>
             <p>{this.state.signUpError}</p>
-            <button onClick={() => this.setState({userExists: !this.state.userExists})}>I already have an account</button>
+            <button class="button-go-sign-in" onClick={() => this.setState({userExists: !this.state.userExists})}>I already have an account</button>
           </div>
         </div>
       )

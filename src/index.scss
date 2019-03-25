@@ -30,15 +30,17 @@ input {
   border: solid 0.5px $grey-light;
   border-radius: 4px;
   padding: 10px;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
+  font-family: "Montserrat";
 }
 
 textarea {
   border: solid 0.5px $grey-light;
   border-radius: 4px;
   padding: 10px;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   min-height: 10rem;
+  font-family: "Montserrat";
 }
 
 .button-primary {

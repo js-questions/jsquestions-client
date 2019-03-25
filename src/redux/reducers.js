@@ -5,6 +5,7 @@ const user = (state = {}, action) => {
   switch(action.type) {
     case 'SET_TOKEN':
       const decoded = jwt_decode(action.token);
+      console.log("HERE", decoded)
       return decoded;
     case 'LOGOUT':
       return {};
@@ -19,6 +20,9 @@ const offers = (state = [], action) => {
       return [ ...state ];
     case 'UPDATE_OFFERS':
       return action.offers; // check that the offers are always up to date
+    case 'REJECT_OFFER':
+      let offers = state.filter((offer => offer.offer_id !== action.id));
+      return offers;
     default:
       return state;
   }
