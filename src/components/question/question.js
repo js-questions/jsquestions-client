@@ -13,7 +13,7 @@ class Question extends Component {
       return <button className={btn_class} onClick={() => {this.changeColor(); this.props.openOfferModal(this.props.question.question_id)}}>{btn_text}</button>
   }
   renderOfflineButton = () => {
-    return <button>Sorry OFFLINE</button>
+    return <button disabled className="button-primary">Sorry OFFLINE</button>
   }
 
   changeColor = () => {
@@ -28,15 +28,17 @@ class Question extends Component {
 
     const learnerOffline = this.props.offlineUsers ? this.props.offlineUsers.find(o2 => this.props.question.learner === o2.user_id) : null;
 
-    const offerButtonExists = learnerOffline ? this.renderOfflineButton() : 
+    const offerButtonExists = learnerOffline ? this.renderOfflineButton() :
       this.props.openOfferModal ? this.renderOfferButton() : null ;
-    
+
     return (
       <div className="question__container">
         <p className="question__user">Avatar</p>
-        <div className="question__body">
-          <p>Question: {this.props.question.title}</p>
-          <p>Description: {this.props.question.description}</p>
+        <div>
+          <h4>Question </h4>
+          <p>{this.props.question.title}</p>
+          <h4>Description </h4>
+          <p>{this.props.question.description}</p>
         </div>
         {offerButtonExists}
       </div>
@@ -44,5 +46,5 @@ class Question extends Component {
   }
 }
 
-export default Question; 
+export default Question;
 

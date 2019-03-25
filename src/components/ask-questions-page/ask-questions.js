@@ -29,7 +29,6 @@ class AskQuestions extends Component {
   postQuestion = async (token) => {
       //sends question to post to database
       await fetch(`http://localhost:4000/questions`, {
-      // await fetch(`${process.env.REACT_APP_END_POINT_URL}/questions`, {
         method: 'POST',
         headers : {
           'Authorization' : 'Bearer ' + token,
@@ -37,7 +36,7 @@ class AskQuestions extends Component {
           'Accept': 'application/json'
         },
         body: JSON.stringify(
-          {"title": this.state.title,
+          {"title": this.props.location.state ? this.props.location.state.title : this.state.title,
           "description": this.state.describeProblem,
           "resources": this.state.relatedResources,
           "code": this.state.codeLink }
@@ -59,7 +58,6 @@ class AskQuestions extends Component {
   signedIn = async (token) => {
     //sends question to database and then sends user to question posted page
     await this.postQuestion(token);
-    console.log('storedquestion', this.state.storedQuestion)
     this.props.history.push(`/question-posted/${this.state.storedQuestion.question_id}`, this.state.storedQuestion);
   }
 
@@ -67,7 +65,7 @@ class AskQuestions extends Component {
     //populates input field on user searched term from landing page
     if (this.props.location.state) {
       this.setState({
-        title: this.props.location.state
+        title: this.props.location.state.title
       })
     }
   }
@@ -80,6 +78,7 @@ class AskQuestions extends Component {
   }
 
   render() {
+
     return (
       <div className="ask-questions">
         <h1>Ask a Question</h1>

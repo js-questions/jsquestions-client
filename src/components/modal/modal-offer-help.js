@@ -23,22 +23,25 @@ function ModalOfferHelp(props) {
 
   return (
     <div className="backdrop">
-      <animated.div style={props2}>
+      {/* <animated.div style={props2}> */}
       <div className="modal">
-        <animated.div style={props3}>
-        <button onClick={()=>props.closeOfferModal()}>X</button>
-        <div>{props.modalRef.title}</div>
+        {/* <animated.div style={props3}> */}
+        <button className="button-close" onClick={()=>props.closeOfferModal()}>X</button>
+        <h3>{props.modalRef.title}</h3>
         <div>{props.modalRef.description}</div>
         <form>
-          <input type='text' placeholder='Explain how you can help' onChange={(event) => setModalInfo({message: event.target.value, questionid: props.modalRef.questionid, expiration: Date.now() + 30})} />
-          <input type='text' value='30'/>
-          <animated.div style={props4}>
-          <button onClick={(e)=> offerHelp(e, modalInfo, props)}>{props.modalRef.button}</button>
-          </animated.div>
+          <textarea type='text' placeholder='Explain how you can help' onChange={(event) => setModalInfo({message: event.target.value, questionid: props.modalRef.questionid, expiration: Date.now() + 30})} />
+          <div className="modal-waiting-time">
+            <p>Waiting time [min]: </p><input type='text' defaultValue='30'/>
+          </div>
+
+          {/* <animated.div style={props4}> */}
+          <button className="button-primary" onClick={(e)=> offerHelp(e, modalInfo, props)}>{props.modalRef.button}</button>
+          {/* </animated.div> */}
         </form>
-        </animated.div>
+        {/* </animated.div> */}
       </div>
-      </animated.div>
+      {/* </animated.div> */}
     </div>
   )
 }

@@ -21,7 +21,7 @@ class Chat extends Component {
     minutes: 0,
     seconds: 0,
     secondsString: '00',
-    overTime: 'black'
+    overTime: 'white'
   }
 
   componentDidMount() {
@@ -64,10 +64,10 @@ class Chat extends Component {
       if (this.state.minutes === 15) {
         this.setState({ overTime: 'red'});
       }
-  
+
     }, 1000)
   }
-    
+
   renderOverlay = () => {
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
       return <Overlay closeOverlay={(counter) => {
@@ -96,16 +96,15 @@ class Chat extends Component {
 
     return(
       <div className="chat-component">
-    
+
         {this.state.tutorJoined ? null : this.renderOverlay()}
 
         <div className="chat-header">
           <h1>{this.props.question.title}</h1>
           <p>{this.props.question.description}</p>
-
           <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
 
-          <button onClick={this.hangUp}>End Call</button>
+          <button className="button-primary" onClick={this.hangUp}>End Call</button>
         </div>
 
         <div className="chat-body">

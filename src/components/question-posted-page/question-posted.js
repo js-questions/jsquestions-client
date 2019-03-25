@@ -20,13 +20,13 @@ class QuestionPosted extends Component {
     this.props.history.push({
       pathname: `/chat/${this.props.question.room_id}/${this.props.question.question_id}/learner`,
       state: {question: this.props.question}
-    }) 
+    })
   }
 
   alertTutor = async (token, tutorId, offerId) => { // also sending offerId
     await fetch(`http://localhost:4000/questions/${this.state.questionid}`, {
-      method: 'PUT', 
-      headers : { 
+      method: 'PUT',
+      headers : {
         'Authorization' : 'Bearer ' + token,
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -49,8 +49,9 @@ class QuestionPosted extends Component {
     const offers = this.props.offers;
     const tutors = this.props.tutors;
       return offers.map((offer, index) => {
+        const expirationDate = offer.expiration.split('T')[0]+ ' ' +offer.expiration.split('T')[1].split('.')[0];
         if (tutors[index]) {
-          return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} rejectOffer={() => this.rejectOffer(offer.offer_id)}chatNow={(e) => this.handleClick(e, tutors[index].user_id, offer.offer_id)}/></div>
+          return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} expirationDate={expirationDate} rejectOffer={() => this.rejectOffer(offer.offer_id)}chatNow={(e) => this.handleClick(e, tutors[index].user_id, offer.offer_id)}/></div>
         } else {
           return '';
         }
@@ -67,9 +68,10 @@ class QuestionPosted extends Component {
   render() {
 
     return (
-      <div>
+      <div className="question-posted">
         <h1>Question: {this.props.question.title}</h1>
-        <h2>Description: {this.props.question.description}</h2>
+        <h3>Description:</h3>
+        <p>{this.props.question.description}</p>
         <div>
           {this.renderOffers()}
         </div>

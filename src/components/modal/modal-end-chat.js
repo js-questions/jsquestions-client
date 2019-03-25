@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import '../log-in/log-in.scss';
-import { Link } from "react-router-dom";
+import './modal.scss';
 
 class ModalEndChat extends Component {
   state = {
@@ -17,8 +16,8 @@ class ModalEndChat extends Component {
     }
 
     fetch(`http://localhost:4000/questions/${this.props.questionId}/feedback`, {
-      method: 'PUT', 
-      headers: { 
+      method: 'PUT',
+      headers: {
         'Authorization' : 'Bearer ' + token,
         'Content-Type': 'application/json'
       },
@@ -44,7 +43,6 @@ class ModalEndChat extends Component {
   setFeedback = (e, num) => {
     e.preventDefault();
     this.setState({feedback: num})
-    console.log(e, this.state.feedback)
   }
 
   render() {
@@ -52,11 +50,11 @@ class ModalEndChat extends Component {
       return (
         <div className="backdrop">
           <div className="modal">
-            <button onClick={()=>this.props.closeChatModal()}>X</button>
-            <div>Thanks for being a tutor</div>
-            <div>Keep on being awesome, We love you.</div>
+            <button className="button-close" onClick={()=>this.props.closeChatModal()}>X</button>
+            <h3>Thanks for being a tutor</h3>
+            <div>Keep on being awesome. We love you.</div>
             <form>
-              <button onClick={(e)=> this.chatFeedback(e)}>SUBMIT</button>
+              <button className="button-primary" onClick={(e)=> this.chatFeedback(e)}>SUBMIT</button>
             </form>
           </div>
         </div>
@@ -65,21 +63,23 @@ class ModalEndChat extends Component {
       return (
         <div className="backdrop">
           <div className="modal">
-            <button onClick={()=>this.props.closeChatModal()}>X</button>
-            <div>Hope your Tutor solved your question</div>
+            <button className="button-close" onClick={()=>this.props.closeChatModal()}>X</button>
+            <h3>Hope your Tutor solved your question</h3>
             <div>Feel free to ask more questions or heck help out others if you feel confident!</div>
             <div>Please vote below on how you feel your Tutor did, Karma helps Tutors differencate themselves apart from others.</div>
             <form>
-              <button onClick={(e) => this.setFeedback(e, 0)}>0 karma</button>
-              <button onClick={(e) => this.setFeedback(e, 1)}>1 karma</button>
-              <button onClick={(e) => this.setFeedback(e, 3)}>3 karma</button>
-              <button onClick={(e)=> this.chatFeedback(e)}>SUBMIT</button>
+              <div className="modal-karma">
+                <button className="button-karma" onClick={(e) => this.setFeedback(e, 0)}>No Karma</button>
+                <button className="button-karma" onClick={(e) => this.setFeedback(e, 1)}><span role="img" aria-label="karma">🙏</span></button>
+                <button className="button-karma" onClick={(e) => this.setFeedback(e, 3)}><span role="img" aria-label="karma">🙏🙏🙏</span></button>
+              </div>
+              <button className="button-primary" onClick={(e)=> this.chatFeedback(e)}>SUBMIT</button>
             </form>
           </div>
         </div>
       )
     }
-    
+
   }
 }
 
