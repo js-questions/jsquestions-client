@@ -30,6 +30,11 @@ export const updateTutors = (tutor) => ({
   tutor
 })
 
+export const updateKarma = (karma, user) => ({
+  type: 'UPDATE_KARMA',
+  karma,
+  user
+});
 
 export const fetchQuestionAndOffers = (questionid) => {
   return function (dispatch) {
