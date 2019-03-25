@@ -68,7 +68,6 @@ class QuestionPosted extends Component {
   }
 
   rejectOffer = (offerid) => {
-    console.log('offer clicked', offerid)
     this.props.rejectOffer(offerid);
   }
 
