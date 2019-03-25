@@ -21,12 +21,12 @@ class CodeEditor extends Component {
       lineNumbers: true,
       content: this.textArea.current,
     })
-    this.codemirror.setSize(null, '80vh');
+    this.codemirror.setSize(null, '79.8vh');
     this.codemirror.on('blur', this.codeChanged);
     this.props.socket.on('editor', (data) => this.codemirror.getDoc().setValue(data.code)); // handles received text
     this.props.socket.on('newUser', this.updateCode); // this code is not working - what was its purpose?
   }
-  
+
   updateCode = (data) => {
     this.codemirror.getDoc().setValue(data.code);
     this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()})

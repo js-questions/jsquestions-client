@@ -12,11 +12,11 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  min-width: 80vw;
+  width: 80vw;
   margin: 10px;
-  border: 1px solid gray;
+  border: 1px solid $grey;
   border-radius: 3px;
-  padding: 10px;
+  padding: 20px 20px 0 20px;
 }
 
 .question__user {
@@ -24,6 +24,19 @@
   margin-left: 2%;
 }
 
-.question__body {
-  width: 60%;
+.question__container div {
+  width: 80%;
+  color: $secondary;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.question__container h4 {
+  margin-right: 15px;
+  margin-bottom: 5px;
+}
+
+.question__container p {
+  margin:  0 15px 20px 15px;
 }

@@ -36,7 +36,7 @@ class QuestionPosted extends Component {
 
   alertTutor = async (token, tutorId, offerId) => { // also sending offerId
     await fetch(`http://localhost:4000/questions/${this.state.questionid}`, {
-      method: 'PUT', 
+      method: 'PUT',
       headers : {
         'Authorization' : 'Bearer ' + token,
         'Content-Type': 'application/json',
@@ -70,9 +70,10 @@ class QuestionPosted extends Component {
 
   render() {
     return (
-      <div>
+      <div className="question-posted">
         <h1>Question: {this.props.question.title}</h1>
-        <h2>Description: {this.props.question.description}</h2>
+        <h3>Description:</h3>
+        <p>{this.props.question.description}</p>
         <div>
           {this.props.users && this.props.offers ? this.renderOffers() : 'Loading...'}
         </div>

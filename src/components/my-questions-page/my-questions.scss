@@ -1,0 +1,13 @@
+.my-questions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.my-questions h1 {
+  margin: 5% 0 3% 0;
+}
+
+.question__link {
+  text-decoration: none;
+}

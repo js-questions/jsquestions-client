@@ -13,7 +13,7 @@ function ModalOfferHelp(props) {
   const [modalInfo, setModalInfo ] = React.useState({
     message: null,
     questionid: props.modalRef.questionid,
-    expiration: 15,
+    expiration: 15 * 6000 + Date.now(),
   })
 
   const backdropAnimation = useSpring({ reverse: !props.showModal, from: {display: 'none'}, to: {display: 'block'}, delay: (_) => !props.showModal ? 500 : 0 })
@@ -24,15 +24,16 @@ function ModalOfferHelp(props) {
   return (
     <animated.div style={backdropAnimation}>
     <div className="backdrop">
-      <animated.div style={props2}>
+      {/* <animated.div style={props2}> */}
       <div className="modal">
-        <animated.div style={props3}>
-        <button onClick={()=>props.closeOfferModal()}>X</button>
-        <div>{props.modalRef.title}</div>
+        {/* <animated.div style={props3}> */}
+        <button className="button-close" onClick={()=>props.closeOfferModal()}>X</button>
+        <h3>{props.modalRef.title}</h3>
         <div>{props.modalRef.description}</div>
         <form>
           <input type='text' placeholder='Explain how you can help' onChange={(event) => setModalInfo({...modalInfo, questionid: props.modalRef.questionid, message: event.target.value})} />
-          <select onChange={(event) => {
+          <p>Waiting time [min]: </p>
+          <select className="modal-waiting-time" onChange={(event) => {
           const time = event.target.value * 6000 + Date.now();
           setModalInfo({...modalInfo, questionid: props.modalRef.questionid, expiration: time})}}>
             <option value='15'>15 Minutes</option>
@@ -48,13 +49,13 @@ function ModalOfferHelp(props) {
             <option value='165'>2:45</option>
             <option value='180'>3:00</option>
           </select>
-          <animated.div style={props4}>
-          <button onClick={(e)=> offerHelp(e, modalInfo, props)}>{props.modalRef.button}</button>
-          </animated.div>
+          {/* <animated.div style={props4}> */}
+          <button className="button-primary" onClick={(e)=> offerHelp(e, modalInfo, props)}>{props.modalRef.button}</button>
+          {/* </animated.div> */}
         </form>
-        </animated.div>
+        {/* </animated.div> */}
       </div>
-      </animated.div>
+      {/* </animated.div> */}
     </div>
     </animated.div>
   )

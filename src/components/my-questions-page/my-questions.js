@@ -30,7 +30,7 @@ class MyQuestions extends Component {
       return this.state.questions.map((question, index) => {
         return (
           <div key={index}>
-            <Link to={{pathname: `/question-posted/${question.question_id}`}}>
+            <Link className="question__link" to={{pathname: `/question-posted/${question.question_id}`}}>
               <Question question={question}/>
             </Link>
           </div>
@@ -38,7 +38,7 @@ class MyQuestions extends Component {
     else {
       return (
         <div>
-          <p>You don't have questions</p>
+          <h3>You don't have questions</h3>
         </div>
       )
     }
@@ -46,8 +46,8 @@ class MyQuestions extends Component {
 
   render() {
     return (
-      <div>
-        MY QUESTIONS
+      <div className="my-questions">
+        <h1>My Questions</h1>
         {this.renderQuestions()}
       </div>
     )
