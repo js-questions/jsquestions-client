@@ -13,7 +13,7 @@ function ModalOfferHelp(props) {
   const [modalInfo, setModalInfo ] = React.useState({
     message: null,
     questionid: props.modalRef.questionid,
-    expiration: 0,
+    expiration: 15,
   })
 
   const backdropAnimation = useSpring({ reverse: !props.showModal, from: {display: 'none'}, to: {display: 'block'}, delay: (_) => !props.showModal ? 500 : 0 })
@@ -32,7 +32,22 @@ function ModalOfferHelp(props) {
         <div>{props.modalRef.description}</div>
         <form>
           <input type='text' placeholder='Explain how you can help' onChange={(event) => setModalInfo({...modalInfo, questionid: props.modalRef.questionid, message: event.target.value})} />
-          <input type='number' placeholder='Numbers only please' onChange={(event) => setModalInfo({...modalInfo, questionid: props.modalRef.questionid, expiration: +event.target.value})} />
+          <select onChange={(event) => {
+          const time = event.target.value * 6000 + Date.now();
+          setModalInfo({...modalInfo, questionid: props.modalRef.questionid, expiration: time})}}>
+            <option value='15'>15 Minutes</option>
+            <option value='30'>30 Minutes</option>
+            <option value='45'>45 Minutes</option>
+            <option value='60'>1:00</option>
+            <option value='75'>1:15</option>
+            <option value='90'>1:30</option>
+            <option value='105'>1:45</option>
+            <option value='120'>2:00</option>
+            <option value='135'>2:15</option>
+            <option value='150'>2:30</option>
+            <option value='165'>2:45</option>
+            <option value='180'>3:00</option>
+          </select>
           <animated.div style={props4}>
           <button onClick={(e)=> offerHelp(e, modalInfo, props)}>{props.modalRef.button}</button>
           </animated.div>
