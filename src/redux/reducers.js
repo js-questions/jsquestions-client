@@ -20,6 +20,9 @@ const offers = (state = [], action) => {
       return [ ...state ];
     case 'UPDATE_OFFERS':
       return action.offers; // check that the offers are always up to date
+    case 'REJECT_OFFER':
+      let offers = state.filter((offer => offer.offer_id !== action.id));
+      return offers;
     default:
       return state;
   }
