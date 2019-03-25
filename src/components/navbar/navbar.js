@@ -103,13 +103,12 @@ class Navbar extends React.Component {
           <h2>Want to help others?</h2>
         </div>
       )
-
     }
   }
 
   updateInput = (e) => {
     const searchTerm = document.getElementById("searchTerm").value;
-    this.setState({questionTitle: searchTerm}, () => console.log(this.state.questionTitle) );
+    this.setState({questionTitle: searchTerm});
   }
 
 
