@@ -70,6 +70,8 @@ class AnswerPage extends Component {
           "expiration": details.expiration
         })
       })
+
+      this.props.socket.emit('offer sent')
     //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
   }
 

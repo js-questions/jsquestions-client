@@ -26,7 +26,7 @@ const Platform = () => (
     <Route path="/ask" component={AskQuestions}/>
     <Route path="/question-posted/:questionid" render={(props) => <QuestionPosted {...props} socket={socket} />}/>
     <Route path="/question/:questionid" component={QuestionAbout}/>
-    <Route path="/answer" component={AnswerPage}/>
+    <Route path="/answer" component={AnswerPage} socket={socket}/>
     <Route path="/my-questions" component={MyQuestions}/>
   </>
 )

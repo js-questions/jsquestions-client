@@ -6,15 +6,16 @@ import Card from '../card/card.js';
 
 class QuestionPosted extends Component {
   state = {
-    questionid: window.location.pathname.replace(/\D/g, "")
+    questionid: window.location.pathname.replace(/\D/g, ""),
+    rerender: false,
+    offers: null
   }
 
   componentDidMount() {
     this.props.fetchQuestionAndOffers(this.state.questionid);
 
-    //HANG-UP
-    this.props.socket.on('new offer', () => {this.setState({showFeedbackModal: true})})
-
+    //WILL RERENDER ON BE NEW OFFER SENT
+    this.props.socket.on('new offer', () => {this.setState({rerender: !this.state.rerender})})
   }
 
   handleClick = (e, tutorId, offerId) => {
@@ -24,7 +25,7 @@ class QuestionPosted extends Component {
     this.props.history.push({
       pathname: `/chat/${this.props.question.room_id}/${this.props.question.question_id}/learner`,
       state: {question: this.props.question}
-    }) 
+    })
   }
 
   alertTutor = async (token, tutorId, offerId) => { // also sending offerId
@@ -42,7 +43,6 @@ class QuestionPosted extends Component {
     )})
     .then(res => res.json())
     .then(question => {
-      console.log('updateQ question', question);
       question.tutor = tutorId; // adding the tutorId to the question
       this.props.socket.emit('chat now', question)
     })
@@ -51,19 +51,16 @@ class QuestionPosted extends Component {
   renderOffers = () => {
     const offers = this.props.offers;
     const tutors = this.props.tutors;
-      return offers.map((offer, index) => {
-        if (tutors[index]) {
-          return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} chatNow={(e) => this.handleClick(e, tutors[index].user_id, offer.offer_id)}/></div>
-        } else {
-          return '';
-        }
-      });
+    return offers.map((offer, index) => {
+      if (tutors[index]) {
+        return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} chatNow={(e) => this.handleClick(e, tutors[index].user_id, offer.offer_id)}/></div>
+      } else {
+        return '';
+      }
+    });
   }
-
-
-//Amber TTD: Check how user is being sent to backend in the chat component into socket...COMPLETED need to talk to Natalia about requests
+  
   render() {
-
     return (
       <div>
         <h1>Question: {this.props.question.title}</h1>
