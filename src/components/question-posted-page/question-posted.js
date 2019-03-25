@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './question-posted.scss';
 import { connect } from 'react-redux';
-import { fetchQuestionAndOffers } from '../../redux/actions.js';
+import { fetchQuestionAndOffers, updateQuestion, rejectOffer } from '../../redux/actions.js';
 import Card from '../card/card.js';
 
 class QuestionPosted extends Component {
@@ -43,6 +43,7 @@ class QuestionPosted extends Component {
     )})
     .then(res => res.json())
     .then(question => {
+      this.props.updateQuestion(question);
       question.tutor = tutorId; // adding the tutorId to the question
       this.props.socket.emit('chat now', question)
     })
@@ -51,15 +52,22 @@ class QuestionPosted extends Component {
   renderOffers = () => {
     const offers = this.props.offers;
     const tutors = this.props.tutors;
-    return offers.map((offer, index) => {
-      if (tutors[index]) {
-        return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} chatNow={(e) => this.handleClick(e, tutors[index].user_id, offer.offer_id)}/></div>
-      } else {
-        return '';
-      }
-    });
+      return offers.map((offer, index) => {
+        if (tutors[index]) {
+          return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} rejectOffer={() => this.rejectOffer(offer.offer_id)}chatNow={(e) => this.handleClick(e, tutors[index].user_id, offer.offer_id)}/></div>
+        } else {
+          return '';
+        }
+      });
   }
-  
+
+  rejectOffer = (offerid) => {
+    console.log('offer clicked', offerid)
+    this.props.rejectOffer(offerid);
+  }
+
+
+//Amber TTD: Check how user is being sent to backend in the chat component into socket...COMPLETED need to talk to Natalia about requests
   render() {
     return (
       <div>
@@ -80,7 +88,7 @@ const mapStateToProps = (state) => ({
   question: state.question
 })
 
-const mapDispatchToProps = { fetchQuestionAndOffers };
+const mapDispatchToProps = { fetchQuestionAndOffers, updateQuestion, rejectOffer };
 
 // const mapDispatchToProps = (dispatch) => ({
 //   fetchOffers: (questionid) => dispatch(fetchOffers(questionid))

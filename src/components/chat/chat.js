@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './chat.scss';
 
+import { connect } from 'react-redux';
 import CodeEditor from './codeeditor';
 import ChatMessages from './chat-messages';
 
@@ -55,6 +56,8 @@ class Chat extends Component {
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
       return <Overlay closeOverlay={(counter) => {
         clearInterval(counter);
+        const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by)
+        this.props.socket.emit('cancel call', targetOffer[0].tutor)
         this.props.history.goBack()
       }
       }/>
@@ -100,4 +103,11 @@ class Chat extends Component {
   }
 }
 
-export default Chat;
+const mapStateToProps = (state) => ({
+  user: state.user,
+  question: state.question,
+  offers: state.offers,
+  tutors: state.tutors,
+})
+
+export default connect(mapStateToProps)(Chat);
