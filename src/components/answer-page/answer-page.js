@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './answer-page.scss';
+import { connect } from 'react-redux';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -21,23 +23,30 @@ class AnswerPage extends Component {
     offlineUsers: null
   }
 
-  getQuestions = async () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      this.setState({loggedIn: true})
-    }
-    fetch(`http://localhost:4000/questions`, {
-      method: 'GET',
-      headers : {
-        'Authorization' : 'Bearer ' + token,
-        'Content-Type': 'application/json'
-      }})
-    .then(res => res.json())
-    .then(res=> this.setState({
-      questions: res
-    }))
-    console.log(this.state.questions)
+  componentWillMount() {
+    this.getUsers();
+    console.log(this.props);
+    this.props.getQuestions();
+    // this.getQuestions();
   }
+
+  // getQuestions = async () => {
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     this.setState({loggedIn: true})
+  //   }
+  //   fetch(`http://localhost:4000/questions`, {
+  //     method: 'GET',
+  //     headers : {
+  //       'Authorization' : 'Bearer ' + token,
+  //       'Content-Type': 'application/json'
+  //     }})
+  //   .then(res => res.json())
+  //   .then(res=> this.setState({
+  //     questions: res
+  //   }))
+  //   console.log('all the questions?', this.state.questions)
+  // }
 
   getUsers = () => {
     const token = localStorage.getItem('token');
@@ -100,8 +109,8 @@ class AnswerPage extends Component {
   }
 
 
-
   renderQuestions = () => {
+
     //User is not logged in
     if (!this.state.loggedIn) {
       return <div>You must be logged in to see active questions</div>
@@ -112,6 +121,7 @@ class AnswerPage extends Component {
     }
     //Renders questions
     else if (this.state.questions.length > 0) {
+      console.log('all the questions?', this.state.questions)
       return this.state.questions.map((question, index) => {
         return (
           <div className="question-container" key={index} >
@@ -124,10 +134,6 @@ class AnswerPage extends Component {
     }
   }
 
-  componentWillMount() {
-    this.getUsers();
-    this.getQuestions();
-  }
   toggleButton = (e, id) => {
     if (e.currentTarget.className==='answer-page__filter-unselected') {
       e.currentTarget.className='answer-page__filter-selected';
@@ -169,4 +175,24 @@ class AnswerPage extends Component {
   }
 }
 
-export default AnswerPage;
+// export default AnswerPage;
+
+
+const mapStateToProps = (state) => ({
+  user: state.user,
+  offers: state.offers,
+  tutors: state.tutors,
+  question: state.question,
+  questions: state.questions
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  getQuestions: () => dispatch({
+    type: 'ALL_QUESTIONS',
+    _api: {
+      endpoint: '/questions',
+    }
+  })
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AnswerPage);

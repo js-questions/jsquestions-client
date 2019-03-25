@@ -1,6 +1,18 @@
 import { combineReducers } from 'redux';
 import jwt_decode from 'jwt-decode';
 
+const questions = (state = [], action) => {
+  switch(action.type) {
+    case 'ALL_QUESTIONS_SUCCESS':
+    console.log('action.data');
+      return action.data;
+    case 'ALL_QUESTIONS_FAILURE':
+      return action.error;
+    default:
+      return state;
+  }
+}
+
 const user = (state = {}, action) => {
   switch(action.type) {
     case 'SET_TOKEN':
@@ -51,6 +63,7 @@ const question = (state = [], action) => {
 const reducers = combineReducers({
   user,
   question,
+  questions,
   offers,
   tutors
 });
