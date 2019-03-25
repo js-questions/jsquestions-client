@@ -53,8 +53,28 @@
 }
 
 .modal input {
-  margin: 15px;
+  margin: 15px 0;
   max-width: 80%;
+}
+
+.modal textArea {
+  margin-bottom: 15px;
+  width: 80%;
+}
+
+.modal-waiting-time {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-waiting-time p {
+  font-size: 1.4rem;
+  margin-right: 20px;
+}
+.modal-waiting-time input {
+  width: 20%;
 }
 
 .button-secondary {

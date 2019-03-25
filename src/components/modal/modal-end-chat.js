@@ -51,11 +51,11 @@ class ModalEndChat extends Component {
       return (
         <div className="backdrop">
           <div className="modal">
-            <button class="button-close" onClick={()=>this.props.closeChatModal()}>X</button>
-            <div>Thanks for being a tutor</div>
-            <div>Keep on being awesome, We love you.</div>
+            <button className="button-close" onClick={()=>this.props.closeChatModal()}>X</button>
+            <h3>Thanks for being a tutor</h3>
+            <div>Keep on being awesome. We love you.</div>
             <form>
-              <button class="button-primary" onClick={(e)=> this.chatFeedback(e)}>SUBMIT</button>
+              <button className="button-primary" onClick={(e)=> this.chatFeedback(e)}>SUBMIT</button>
             </form>
           </div>
         </div>
@@ -74,7 +74,7 @@ class ModalEndChat extends Component {
                 <button className="button-karma" onClick={(e) => this.setFeedback(e, 1)}><span>🙏</span></button>
                 <button className="button-karma" onClick={(e) => this.setFeedback(e, 3)}><span>🙏🙏🙏</span></button>
               </div>
-              <button class="button-primary" onClick={(e)=> this.chatFeedback(e)}>SUBMIT</button>
+              <button className="button-primary" onClick={(e)=> this.chatFeedback(e)}>SUBMIT</button>
             </form>
           </div>
         </div>
