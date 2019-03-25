@@ -110,5 +110,10 @@
 
 .button-karma:focus {
   background-color: $grey;
+}
 
+.link-style {
+  text-decoration: none;
+  color: $secondary;
+  font-weight: bold;
 }
