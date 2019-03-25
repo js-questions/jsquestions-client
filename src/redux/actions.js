@@ -20,6 +20,11 @@ export const updateOffers = (offers) => ({
   offers
 })
 
+export const removeOffer = (id) => ({
+  type: 'REJECT_OFFER',
+  id
+})
+
 export const updateQuestion = (question) => ({
   type: 'UPDATE_QUESTION',
   question
@@ -36,13 +41,30 @@ export const updateKarma = (karma, user) => ({
   user
 });
 
+export const rejectOffer = (id) => {
+  return function (dispatch) {
+    const token = localStorage.getItem('token');
+    if (token) {
+      return fetch(`http://localhost:4000/offers/${id}/reject`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Accept': 'application/json'
+        },
+      })
+      .then(res => res.json())
+      .then(res => dispatch(removeOffer(id)))
+    }
+  }
+}
+
 export const fetchQuestionAndOffers = (questionid) => {
   return function (dispatch) {
     dispatch(requestOffers());
 
-    // const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     // above - real token OR - use the token below
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyMzQ1NjcsInVzZXJuYW1lIjoiTW9jayBMZWFybmVyIiwiZmlyc3ROYW1lIjoiRmlyc3QgTGVhcm5lciBOYW1lIiwibGFzdE5hbWUiOiJMYXN0IExlYXJuZXIgTmFtZSIsImVtYWlsIjoibW9ja2xlYXJuZXJAZ21haWwuY29tIiwiY3JlZGl0cyI6MCwia2FybWEiOjAsImF2YWlsYWJsZSI6bnVsbCwicHJvZmlsZUJhZGdlIjoiaHR0cHM6Ly9pbWFnZS5mbGF0aWNvbi5jb20vaWNvbnMvcG5nLzEyOC8yMzUvMjM1Mzk0LnBuZyIsImNyZWF0ZWRBdCI6IjIwMTktMDMtMjBUMTg6Mzg6MzcuOTM3WiIsInVwZGF0ZWRBdCI6IjIwMTktMDMtMjBUMTg6Mzg6MzcuOTM3WiIsImlhdCI6MTU1MzEwNzk1OSwiZXhwIjoxNTU1Njk5OTU5fQ.XCzJ17SrRP567urQDbEPRDtuireYM_kGo6hIxp3hDkY"
+    // const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyMzQ1NjcsInVzZXJuYW1lIjoiTW9jayBMZWFybmVyIiwiZmlyc3ROYW1lIjoiRmlyc3QgTGVhcm5lciBOYW1lIiwibGFzdE5hbWUiOiJMYXN0IExlYXJuZXIgTmFtZSIsImVtYWlsIjoibW9ja2xlYXJuZXJAZ21haWwuY29tIiwiY3JlZGl0cyI6MCwia2FybWEiOjAsImF2YWlsYWJsZSI6bnVsbCwicHJvZmlsZUJhZGdlIjoiaHR0cHM6Ly9pbWFnZS5mbGF0aWNvbi5jb20vaWNvbnMvcG5nLzEyOC8yMzUvMjM1Mzk0LnBuZyIsImNyZWF0ZWRBdCI6IjIwMTktMDMtMjBUMTg6Mzg6MzcuOTM3WiIsInVwZGF0ZWRBdCI6IjIwMTktMDMtMjBUMTg6Mzg6MzcuOTM3WiIsImlhdCI6MTU1MzEwNzk1OSwiZXhwIjoxNTU1Njk5OTU5fQ.XCzJ17SrRP567urQDbEPRDtuireYM_kGo6hIxp3hDkY"
     
     if (token) {
       return fetch(`http://localhost:4000/questions/${questionid}/offers`, {
