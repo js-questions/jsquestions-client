@@ -1,6 +1,7 @@
 import React from 'react';
 import './chat.scss';
 
+import { connect } from 'react-redux';
 import CodeMirror from 'codemirror';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/mode/javascript/javascript';
@@ -128,6 +129,8 @@ class Chat extends React.Component {
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
       return <Overlay closeOverlay={(counter) => {
         clearInterval(counter);
+        const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by)
+        this.props.socket.emit('cancel call', targetOffer[0].tutor)
         this.props.history.goBack()
       }
       }/>
@@ -215,6 +218,11 @@ class Chat extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  user: state.user,
+  question: state.question,
+  offers: state.offers,
+  tutors: state.tutors,
+})
 
-
-export default Chat;
+export default connect(mapStateToProps)(Chat);
