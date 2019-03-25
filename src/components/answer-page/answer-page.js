@@ -43,19 +43,20 @@ class AnswerPage extends Component {
 
   getUsers = () => {
     const token = localStorage.getItem('token');
-
-    fetch(`http://localhost:4000/users/`, {
-      method: 'GET', 
-      headers : { 
-        'Authorization' : 'Bearer ' + token,
-        'Content-Type': 'application/json'
-      }})
-    .then(res => res.json())
-    .then(res=> this.setState({
-      offlineUsers: res.filter(user => {
-        return user.available === null;
-      })
-    }))
+    if (token) {
+      fetch(`http://localhost:4000/users/`, {
+        method: 'GET', 
+        headers : { 
+          'Authorization' : 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        }})
+      .then(res => res.json())
+      .then(res => this.setState({
+        offlineUsers: res.filter(user => {
+          return user.available === null;
+        })
+      }))
+    }
   }
 
   sendOffer = (details) => {

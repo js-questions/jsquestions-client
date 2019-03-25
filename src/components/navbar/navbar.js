@@ -1,14 +1,13 @@
 import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
-import { setToken } from '../../redux/actions.js';
+import { setToken, logout } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
 import { Link } from "react-router-dom";
 import ProfileMenu from './profile-menu';
 import TutorNotification from '../modal/modal-tutor-notification.js';
-// import Modal from '../modal/modal.js'; modal = tutor notification modal. please update to tutor notification
 import titleImage from '../../assets/hero-logo.png';
 
 class Navbar extends React.Component {
@@ -83,7 +82,7 @@ class Navbar extends React.Component {
 
   showMenu = () => {
     if (this.state.showMenu) {
-      return <ProfileMenu/>
+      return <ProfileMenu logout={this.props.logout}/>
     }
   }
 
@@ -147,6 +146,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setToken: (token) => dispatch(setToken(token)),
+  logout: () => dispatch(logout()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

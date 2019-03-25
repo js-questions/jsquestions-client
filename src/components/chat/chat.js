@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './chat.scss';
 
 import { connect } from 'react-redux';
+import { updateChatQuestion } from '../../redux/actions.js';
+
 import CodeEditor from './codeeditor';
 import ChatMessages from './chat-messages';
 
@@ -27,9 +29,23 @@ class Chat extends Component {
     this.props.socket.emit('join room', this.state.roomId)
 
     this.props.socket.on('join room', (participants) => {
-      if (participants === 2) this.setState({tutorJoined: true}, () => this.startTimer());
+      if (participants === 2) {
+        const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by)
+        this.setState({tutorJoined: true}, () => this.startTimer());
+        if (this.props.question.learner === this.props.user.user_id) {
+          this.props.socket.emit('question info', {
+            question: this.props.question,
+            tutor: targetOffer[0].tutor
+          })
+        }
+      }
       else this.setState({tutorJoined: false});
     });
+
+    // STORE THE QUESTION INFO TO THE REDUX STATE AND THE CHATROOM
+    this.props.socket.on('question info', (data) => {
+      this.props.updateChatQuestion(data);
+    })
 
     //HANG-UP
     this.props.socket.on('hang up', () => {this.setState({showFeedbackModal: true})})
@@ -84,7 +100,8 @@ class Chat extends Component {
         {this.state.tutorJoined ? null : this.renderOverlay()}
 
         <div className="chat-header">
-          <h1>Question Title</h1>
+          <h1>{this.props.question.title}</h1>
+          <p>{this.props.question.description}</p>
 
           <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
 
@@ -110,4 +127,8 @@ const mapStateToProps = (state) => ({
   tutors: state.tutors,
 })
 
-export default connect(mapStateToProps)(Chat);
+const mapDispatchToProps = (dispatch) => ({
+  updateChatQuestion: (question) => dispatch(updateChatQuestion(question))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);
