@@ -89,7 +89,6 @@ class Login extends Component {
           <div className="modal">
             <button class="button-close" onClick={this.props.close}>X</button>
             <h2>Sign Up</h2>
-
             <form onSubmit={this.handleSignup} class="form-style">
               <input type='text' minLength="4" maxLength="12" placeholder='Username' value={this.state.username} onChange={(event) => this.setState({username: event.target.value})} required />
               <input type='email' placeholder='E-mail address' value={this.state.email} onChange={(event) => this.setState({email: event.target.value})} required />
@@ -97,7 +96,7 @@ class Login extends Component {
               <button class="button-primary">Sign up</button>
             </form>
             <p>{this.state.signUpError}</p>
-            <button class="button-go-sign-in" onClick={() => this.setState({userExists: !this.state.userExists})}>I already have an account</button>
+            <button class="button-secondary" onClick={() => this.setState({userExists: !this.state.userExists})}>I already have an account</button>
           </div>
         </div>
       )
@@ -105,14 +104,15 @@ class Login extends Component {
       return(
         <div className="backdrop">
           <div className="modal">
-          <button onClick={this.props.close}>X</button>
+            <button class="button-close" onClick={this.props.close}>X</button>
+            <h2>Log in</h2>
             <form onSubmit={this.handleLogin}>
               <input type='email' placeholder='E-mail address' value={this.state.email} onChange={(event) => this.setState({email: event.target.value})} required/>
               <input type='password' placeholder='Password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value})} required/>
-              <button>Sign in</button>
+              <button class="button-primary">Sign in</button>
             </form>
             <p>{this.state.loginError}</p>
-            <button onClick={() => this.setState({userExists: !this.state.userExists})}>I don't have an account</button>
+            <button class="button-secondary" onClick={() => this.setState({userExists: !this.state.userExists})}>I don't have an account</button>
           </div>
         </div>
       )

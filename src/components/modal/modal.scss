@@ -17,7 +17,9 @@
   background-color: white;
   margin: 0 auto;
   width: 50%;
+  max-width: 500px;
   height: 60%;
+  max-height: 450px;
   -webkit-box-shadow: 0 10px 7px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 10px 7px rgba(0, 0, 0, 0.3);
   box-shadow: 0 10px 7px rgba(0, 0, 0, 0.3);
@@ -33,6 +35,11 @@
 
 .button-close {
   align-self: flex-end;
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: 700;
+  outline: none;
+  cursor: pointer;
 }
 
 .modal form {
@@ -44,6 +51,16 @@
 }
 
 .modal input {
-  width: 100%;
-  margin: 10px;
+  margin: 15px;
+  max-width: 80%;
+}
+
+.button-secondary {
+  margin-top: 10px;
+  font-family: Montserrat;
+  font-weight: 700;
+  font-size: 1.3rem;
+  cursor: pointer;
+  border: none;
+  outline: none;
 }

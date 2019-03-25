@@ -86,7 +86,7 @@ class AskQuestions extends Component {
         <div className="ask-questions__form-box">
           <form className="ask-questions__form">
             <h4>Title (*)</h4>
-            <input value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} placeholder='My title is...' />
+            <input value={this.props.location.state ? this.props.location.state.title : this.state.title} onChange={(event) => this.setState({title: event.target.value})} placeholder='My title is...' />
 
             <h4>Describe your problem</h4>
             <textarea onChange={(event) => this.setState({describeProblem: event.target.value})} placeholder='What problem are you having? What do you want to achieve?'/>

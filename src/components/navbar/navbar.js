@@ -17,8 +17,10 @@ class Navbar extends React.Component {
       showSignup: false,
       openModal: true,
       showMenu: false,
-      socketQuestion: ''
+      socketQuestion: '',
+      questionTitle: ''
     }
+    this.updateInput = this.updateInput.bind(this);
   }
 
   componentDidMount = () => {
@@ -92,8 +94,10 @@ class Navbar extends React.Component {
 
           <img src={titleImage} alt="JS QUESTIONS"/>
           <form>
-            <input id="searchTerm" type="text" placeholder="What do you need help with?"/>
-            <div className="navbar-item searchTerm-button"><Link className="navbar__link" to='/answer'>?</Link></div>
+            <input id="searchTerm" type="text" placeholder="What do you need help with?" onChange={this.updateInput}/>
+            <div  className="navbar-item searchTerm-button">
+              <Link className="navbar__link" to={{pathname: '/ask', state: {title: this.state.questionTitle}}}>?</Link>
+            </div>
           </form>
           <h3>For when Stack Overflow and the Internet just aren't enough.</h3>
           <h2>Want to help others?</h2>
@@ -103,11 +107,9 @@ class Navbar extends React.Component {
     }
   }
 
-  handleClick = (e) => {
+  updateInput = (e) => {
     const searchTerm = document.getElementById("searchTerm").value;
-    e.preventDefault();
-    console.log('searchTerm ', searchTerm)
-    // this.props.history.push('/ask', searchTerm);
+    this.setState({questionTitle: searchTerm}, () => console.log(this.state.questionTitle) );
   }
 
 

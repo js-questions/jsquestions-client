@@ -43,13 +43,14 @@ class AnswerPage extends Component {
     const token = localStorage.getItem('token');
 
     fetch(`http://localhost:4000/users/`, {
-      method: 'GET', 
-      headers : { 
+      method: 'GET',
+      headers : {
         'Authorization' : 'Bearer ' + token,
         'Content-Type': 'application/json'
       }})
     .then(res => res.json())
-    .then(res=> this.setState({
+    .then(res=>
+      this.setState({
       offlineUsers: res.filter(user => {
         return user.available === null;
       })
@@ -98,8 +99,6 @@ class AnswerPage extends Component {
     //Amber TTD: need a way to cancel offer help sent question comonent button change
   }
 
-
-
   renderQuestions = () => {
     //User is not logged in
     if (!this.state.loggedIn) {
@@ -114,9 +113,9 @@ class AnswerPage extends Component {
       return this.state.questions.map((question, index) => {
         return (
           <div className="question-container" key={index} >
-            <Question question={question} openOfferModal={this.openOfferModal} offlineUsers={this.state.offlineUsers}/> 
+            <Question question={question} openOfferModal={this.openOfferModal} offlineUsers={this.state.offlineUsers}/>
           </div>
-      )})} 
+      )})}
     //No questions to render
     else {
       return <div>There aren't any questions being asked right now :( </div>
