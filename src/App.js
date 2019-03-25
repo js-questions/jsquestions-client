@@ -24,9 +24,14 @@ const Platform = () => (
   <>
     <Navbar socket={socket} landingPage={false}/>
     <Route path="/ask" component={AskQuestions}/>
+<<<<<<< HEAD
     <PrivateRoute path="/question-posted/:questionid" render={(props) => <QuestionPosted {...props} socket={socket} />}/>
     <PrivateRoute path="/question/:questionid" component={QuestionAbout}/>
     <Route path="/answer" render={(props) => <AnswerPage {...props} socket={socket} />}/>
+=======
+    <PrivateRoute path="/question-posted/:questionid" component={QuestionPosted}/>
+    <Route path="/answer" component={AnswerPage}/>
+>>>>>>> develop
     <PrivateRoute path="/my-questions" component={MyQuestions}/>
   </>
 )
@@ -34,7 +39,7 @@ const Platform = () => (
 function PrivateRoute({ component: Component, ...rest}) {
   let token = localStorage.getItem('token');
   return (
-    <Route {...rest} render={props => token ? (<Component {...props}/>) : <Redirect to="/" />} />
+    <Route {...rest} render={props => token ? (<Component {...props} socket={socket} />) : <Redirect to="/" />} />
   )
 }
 
