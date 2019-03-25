@@ -7,7 +7,7 @@ import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
 import { Link } from "react-router-dom";
 import ProfileMenu from './profile-menu';
-import Modal from '../modal/modal.js';
+import TutorNotification from '../modal/modal-tutor-notification.js';
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -23,16 +23,13 @@ class Navbar extends React.Component {
   componentDidMount = () => {
     this.checkToken();
     this.props.socket.on('push tutor', (question) => {
-      console.log("works");
       this.setState({socketQuestion: question}, () => this.tutorNotification() );
-  })
-
-
+    })
   }
 
   tutorNotification = () => {
     if (this.state.socketQuestion !== '') {
-      return <Modal question={this.state.socketQuestion} />
+      return <TutorNotification question={this.state.socketQuestion} />
     } else {
       return '';
     }
