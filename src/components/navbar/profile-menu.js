@@ -7,10 +7,9 @@ class ProfileMenu extends React.Component {
   render() {
     return (
       <div className="profile-menu">
-        <div className="menu-item"><Link to='/ask'>My profile</Link></div>
-        <div className="menu-item"><Link to='/my-questions'>My questions</Link></div>
-        <div className="menu-item"><Link to='/ask'>My help requests</Link></div>
-        <button className="menu-item">Logout</button>
+        <div className="menu-item"><Link className="profile-menu__link" to='/ask'>My profile</Link></div>
+        <div className="menu-item"><Link className="profile-menu__link" to='/my-questions'>My questions</Link></div>
+        <div className="menu-item">Logout</div>
       </div>
     )
   }

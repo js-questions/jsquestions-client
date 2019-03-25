@@ -1,7 +1,7 @@
-import React, { Component, useState  } from 'react';
+import React from 'react';
 import '../log-in/log-in.scss';
-import { Link } from "react-router-dom";
-import { useSpring, animated, config } from 'react-spring';
+import './modal.scss';
+import { useSpring, animated } from 'react-spring';
 
 
 const offerHelp = (e, modalInfo, props) => {
@@ -16,7 +16,7 @@ function ModalOfferHelp(props) {
     questionid: props.modalRef.questionid,
     expiration: Date.now() + 30
   })
-  
+
   const props2 = useSpring({ to: {opacity: 1, width: '600px', height: '600px'}, from: {opacity: 0, width: '0px', height: '0px'}, config: {duration:500}})
   const props3 = useSpring({ opacity: 1, from: {opacity: 0}, config: {duration:2000}})
   const props4 = useSpring({ opacity: 1, from: {opacity: 0}, config: {duration:3000}})

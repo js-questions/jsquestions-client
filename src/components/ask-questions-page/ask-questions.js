@@ -82,23 +82,23 @@ class AskQuestions extends Component {
   render() {
     return (
       <div className="ask-questions">
-        <h1 className="ask-questions__title">Ask a Question</h1>
+        <h1>Ask a Question</h1>
         <div className="ask-questions__form-box">
           <form className="ask-questions__form">
             <h4>Title (*)</h4>
-            <input className="ask-questions__input" value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} placeholder='My title is...' />
+            <input value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} placeholder='My title is...' />
 
             <h4>Describe your problem</h4>
-            <textarea className="ask-questions__input" onChange={(event) => this.setState({describeProblem: event.target.value})} placeholder='What problem are you having? What do you want to achieve?'/>
+            <textarea onChange={(event) => this.setState({describeProblem: event.target.value})} placeholder='What problem are you having? What do you want to achieve?'/>
 
             <h4>Related resources</h4>
-            <textarea className="ask-questions__input" onChange={(event) => this.setState({relatedResources: event.target.value})} placeholder='What research did you already do? Add any Stack Overflow articles, blog posts, Github repos,
+            <textarea onChange={(event) => this.setState({relatedResources: event.target.value})} placeholder='What research did you already do? Add any Stack Overflow articles, blog posts, Github repos,
   Codepens, etc. here.'/>
 
             <h4>Link to Code</h4>
-            <input className="ask-questions__input" onChange={(event) => this.setState({codeLink: event.target.value})} placeholder='Ex: Github Repo, JSFiddle, Codepen, etc.'/>
+            <input onChange={(event) => this.setState({codeLink: event.target.value})} placeholder='Ex: Github Repo, JSFiddle, Codepen, etc.'/>
 
-            <button className="ask-questions__button button-primary" onClick={this.handleClick.bind(this)}>Help!</button>
+            <button className="button-primary" onClick={this.handleClick.bind(this)}>Help!</button>
             <p className="ask-questions__p">(*) These are the only mandatory fields but the more information you give the tutors, the better they will understand your problem.</p>
           </form>
 

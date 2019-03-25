@@ -6,8 +6,8 @@
   align-items: center;
 }
 
-.ask-questions__title {
-  margin: 5% 0;
+.ask-questions h1 {
+  margin: 5% 0 3% 0;
 }
 
 .ask-questions__form-box {
@@ -23,17 +23,22 @@
   width: 100%;
 }
 
-.ask-questions__input {
+.ask-questions__form input {
   width: 100%;
   margin: 2% 0 5% 0;
 }
 
-.ask-questions__p {
+.ask-questions__form textarea {
+  width: 100%;
+  margin: 2% 0 5% 0;
+}
+
+.ask-questions__form p {
   font-size: 1.2rem;
   margin-bottom: 5%;
 }
 
-.ask-questions__button {
+.ask-questions__form button {
   align-self: center;
   margin-bottom: 5%;
 }
