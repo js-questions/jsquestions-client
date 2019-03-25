@@ -4,7 +4,6 @@ import jwt_decode from 'jwt-decode';
 const questions = (state = [], action) => {
   switch(action.type) {
     case 'ALL_QUESTIONS_SUCCESS':
-    console.log('action.data');
       return action.data;
     case 'ALL_QUESTIONS_FAILURE':
       return action.error;

@@ -181,7 +181,6 @@ class AnswerPage extends Component {
 const mapStateToProps = (state) => ({
   user: state.user,
   offers: state.offers,
-  tutors: state.tutors,
   question: state.question,
   questions: state.questions
 })
