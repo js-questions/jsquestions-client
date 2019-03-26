@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 class ProfileMenu extends React.Component {
   handleLogout = () => {
     localStorage.removeItem('token');
+    this.props.toggleMenu();
     this.props.logout();
   }
 

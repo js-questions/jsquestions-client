@@ -82,9 +82,13 @@ class Navbar extends React.Component {
     }
   }
 
+  toggleProfileMenu = () => {
+    this.setState({showMenu: false})
+  }
+
   showMenu = () => {
     if (this.state.showMenu) {
-      return <ProfileMenu logout={this.props.logout}/>
+      return <ProfileMenu toggleMenu={this.toggleProfileMenu}logout={this.props.logout}/>
     }
   }
 
