@@ -29,28 +29,32 @@ function ModalOfferHelp(props) {
         {/* <animated.div style={props3}> */}
         <button className="button-close" onClick={()=>props.closeOfferModal()}>X</button>
         <h3>{props.modalRef.title}</h3>
-        <div>{props.modalRef.description}</div>
-        <form>
+        <form className="offer-help__form">
           <input type='text' placeholder='Explain how you can help' maxLength="200" onChange={(event) => setModalInfo({...modalInfo, questionid: props.modalRef.questionid, message: event.target.value})} />
-          <p>Waiting time [min]: </p>
-          <select className="modal-waiting-time" onChange={(event) => {
-          const time = event.target.value * 6000 + Date.now();
-          setModalInfo({...modalInfo, questionid: props.modalRef.questionid, expiration: time})}}>
-            <option value='15'>15 Minutes</option>
-            <option value='30'>30 Minutes</option>
-            <option value='45'>45 Minutes</option>
-            <option value='60'>1:00</option>
-            <option value='75'>1:15</option>
-            <option value='90'>1:30</option>
-            <option value='105'>1:45</option>
-            <option value='120'>2:00</option>
-            <option value='135'>2:15</option>
-            <option value='150'>2:30</option>
-            <option value='165'>2:45</option>
-            <option value='180'>3:00</option>
-          </select>
+
+          <div className="offer-help-select-time">
+            <p>Waiting time [min]: </p>
+            <select className="modal-waiting-time" onChange={(event) => {
+            const time = event.target.value * 6000 + Date.now();
+            setModalInfo({...modalInfo, questionid: props.modalRef.questionid, expiration: time})}}>
+              <option value='15'>15 min</option>
+              <option value='30'>30 min</option>
+              <option value='45'>45 min</option>
+              <option value='60'>1h</option>
+              <option value='75'>1h 15min</option>
+              <option value='90'>1h 30min</option>
+              <option value='105'>1h 45min</option>
+              <option value='120'>2h</option>
+              <option value='135'>2h 15min</option>
+              <option value='150'>2h 30min</option>
+              <option value='165'>2h 45min</option>
+              <option value='180'>3h</option>
+            </select>
+          </div>
+
+
           {/* <animated.div style={props4}> */}
-          <button className="button-primary" onClick={(e)=> offerHelp(e, modalInfo, props)}>{props.modalRef.button}</button>
+          <button className="button-primary button-offer-help" onClick={(e)=> offerHelp(e, modalInfo, props)}>{props.modalRef.button}</button>
           {/* </animated.div> */}
         </form>
         {/* </animated.div> */}

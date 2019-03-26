@@ -50,9 +50,9 @@ class Question extends Component {
         </div>
         <div className="question__body">
           <h4>Question </h4>
-          <p className="question__title">{this.props.question.title}</p>
+          <div className="question__title">{this.props.question.title}</div>
           <h4>Description </h4>
-          <p className="question__description">{this.props.question.description}</p>
+          <div className="question__description">{this.props.question.description}</div>
         </div>
         {offerButtonExists}
       </div>
