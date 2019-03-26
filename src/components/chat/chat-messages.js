@@ -56,7 +56,7 @@ class ChatMessages extends Component {
       <div className="chat-box">
         <div id="messages"></div>
         <form className="form-wrapper" action="">
-          <textarea className="message-field" autoComplete="off" ref={input => this.message = input}
+          <textarea wrap="hard" placeholder="Type your message" className="message-field" autoComplete="off" ref={input => this.message = input}
             onKeyPress={this.detectEnter}/>
           <button onClick={this.clickButton} className="send-icon" type="button">
             <FontAwesomeIcon onClick={this.clickButton} icon={faPaperPlane} />

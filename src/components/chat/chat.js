@@ -103,16 +103,20 @@ class Chat extends Component {
         {this.state.tutorJoined ? null : this.renderOverlay()}
 
         <div className="chat-header">
-          <div className="chat-logo"><img src={logo} width="40px" alt="logo"/></div>
-          <h2>Live Help Session</h2>
-          <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
-          <button className="end-call-button" onClick={this.hangUp}>End Call</button>        
+          <div className="left">
+            <img src={logo} width="40px" alt="logo"/>
+            <p>Live Help Session</p>
+          </div>
+          <div className="right">
+            <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
+            <button className="end-call-button" onClick={this.hangUp}>End Call</button>        
+          </div>
         </div>
 
-        <div className="chat-info">
+        {/* <div className="chat-info">
           <h1>{this.props.question.title}</h1>
           <p>{this.props.question.description}</p>
-        </div>
+        </div> */}
 
         <div className="chat-body">
           <CodeEditor socket={this.props.socket} room={this.state.roomId}/>

@@ -15,13 +15,27 @@
   height: 50px;
   background-color: $secondary;
   padding: 20px;
+  width: 100vw;
 }
 
-.chat-header h2 {
-  padding: 0px;
-  width: 60%;
+.left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.left p {
+  padding: 10px;
+  margin: 10px;
   color: white;
   font-size: 1em;
+  display: inline;
+  font-weight: 500;
+}
+
+.right #timer {
+  display: inline;
+  padding: 20px;
 }
 
 .end-call-button {
@@ -68,10 +82,12 @@
   width: 200px;
   font-size: .7em;
   resize: none;
+  padding-right: 20px;
 }
 
 .chat-box textarea {
-  min-height: .6rem;
+  min-height: .2rem;
+  max-height: 3.5rem;
 }
 
 .send-icon {
@@ -153,10 +169,12 @@ form button:hover {
 .oneMessage {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  margin: 5px 20px;
+  padding: 10px;
+  margin: 5px 10px;
   border-radius: 10px;
-  max-width: 50%;
+  max-width: 90%;
+  font-size: .8em;
+  height: auto;
 }
 
 .myMessage {
@@ -166,10 +184,10 @@ form button:hover {
 
 .elseMessage {
   align-self: flex-start;
-  background-color: $white;
+  background-color: #EEECEC;
 }
 
 .messageDate {
-  font-size: 10px;
+  font-size: 8px;
   align-self: flex-end;
 }
