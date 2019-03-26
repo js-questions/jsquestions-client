@@ -12,51 +12,101 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: 10vh;
+  height: 50px;
   background-color: $secondary;
+  padding: 20px;
 }
 
-.chat-header h1 {
-  background-color: $grey-light;
-  margin: 20px;
-  padding: 20px;
+.chat-header h2 {
+  padding: 0px;
   width: 60%;
+  color: white;
   font-size: 1em;
 }
 
-.chat-header button {
-  background-color: $grey-light;
-  margin: 20px;
-  padding: 20px;
-  width: 120px;
-  text-align: center;
+.end-call-button {
+  width: 100px;
+  height: 35px;
+  padding: 10px;
+  background-color: $primary;
+  border-radius: 40px;
+  border: 0px;
+  box-shadow: 0 2px rgba(black, .3);
+  font-weight: bolder;
+  font-family: "Montserrat";
+}
+
+.end-call-button:hover {
+  cursor: pointer;
+  background-color: $primary-dark;
 }
 
 .chat-body {
   display: flex;
   flex-direction: row;
-  background-color: $white;
+  height: 100vh;
 }
 
 .chat-box {
   width: 30%;
   height: 80vh;
   background-color: $white;
-  margin: 20px;
-  border: solid 1px $grey;
+  margin: 15px;
+  border: solid 1px $grey-light;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
 }
 
+.form-wrapper {
+  position: relative;
+  padding: 5px;
+}
+
+.message-field {
+  width: 200px;
+  font-size: .7em;
+  resize: none;
+}
+
+.chat-box textarea {
+  min-height: .6rem;
+}
+
+.send-icon {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  border: 0;
+  outline: 0;
+  width: 20px;
+}
+
+
+
+.chat-footer {
+  position: fixed;
+  bottom: 0;
+  height: 30px;
+  background-color: lightgray;
+  width: 100vw;
+}
+
+
+.chat-footer p {
+  font-size: .7em;
+  padding: 10px;
+  padding-left: 20px;
+  color: white;
+}
+
 .editor {
   width: 70%;
   max-width: 70%;
   height: 80vh;
-  background-color: $grey-light;
-  margin: 20px 0px 20px 20px;
-  border: solid 1px $grey;
+  margin: 15px 0px 15px 15px;
+  border: solid 1px $grey-light;
 }
 
 .CodeMirror {
@@ -68,7 +118,6 @@
   height: 100%;
   min-height: 500px;
 }
-
 
 form {
   padding: 5px 10px;
