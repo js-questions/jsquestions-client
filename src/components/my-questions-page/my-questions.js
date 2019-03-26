@@ -7,12 +7,32 @@ class MyQuestions extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      questions: []
+      questions: [],
+      allUsers: null
+    }
+  }
+
+  getUsers = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetch(`http://localhost:4000/users/`, {
+        method: 'GET',
+        headers : {
+          'Authorization' : 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        }})
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          allUsers: res
+        });
+      })
     }
   }
 
   componentWillMount (){
     const token = localStorage.getItem('token');
+    this.getUsers();
     fetch(`http://localhost:4000/questions/asked`, {
       method: 'GET',
       headers : {
@@ -28,10 +48,11 @@ class MyQuestions extends Component {
   renderQuestions = () => {
     if (this.state.questions.length > 0) {
       return this.state.questions.map((question, index) => {
+        let learner = this.state.allUsers.filter(user => { return user.user_id===question.learner})[0];
         return (
           <div key={index}>
             <Link className="question__link" to={{pathname: `/question-posted/${question.question_id}`}}>
-              <Question question={question}/>
+              <Question question={question} learner={learner}/>
             </Link>
           </div>
     )})}
