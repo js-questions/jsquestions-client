@@ -125,10 +125,10 @@ class AnswerPage extends Component {
     //Renders questions
     else if (this.state.questions.length > 0) {
       return this.state.questions.map((question, index) => {
-        let learner = this.state.allUsers.filter(user => { return user.user_id===question.learner})[0];
+        let user = this.state.allUsers.filter(user => { return user.user_id===question.learner})[0];
         return (
           <div className="question-container" key={index} >
-            <Question question={question} learner={learner} openOfferModal={this.openOfferModal} offlineUsers={this.state.offlineUsers}/>
+            <Question question={question} user={user} openOfferModal={this.openOfferModal} offlineUsers={this.state.offlineUsers}/>
           </div>
       )})}
     //No questions to render
