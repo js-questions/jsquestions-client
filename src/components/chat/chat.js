@@ -36,7 +36,7 @@ class Chat extends Component {
           const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by) // offers prop only exists for the learner
           this.props.socket.emit('question info', {
             question: this.props.question,
-            tutor: targetOffer[0].tutor // updated to get the userid of the tutor
+            tutor: targetOffer[0].tutor
           })
         }
       }
