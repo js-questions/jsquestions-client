@@ -7,22 +7,13 @@ import Card from '../card/card.js';
 class QuestionPosted extends Component {
   state = {
     questionid: window.location.pathname.replace(/\D/g, ""),
-    token: localStorage.getItem('token'),
+    token: localStorage.getItem('token')
   }
 
   componentDidMount() {
-    this.props.fetchQuestionAndOffers(this.state.questionid);
     this.fetchUsers();
+    this.props.fetchQuestionAndOffers(this.state.questionid, this.state.token);
     this.props.socket.on('offer sent', (offer) => this.props.updateOffer(offer))
-  }
-
-  handleClick = (e, tutorId, offerId) => {
-    e.preventDefault();
-    this.alertTutor(this.state.token, tutorId, offerId);
-    this.props.history.push({
-      pathname: `/chat/${this.props.question.room_id}/${this.props.question.question_id}/learner`,
-      state: {question: this.props.question}
-    })
   }
 
   fetchUsers = () => {
@@ -32,6 +23,15 @@ class QuestionPosted extends Component {
     }})
       .then(res => res.json())
       .then(users => this.props.getUsers(users))
+  }
+
+  handleClick = (e, tutorId, offerId) => {
+    e.preventDefault();
+    this.alertTutor(this.state.token, tutorId, offerId);
+    this.props.history.push({
+      pathname: `/chat/${this.props.question.room_id}/${this.props.question.question_id}/learner`,
+      state: {question: this.props.question}
+    })
   }
 
   alertTutor = async (token, tutorId, offerId) => { // also sending offerId
@@ -67,7 +67,6 @@ class QuestionPosted extends Component {
     this.props.rejectOffer(offerid);
   }
 
-
   render() {
     return (
       <div className="question-posted">
@@ -90,9 +89,5 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = { getUsers, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer };
-
-// const mapDispatchToProps = (dispatch) => ({
-//   fetchOffers: (questionid) => dispatch(fetchOffers(questionid))
-// })
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionPosted);
