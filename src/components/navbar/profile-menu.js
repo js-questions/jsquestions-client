@@ -6,6 +6,7 @@ class ProfileMenu extends React.Component {
   handleLogout = () => {
     localStorage.removeItem('token');
     this.props.logout();
+    this.props.socket.emit('offline user', this.props.user.user_id);
   }
 
   render() {
