@@ -25,7 +25,8 @@ class Navbar extends React.Component {
 
   componentDidMount = () => {
     this.checkToken();
-    this.props.socket.on('push tutor', (question) => {
+    this.props.socket.on('push tutor', ({ question, learner }) => {
+      console.log('Push tutor data received', question, learner);
       this.setState({socketQuestion: question}, () => this.tutorNotification() );
     })
     this.props.socket.on('cancel call', () => {

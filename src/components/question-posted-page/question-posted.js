@@ -50,8 +50,9 @@ class QuestionPosted extends Component {
     .then(res => res.json())
     .then(question => {
       this.props.updateQuestion(question);
+      const learner = this.props.user;
       question.tutor = tutorId; // adding the tutorId to the question
-      this.props.socket.emit('chat now', question)
+      this.props.socket.emit('chat now', { question, learner })
     })
   }
 
