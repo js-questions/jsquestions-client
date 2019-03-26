@@ -85,7 +85,7 @@ class Navbar extends React.Component {
 
   showMenu = () => {
     if (this.state.showMenu) {
-      return <ProfileMenu logout={this.props.logout}/>
+      return <ProfileMenu user={this.props.user} logout={this.props.logout}/>
     }
   }
 
@@ -112,7 +112,6 @@ class Navbar extends React.Component {
     const searchTerm = document.getElementById("searchTerm").value;
     this.setState({questionTitle: searchTerm});
   }
-
 
   render() {
     // Sending token on user refresh

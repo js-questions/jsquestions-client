@@ -20,7 +20,8 @@ class AnswerPage extends Component {
       button: 'Send chat invitation',
       questionid: null
     },
-    offlineUsers: null
+    offlineUsers: null,
+    allUsers: null
   }
 
   getQuestions = async () => {
@@ -50,11 +51,16 @@ class AnswerPage extends Component {
           'Content-Type': 'application/json'
         }})
       .then(res => res.json())
-      .then(res => this.setState({  // [Rod] We should set it to the redux store instead
-        offlineUsers: res.filter(user => {
-          return user.available === null;
-        })
-      }))
+      .then(res => {
+        this.setState({
+          offlineUsers: res.filter(user => {  // [Rod] We should set it to the redux store instead
+            return user.available === null;
+          })
+        });
+        this.setState({
+          allUsers: res
+        });
+      })
     }
   }
 
@@ -119,9 +125,10 @@ class AnswerPage extends Component {
     //Renders questions
     else if (this.state.questions.length > 0) {
       return this.state.questions.map((question, index) => {
+        let user = this.state.allUsers.filter(user => { return user.user_id===question.learner})[0];
         return (
           <div className="question-container" key={index} >
-            <Question question={question} openOfferModal={this.openOfferModal} offlineUsers={this.state.offlineUsers}/>
+            <Question question={question} user={user} openOfferModal={this.openOfferModal} offlineUsers={this.state.offlineUsers}/>
           </div>
       )})}
     //No questions to render
@@ -130,9 +137,9 @@ class AnswerPage extends Component {
     }
   }
 
-  componentWillMount() {
-    this.getUsers();
-    this.getQuestions();
+  componentWillMount = async () => {
+    await this.getUsers();
+    await this.getQuestions();
   }
   
   toggleButton = (e, id) => {

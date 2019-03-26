@@ -27,15 +27,16 @@ code {
 }
 
 input {
-  border: solid 0.5px $grey-light;
+  border: solid 1px $grey-light;
   border-radius: 4px;
   padding: 10px;
   font-size: 1.4rem;
   font-family: "Montserrat";
+  width: 100%;
 }
 
 textarea {
-  border: solid 0.5px $grey-light;
+  border: solid 1px $grey-light;
   border-radius: 4px;
   padding: 10px;
   font-size: 1.4rem;
@@ -53,7 +54,7 @@ textarea {
   font-family: -apple-system, 'Montserrat', "Roboto", "Helvetica Neue", sans-serif;
   font-size: 1.5rem;
   border: none;
-  box-shadow: 0 3px $grey;
+  box-shadow: 0 3px rgba(black, .4);
   outline:none;
 }
 
