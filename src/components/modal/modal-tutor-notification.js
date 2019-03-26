@@ -6,7 +6,8 @@ import '../../phone.scss';
 class TutorInvitation extends Component {
 
   render() {
-    console.log(this.props.question)
+    console.log('Tutor invitation modal is receiving', this.props)
+    // We need to add the learner and question information to this modal. Styling.
     return (
       <div className="backdrop">
         <div className="modal">
