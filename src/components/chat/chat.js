@@ -33,10 +33,11 @@ class Chat extends Component {
         this.setState({tutorJoined: true}, () => this.startTimer());
         if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
         // if (this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
-          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by) // offers prop only exists for the learner
+          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
+          sessionStorage.setItem('targetOffer', targetOffer);
           this.props.socket.emit('question info', {
             question: this.props.question,
-            tutor: targetOffer[0].tutor
+            tutor: sessionStorage.getItem('targetOffer')
           })
         }
       }
@@ -53,6 +54,19 @@ class Chat extends Component {
   }
 
   startTimer = () => {
+    if (!sessionStorage.getItem('timeStarted')){
+      sessionStorage.setItem('timeStarted', Date.now());
+    }
+
+    if (sessionStorage.getItem('timeStarted')) {
+      const newTime = Date.now() - sessionStorage.getItem('timeStarted');
+      const secs = Number(((newTime % 60000) / 1000).toFixed(0));
+      const mins= Math.floor(newTime/ 60000);
+      this.setState({
+        minutes: mins,
+        seconds: secs,
+      })
+    }
     setInterval(async () => {
       this.setState({seconds: this.state.seconds + 1})
       if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
@@ -83,10 +97,13 @@ class Chat extends Component {
 
   hangUp = () => {
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
+
   }
 
   showEndChatModal = () => {
     if (this.state.showFeedbackModal) {
+      sessionStorage.removeItem('timeStarted');
+      sessionStorage.removeItem('targetOffer');
       return <ModalEndChat closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
     }
   }

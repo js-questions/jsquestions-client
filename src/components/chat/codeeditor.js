@@ -34,6 +34,7 @@ class CodeEditor extends Component {
 
   codeChanged = () => {
     const editorContent = this.codemirror.getDoc().getValue();
+    console.log('editorContent', editorContent) // OMG: undefined for learner
     const data = { code: editorContent, room: this.props.room } // changed property 'text' to 'code' to be more explicit
     if (editorContent !== this.state.keepChangeEditor) {
       this.props.socket.emit('editor', data);
@@ -42,9 +43,10 @@ class CodeEditor extends Component {
   }
 
   render() {
+    // console.log('rerender')
     return(
       <div className="editor">
-        <textarea id="txtArea" name="txtArea" ref={this.textArea}/>
+        <textarea id="txtArea" name="txtArea"ref={this.textArea}/>
       </div>
 
     )
