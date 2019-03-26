@@ -58,8 +58,11 @@
 .chat-body {
   display: flex;
   flex-direction: row;
+  align-items: center;
   height: 100vh;
+  justify-content: space-evenly;
   background-color: #EEECEC;
+  padding-bottom: 30px;
 }
 
 .chat-box {
@@ -75,8 +78,8 @@
 
 .form-wrapper {
   position: relative;
-  padding: 5px;
-  height: 30px;
+  padding: 5px 10px;
+  min-height: 35px;
   margin-bottom: 5px;
 }
 
@@ -134,24 +137,6 @@
   width: 95%;
   height: 100%;
   min-height: 500px;
-}
-
-form {
-  padding: 5px 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  min-height: 35px;
-}
-
-form button {
-  width: 70px;
-  margin-left: 5px;
-
-}
-
-form button:hover {
-  cursor: pointer;
 }
 
 #messages {
