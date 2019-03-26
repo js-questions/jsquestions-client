@@ -18,7 +18,8 @@ class AnswerPage extends Component {
       button: 'Send chat invitation',
       questionid: null
     },
-    offlineUsers: null
+    offlineUsers: null,
+    allUsers: null
   }
 
   getQuestions = async () => {
@@ -48,11 +49,17 @@ class AnswerPage extends Component {
           'Content-Type': 'application/json'
         }})
       .then(res => res.json())
-      .then(res => this.setState({
-        offlineUsers: res.filter(user => {
-          return user.available === null;
-        })
-      }))
+      .then(res => {
+        this.setState({
+          offlineUsers: res.filter(user => {
+            return user.available === null;
+          })
+        });
+        this.setState({
+          allUsers: res
+        });
+      })
+
     }
   }
 
@@ -109,7 +116,9 @@ class AnswerPage extends Component {
     }
     //Renders questions
     else if (this.state.questions.length > 0) {
+      console.log('allUsers ', this.state.allUsers)
       return this.state.questions.map((question, index) => {
+        console.log('question ', question)
         return (
           <div className="question-container" key={index} >
             <Question question={question} openOfferModal={this.openOfferModal} offlineUsers={this.state.offlineUsers}/>
