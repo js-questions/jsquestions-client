@@ -83,7 +83,7 @@ class Navbar extends React.Component {
   }
 
   toggleProfileMenu = () => {
-    this.setState({showMenu: false})
+    this.setState({showMenu: !this.state.showMenu})
   }
 
   showMenu = () => {
