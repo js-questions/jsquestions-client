@@ -22,7 +22,8 @@ class Chat extends Component {
     seconds: 0,
     secondsString: '00',
     overTime: 'white',
-    clockReset: true
+    clockReset: true,
+    timerId: null
   }
 
   componentDidMount() {
@@ -74,7 +75,7 @@ class Chat extends Component {
       })
     }
 
-      setInterval( () => {
+      const intervalId = setInterval( () => {
         this.setState({seconds: this.state.seconds + 1})
         if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
         else this.setState({secondsString: this.state.seconds})
@@ -86,6 +87,7 @@ class Chat extends Component {
         }
       }, 1000)
 
+      this.setState({ timerId: intervalId });
   }
 
   renderOverlay = () => {
@@ -102,7 +104,6 @@ class Chat extends Component {
 
   hangUp = () => {
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
-
   }
 
   showEndChatModal = () => {
@@ -111,6 +112,10 @@ class Chat extends Component {
       sessionStorage.removeItem('targetOffer');
       return <ModalEndChat closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
     }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.timerId);
   }
 
   render() {
