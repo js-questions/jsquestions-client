@@ -46,15 +46,13 @@ textarea {
 .button-primary {
   background-color: $primary;
   border-radius: 40px;
-  padding: 10px 0;
-  min-width: 150px;
-  min-height: 50px;
+  padding: 12px 25px;
   font-weight: 700;
   font-family: -apple-system, 'Montserrat', "Roboto", "Helvetica Neue", sans-serif;
   font-size: 1.5rem;
   border: none;
-  box-shadow: 0 3px $grey;
-  outline:none;
+  box-shadow: 0 3px (black, .4);
+  outline: none;
 }
 
 .button-primary:hover {

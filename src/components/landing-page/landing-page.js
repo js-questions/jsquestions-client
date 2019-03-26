@@ -22,7 +22,7 @@ class LandingPage extends Component {
         <div className="landing-page__help-others">
           <h1>Join the JS Questions community.</h1>
           <h3>There's no better practice than solving real world problems.</h3>
-          <button className="button-primary">Join now!.</button>
+          <button className="button-primary">Join now!</button>
         </div>
         <div className="landing-page__footer">
           <p>© JS Questions 2019. View our Data Policy and Terms.</p>

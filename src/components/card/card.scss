@@ -8,12 +8,14 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
 }
 
 .card-avatar {
   display: flex;
   flex-direction: column;
   margin-right: 20px;
+  // flex: 1 0 60px;
 }
 
 .card-avatar p {
@@ -24,13 +26,21 @@
   display: flex;
   flex-direction: column;
   margin-right: 20px;
-  width: 80%;
+  width: 50%;
+  // flex: 3 2 200px;
 }
 
 .card-action {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
+  align-self: flex-end;
+  width: 20%;
+  // flex: 1 0 100px;
+}
+
+.button-primary {
+  align-self: center;
 }
 
 .button-secondary {
@@ -42,6 +52,7 @@
   border: none;
   outline: none;
   color: $secondary;
+  align-self: center;
 }
 
 .button-secondary:hover {
