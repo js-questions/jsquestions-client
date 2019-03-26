@@ -87,6 +87,11 @@ $searchSize :  45px;
 .profile-menu__link {
   text-decoration: none;
   color: $secondary;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.profile-menu__link:hover {
   font-weight: 700;
 }
 
@@ -111,11 +116,24 @@ $searchSize :  45px;
 .profile-menu {
   background-color: $primary;
   width: 140px;
-  height: 90px;
   position: absolute;
-  right: 3%;
-  top: 100px;
+  right: 5%;
+  top: 80px;
   padding: 10px;
+  padding-top: 0px;
+  padding-left: 15px;
+  box-shadow: darken(black, 20%);
+}
+
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid $primary;
+  position: relative;
+  left: 45px;
+  top: -10px;
 }
 
 .menu-item {
@@ -163,7 +181,6 @@ $searchSize :  45px;
   padding: 0 0 0 22px;
   width: 300px;
   font-size: 1.7rem;
-
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -183,7 +200,7 @@ $searchSize :  45px;
   color:rgba(0, 0, 0, 0.4);
 }
 
-.searchTerm-button {
+.searchTerm-button{
   background-color: $primary;
   transition: all 0.3s;
   border: none;
@@ -192,25 +209,9 @@ $searchSize :  45px;
   height: $searchSize;
   width: $searchSize;
   padding: 0 15px;
-  text-decoration: none;
-  color: darken($grey, 40%);
 }
 
 .searchTerm-button:hover {
-  background-color: darken($primary, 10%);
-  // box-shadow: inset 2px 2px 2px darken($primary, 40%);
-  box-shadow: 2px 2px 2px darken(black, 10%);
-}
-
-.arrow-up {
-  width: 0; 
-  height: 0; 
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  
-  border-bottom: 5px solid black;
-}
-
-.log-in {
-  padding-right: 15px;
+  background-color: darken($primary, 5%);
+  box-shadow: inset 2px 2px 2px darken($primary, 40%);
 }
