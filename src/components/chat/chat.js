@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './chat.scss';
+import './codeeditor.scss';
+
 import logo from '../../assets/square-logo.png';
 
 import { connect } from 'react-redux';
@@ -124,7 +126,7 @@ class Chat extends Component {
         </div>
 
         <div className="chat-footer">
-          <p>I need to report a problem</p>
+          <p>Troubleshooting - I need to report a problem</p>
         </div>
 
         {this.showEndChatModal()}

@@ -22,7 +22,16 @@ class ChatMessages extends Component {
       messageDate.className += ' messageDate';
       if (currentId === msg.id) messages.className += ' myMessage';
       else messages.className += ' elseMessage';
+      this.scrollToBottom();
     });
+  }
+
+  scrollToBottom = () => {
+    const messages = document.getElementById('messages');
+    let shouldScroll = messages.scrollTop + messages.clientHeight === messages.scrollHeight;
+    if (!shouldScroll) {
+      messages.scrollTop = messages.scrollHeight;
+    }
   }
 
   clickButton = (e) => {
@@ -59,7 +68,7 @@ class ChatMessages extends Component {
           <textarea wrap="hard" placeholder="Type your message" className="message-field" autoComplete="off" ref={input => this.message = input}
             onKeyPress={this.detectEnter}/>
           <button onClick={this.clickButton} className="send-icon" type="button">
-            <FontAwesomeIcon onClick={this.clickButton} icon={faPaperPlane} />
+            <FontAwesomeIcon icon={faPaperPlane} />
           </button>
         </form>
       </div>
