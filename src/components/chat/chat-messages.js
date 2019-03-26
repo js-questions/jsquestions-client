@@ -48,16 +48,18 @@ class ChatMessages extends Component {
   }
 
   sendMessage = () => {
-    const dateNow = new Date();
-    const dateNowFormatted = dateNow.toLocaleString();
-    const msgToSend = {
-      date: dateNowFormatted,
-      id: this.props.socket.id,
-      value: this.message.value,
-      room: this.props.room
-    };
-    this.props.socket.emit('chat message', msgToSend);
-    this.message.value = '';
+    if (this.message.value !== '') {
+      const dateNow = new Date();
+      const dateNowFormatted = dateNow.toLocaleString();
+      const msgToSend = {
+        date: dateNowFormatted,
+        id: this.props.socket.id,
+        value: this.message.value,
+        room: this.props.room
+      };
+      this.props.socket.emit('chat message', msgToSend);
+      this.message.value = '';
+    }
   }
 
   render() {
@@ -65,7 +67,7 @@ class ChatMessages extends Component {
       <div className="chat-box">
         <div id="messages"></div>
         <form className="form-wrapper" action="">
-          <textarea wrap="hard" placeholder="Type your message" className="message-field" autoComplete="off" ref={input => this.message = input}
+          <textarea wrap="hard" placeholder="Type your message" className="message-field" autoComplete="off" ref={textarea => this.message = textarea}
             onKeyPress={this.detectEnter}/>
           <button onClick={this.clickButton} className="send-icon" type="button">
             <FontAwesomeIcon icon={faPaperPlane} />

@@ -13,7 +13,7 @@ $searchSize :  50px;
 .navbar-box__landingPage {
   display: flex;
   flex-direction: column;
-  height: 450px;
+  height: 500px;
   background-image:linear-gradient(
     to right bottom,
     $secondary-transparent,
@@ -210,6 +210,8 @@ $searchSize :  50px;
 
 .searchTerm-button{
   background-color: $primary;
+  color: lighten($primary, 30%);
+  font-weight: 600;
   transition: all 0.3s;
   border: none;
   border-bottom-right-radius: $searchSize;
@@ -220,9 +222,8 @@ $searchSize :  50px;
   padding-left: 17px;
   text-decoration: none;
   margin-left: -2px;
-  // box-shadow: -2px 2px 3px 0px darken(gray, 10%);
-  text-shadow: 0 1px 0 rgba(0,0,0,0.3);
-  font-size: 1.5em;
+  box-shadow: -2px 2px 3px 0px darken(gray, 10%);
+  font-size: 1.2em;
   border-bottom: 5px solid darken($primary, 20%);
   border-right: 3px solid darken($primary, 20%)
 }
@@ -230,7 +231,6 @@ $searchSize :  50px;
 .searchTerm-button:hover {
   background-color: darken($primary, 5%);
   box-shadow: 3px 3px 8px 0px darken($secondary, 5%);
-  // box-shadow: -2px 2px 3px 0px darken(gray, 10%);
 }
 
 .log-in {
