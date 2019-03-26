@@ -35,7 +35,7 @@ class AnswerPage extends Component {
         'Content-Type': 'application/json'
       }})
     .then(res => res.json())
-    .then(res=> this.setState({
+    .then(res => this.setState({
       questions: res
     }))
   }
@@ -134,6 +134,7 @@ class AnswerPage extends Component {
     this.getUsers();
     this.getQuestions();
   }
+  
   toggleButton = (e, id) => {
     if (e.currentTarget.className==='answer-page__filter-unselected') {
       e.currentTarget.className='answer-page__filter-selected';
