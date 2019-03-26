@@ -7,9 +7,11 @@ import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
 
 class CodeEditor extends Component {
+
   state = {
     keepChangeEditor: ''
   }
+
   textArea = React.createRef();
 
   componentDidMount() {
@@ -19,10 +21,15 @@ class CodeEditor extends Component {
       lineNumbers: true,
       content: this.textArea.current,
     })
-
     this.codemirror.setSize(null, '79.8vh');
-    this.codemirror.on('change', this.codeChanged);
+    this.codemirror.on('blur', this.codeChanged);
     this.props.socket.on('editor', (data) => this.codemirror.getDoc().setValue(data.code)); // handles received text
+    this.props.socket.on('newUser', this.updateCode); // this code is not working - what was its purpose?
+  }
+
+  updateCode = (data) => {
+    this.codemirror.getDoc().setValue(data.code);
+    this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()})
   }
 
   codeChanged = () => {
@@ -32,14 +39,12 @@ class CodeEditor extends Component {
       this.props.socket.emit('editor', data);
       this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()});
     }
-    this.codemirror.focus();
-    this.codemirror.setCursor(this.codemirror.lineCount(), 0);
   }
 
   render() {
     return(
       <div className="editor">
-        <textarea id="txtArea" name="txtArea"ref={this.textArea}/>
+        <textarea id="txtArea" name="txtArea" ref={this.textArea}/>
       </div>
 
     )

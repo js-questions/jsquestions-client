@@ -22,27 +22,22 @@ class Chat extends Component {
     seconds: 0,
     secondsString: '00',
     overTime: 'white',
-    clockReset: true,
-    timerId: null
+    timerId: null,
   }
 
   componentDidMount() {
+    //const room = this.props.room; //Amber removed this ... TTD to refractor
     this.props.socket.emit('join room', this.state.roomId)
 
     this.props.socket.on('join room', (participants) => {
       if (participants === 2) {
-
-        if (this.state.clockReset) {
-          this.setState({tutorJoined: true}, () => this.startTimer());
-        }
-        this.setState({clockReset:false})
-
+        this.setState({tutorJoined: true}, () => this.startTimer());
         if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
-          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
-          sessionStorage.setItem('targetOffer', targetOffer);
+        // if (this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
+          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by) // offers prop only exists for the learner
           this.props.socket.emit('question info', {
             question: this.props.question,
-            tutor: sessionStorage.getItem('targetOffer')
+            tutor: targetOffer[0].tutor
           })
         }
       }
@@ -59,33 +54,20 @@ class Chat extends Component {
   }
 
   startTimer = () => {
-    if (!sessionStorage.getItem('timeStarted')){
-      sessionStorage.setItem('timeStarted', Date.now());
-    }
+    const intervalId = setInterval(async () => {
+      this.setState({seconds: this.state.seconds + 1})
+      if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
+      else this.setState({secondsString: this.state.seconds})
 
-    if (sessionStorage.getItem('timeStarted')) {
-      const newTime = Date.now() - sessionStorage.getItem('timeStarted');
-      const secs = Number(((newTime % 60000) / 1000).toFixed(0));
-      const mins= Math.floor(newTime/ 60000);
-      this.setState({
-        minutes: mins,
-        seconds: secs,
-      })
-    }
+      if (this.state.seconds === 60) {
+        await this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
+      }
 
-      const intervalId = setInterval( () => {
-        this.setState({seconds: this.state.seconds + 1})
-        if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
-        else this.setState({secondsString: this.state.seconds})
-        if (this.state.seconds === 60) {
-          this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
-        }
-        if (this.state.minutes === 15) {
-          this.setState({ overTime: 'red'});
-        }
-      }, 1000)
-
-      this.setState({ timerId: intervalId });
+      if (this.state.minutes === 15) {
+        this.setState({ overTime: 'red'});
+      }
+    }, 1000)
+    this.setState({ timerId: intervalId });
   }
 
   renderOverlay = () => {
@@ -106,8 +88,6 @@ class Chat extends Component {
 
   showEndChatModal = () => {
     if (this.state.showFeedbackModal) {
-      sessionStorage.removeItem('timeStarted');
-      sessionStorage.removeItem('targetOffer');
       return <ModalEndChat closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
     }
   }
