@@ -117,12 +117,13 @@ $searchSize :  45px;
   background-color: $primary;
   width: 140px;
   position: absolute;
-  right: 5%;
+  right: 6%;
   top: 80px;
   padding: 10px;
   padding-top: 0px;
   padding-left: 15px;
-  box-shadow: 2px 2px 2px darken(black, 40%);
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
 }
 
 .arrow-up {
