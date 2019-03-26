@@ -33,7 +33,10 @@ class Question extends Component {
 
     return (
       <div className="question__container">
-        <p className="question__user">Avatar</p>
+        <div className="question__user">
+          <img src={this.props.learner.profileBadge} alt="profile-badge" width="50px"/>
+          <p>{this.props.learner.username}</p>
+        </div>
         <div>
           <h4>Question </h4>
           <p>{this.props.question.title}</p>

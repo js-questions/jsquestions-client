@@ -22,6 +22,14 @@
 .question__user {
   width: 20%;
   margin-left: 2%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.question__user p {
+  font-weight: 700;
 }
 
 .question__container div {
