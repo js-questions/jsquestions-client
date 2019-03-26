@@ -1,7 +1,7 @@
 import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
-import { setToken, logout } from '../../redux/actions.js';
+import { setUser, setToken, logout } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
@@ -25,7 +25,8 @@ class Navbar extends React.Component {
 
   componentDidMount = () => {
     this.checkToken();
-    this.props.socket.on('push tutor', (question) => {
+    this.props.socket.on('push tutor', ({ question, learner }) => {
+      this.props.setUser(learner);
       this.setState({socketQuestion: question}, () => this.tutorNotification() );
     })
     this.props.socket.on('cancel call', () => {
@@ -35,7 +36,7 @@ class Navbar extends React.Component {
 
   tutorNotification = () => {
     if (this.state.socketQuestion !== '') {
-      return <TutorNotification question={this.state.socketQuestion} />
+      return <TutorNotification question={this.state.socketQuestion} learner={this.props.users.filter(user => user.user_id === this.state.socketQuestion.learner)[0]} />
     } else {
       return '';
     }
@@ -84,7 +85,7 @@ class Navbar extends React.Component {
 
   showMenu = () => {
     if (this.state.showMenu) {
-      return <ProfileMenu logout={this.props.logout}/>
+      return <ProfileMenu user={this.props.user} logout={this.props.logout}/>
     }
   }
 
@@ -111,7 +112,6 @@ class Navbar extends React.Component {
     const searchTerm = document.getElementById("searchTerm").value;
     this.setState({questionTitle: searchTerm});
   }
-
 
   render() {
     // Sending token on user refresh
@@ -142,12 +142,14 @@ class Navbar extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user
+  user: state.user,
+  users: state.users,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   setToken: (token) => dispatch(setToken(token)),
   logout: () => dispatch(logout()),
+  setUser: (user) => dispatch(setUser(user)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
