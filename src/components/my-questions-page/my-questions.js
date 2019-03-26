@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import './my-questions.scss';
 import Question from './../question/question';
 
@@ -11,7 +12,7 @@ class MyQuestions extends Component {
     }
   }
 
-  componentWillMount (){
+  componentWillMount = async () => {
     const token = localStorage.getItem('token');
     fetch(`http://localhost:4000/questions/asked`, {
       method: 'GET',
@@ -28,10 +29,11 @@ class MyQuestions extends Component {
   renderQuestions = () => {
     if (this.state.questions.length > 0) {
       return this.state.questions.map((question, index) => {
+        let user = this.props.user;
         return (
           <div key={index}>
             <Link className="question__link" to={{pathname: `/question-posted/${question.question_id}`}}>
-              <Question question={question}/>
+              <Question question={question} user={user}/>
             </Link>
           </div>
     )})}
@@ -54,5 +56,9 @@ class MyQuestions extends Component {
   }
 }
 
-export default MyQuestions;
+const mapStateToProps = (state) => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps)(MyQuestions);
 

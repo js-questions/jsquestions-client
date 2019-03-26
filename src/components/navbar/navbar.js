@@ -84,7 +84,7 @@ class Navbar extends React.Component {
 
   showMenu = () => {
     if (this.state.showMenu) {
-      return <ProfileMenu logout={this.props.logout}/>
+      return <ProfileMenu user={this.props.user} logout={this.props.logout}/>
     }
   }
 
