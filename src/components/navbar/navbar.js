@@ -133,11 +133,12 @@ class Navbar extends React.Component {
             <div className="navbar-item navbar__underline"><Link className="navbar__link" to='/answer'>Help others.</Link></div>
           </div>
           {this.loginProcess()}
+          {this.showMenu()}
         </div>
         {this.landingPageNavbar()}
         {this.showSignupModal()}
         {this.tutorNotification()}
-        {this.showMenu()}
+        
       </div>
     )
   }
