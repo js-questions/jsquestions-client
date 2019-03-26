@@ -5,7 +5,6 @@ import AskQuestions from './components/ask-questions-page/ask-questions';
 import LandingPage from './components/landing-page/landing-page';
 import QuestionPosted from './components/question-posted-page/question-posted';
 import AnswerPage from './components/answer-page/answer-page';
-import QuestionAbout from './components/question-posted-page/question-about';
 import MyQuestions from './components/my-questions-page/my-questions';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 
@@ -25,7 +24,7 @@ const Platform = () => (
     <Navbar socket={socket} landingPage={false}/>
     <Route path="/ask" component={AskQuestions}/>
     <PrivateRoute path="/question-posted/:questionid" component={QuestionPosted}/>
-    <Route path="/answer" component={AnswerPage}/>
+    <PrivateRoute path="/answer" component={AnswerPage}/>
     <PrivateRoute path="/my-questions" component={MyQuestions}/>
   </>
 )
@@ -40,7 +39,7 @@ function PrivateRoute({ component: Component, ...rest}) {
 class App extends Component {
 
   render() {
-    
+
     return (
       <div>
         <Router>

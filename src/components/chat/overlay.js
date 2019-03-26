@@ -24,7 +24,7 @@ class Overlay extends Component {
   componentWillUnmount() {
     clearInterval(this.state.counter);
   }
- 
+
   render() {
     return (
       <div className="backdrop">

@@ -1,5 +1,3 @@
-import ReduxThunk from 'redux-thunk' 
-
 export const setToken = (token) => ({
   type: 'SET_TOKEN',
   token
@@ -24,6 +22,11 @@ export const updateOffers = (offers) => ({
   offers
 })
 
+export const updateOffer = (offer) => ({
+  type: 'UPDATE_OFFER',
+  offer
+})
+
 export const removeOffer = (id) => ({
   type: 'REJECT_OFFER',
   id
@@ -32,6 +35,11 @@ export const removeOffer = (id) => ({
 export const updateQuestion = (question) => ({
   type: 'UPDATE_QUESTION',
   question
+})
+
+export const updateQuestions = (questions) => ({
+  type: 'UPDATE_QUESTIONS',
+  questions
 })
 
 export const updateTutors = (tutor) => ({
@@ -67,7 +75,7 @@ export const rejectOffer = (id) => {
   }
 }
 
-export const fetchQuestionAndOffers = (questionid, users, token) => {
+export const fetchQuestionAndOffers = (questionid, token) => {
   return function (dispatch) {
     dispatch(requestOffers());
 
@@ -82,11 +90,7 @@ export const fetchQuestionAndOffers = (questionid, users, token) => {
         .then(res => res.json())
         .then(res => {
           dispatch(updateQuestion(res.question));
-          let offers = res.offers;
-          offers.map(offer => 
-            Object.assign(offer, {tutor: users.filter(user => user.user_id === offer.tutor)[0]})
-          )
-          dispatch(updateOffers(offers));
+          dispatch(updateOffers(res.offers));
         })
     } else {
       console.log('User needs to log in to see their questions');

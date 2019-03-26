@@ -21,7 +21,7 @@ class Chat extends Component {
     minutes: 0,
     seconds: 0,
     secondsString: '00',
-    overTime: 'black'
+    overTime: 'white'
   }
 
   componentDidMount() {
@@ -32,10 +32,11 @@ class Chat extends Component {
       if (participants === 2) {
         this.setState({tutorJoined: true}, () => this.startTimer());
         if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
+        // if (this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
           const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by) // offers prop only exists for the learner
           this.props.socket.emit('question info', {
             question: this.props.question,
-            tutor: targetOffer[0].tutor.user_id // updated to get the userid of the tutor
+            tutor: targetOffer[0].tutor // updated to get the userid of the tutor
           })
         }
       }
@@ -64,10 +65,10 @@ class Chat extends Component {
       if (this.state.minutes === 15) {
         this.setState({ overTime: 'red'});
       }
-  
+
     }, 1000)
   }
-    
+
   renderOverlay = () => {
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
       return <Overlay closeOverlay={(counter) => {
@@ -96,16 +97,15 @@ class Chat extends Component {
 
     return(
       <div className="chat-component">
-    
+
         {this.state.tutorJoined ? null : this.renderOverlay()}
 
         <div className="chat-header">
           <h1>{this.props.question.title}</h1>
           <p>{this.props.question.description}</p>
-
           <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
 
-          <button onClick={this.hangUp}>End Call</button>
+          <button className="button-primary" onClick={this.hangUp}>End Call</button>
         </div>
 
         <div className="chat-body">

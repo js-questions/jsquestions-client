@@ -13,13 +13,14 @@
   align-items: center;
   justify-content: space-between;
   height: 10vh;
+  background-color: $secondary;
 }
 
 .chat-header h1 {
   background-color: $grey-light;
   margin: 20px;
   padding: 20px;
-  width: 80%;
+  width: 60%;
   font-size: 1em;
 }
 
@@ -40,7 +41,7 @@
 .chat-box {
   width: 30%;
   height: 80vh;
-  background-color: $grey-light;
+  background-color: $white;
   margin: 20px;
   border: solid 1px $grey;
   display: flex;
@@ -111,7 +112,7 @@ form button:hover {
 
 .myMessage {
   align-self: flex-end;
-  background-color: rgb(185, 249, 185);
+  background-color: $primary-light;
 }
 
 .elseMessage {

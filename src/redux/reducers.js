@@ -1,25 +1,22 @@
 import { combineReducers } from 'redux';
 import jwt_decode from 'jwt-decode';
 
-const questions = (state = [], action) => {
+const user = (state = {}, action) => {
   switch(action.type) {
-    case 'ALL_QUESTIONS_SUCCESS':
-      return action.data;
-    case 'ALL_QUESTIONS_FAILURE':
-      return action.error;
+    case 'SET_TOKEN':
+      const decoded = jwt_decode(action.token);
+      return decoded;
+    case 'LOGOUT':
+      return {};
     default:
       return state;
   }
 }
 
-const user = (state = {}, action) => {
+const users = (state = [], action) => {
   switch(action.type) {
-    case 'SET_TOKEN':
-      const decoded = jwt_decode(action.token);
-      console.log("HERE", decoded)
-      return decoded;
-    case 'LOGOUT':
-      return {};
+    case 'GET_USERS':
+      return action.users;
     default:
       return state;
   }
@@ -31,6 +28,8 @@ const offers = (state = [], action) => {
       return [ ...state ];
     case 'UPDATE_OFFERS':
       return action.offers; // check that the offers are always up to date
+    case 'UPDATE_OFFER':
+      return [ ...state, action.offer ]
     case 'REJECT_OFFER':
       let offers = state.filter((offer => offer.offer_id !== action.id));
       return offers;
@@ -39,10 +38,10 @@ const offers = (state = [], action) => {
   }
 }
 
-const users = (state = [], action) => {
+const questions = (state = [], action) => {
   switch(action.type) {
-    case 'GET_USERS':
-      return action.users;
+    case 'UPDATE_QUESTIONS':
+      return action.questions;
     default:
       return state;
   }
