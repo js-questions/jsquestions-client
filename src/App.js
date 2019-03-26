@@ -24,7 +24,7 @@ const Platform = () => (
     <Navbar socket={socket} landingPage={false}/>
     <Route path="/ask" component={AskQuestions}/>
     <PrivateRoute path="/question-posted/:questionid" component={QuestionPosted}/>
-    <Route path="/answer" component={AnswerPage}/>
+    <PrivateRoute path="/answer" component={AnswerPage}/>
     <PrivateRoute path="/my-questions" component={MyQuestions}/>
   </>
 )
