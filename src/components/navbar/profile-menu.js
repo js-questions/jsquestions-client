@@ -25,9 +25,9 @@ class ProfileMenu extends Component {
 
   handleLogout = () => {
     localStorage.removeItem('token');
-    this.props.logout();
     this.props.toggleMenu();
-    this.props.socket.emit('offline user', this.props.user.user_id);
+    this.props.socket.emit('offline user', this.props.user.user_id); // this is causing the page to refresh after logout
+    // this.props.logout();
   }
 
   handleClickOutside(event) {
