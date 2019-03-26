@@ -116,6 +116,8 @@ class AnswerPage extends Component {
     }
     //Renders questions
     else if (this.state.questions.length > 0) {
+      console.log(this.state.allUsers)
+      console.log('this.state.offlineUsers ', this.state.offlineUsers)
       return this.state.questions.map((question, index) => {
         let learner = this.state.allUsers.filter(user => { return user.user_id===question.learner})[0];
         return (

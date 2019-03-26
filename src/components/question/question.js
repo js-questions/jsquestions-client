@@ -25,23 +25,27 @@ class Question extends Component {
   render() {
 
     //disable offerbutton on user offline
-
     const learnerOffline = this.props.offlineUsers ? this.props.offlineUsers.find(o2 => this.props.question.learner === o2.user_id) : null;
 
     const offerButtonExists = learnerOffline ? this.renderOfflineButton() :
       this.props.openOfferModal ? this.renderOfferButton() : null ;
 
+    const availability = learnerOffline ? 'availability offline' : 'availability online';
+
     return (
       <div className="question__container">
         <div className="question__user">
-          <img src={this.props.learner.profileBadge} alt="profile-badge" width="50px"/>
+          <div className="question__img">
+            <img src={this.props.learner.profileBadge} alt="profile-badge"/>
+          </div>
+          <div className={availability}></div>
           <p>{this.props.learner.username}</p>
         </div>
-        <div>
+        <div className="question__body">
           <h4>Question </h4>
-          <p>{this.props.question.title}</p>
+          <p className="question__title">{this.props.question.title}</p>
           <h4>Description </h4>
-          <p>{this.props.question.description}</p>
+          <p className="question__description">{this.props.question.description}</p>
         </div>
         {offerButtonExists}
       </div>
