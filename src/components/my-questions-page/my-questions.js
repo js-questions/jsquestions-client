@@ -46,6 +46,7 @@ class MyQuestions extends Component {
   }
 
   renderQuestions = () => {
+    this.getUsers();
     if (this.state.questions.length > 0) {
       return this.state.questions.map((question, index) => {
         let learner = this.state.allUsers.filter(user => { return user.user_id===question.learner})[0];
