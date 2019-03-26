@@ -95,7 +95,7 @@ class AskQuestions extends Component {
   Codepens, etc. here.'/>
 
             <h4>Link to Code</h4>
-            <input maxLength="200" onChange={(event) => this.setState({codeLink: event.target.value})} placeholder='Ex: Github Repo, JSFiddle, Codepen, etc.'/>
+            <input maxLength="1000" onChange={(event) => this.setState({codeLink: event.target.value})} placeholder='Ex: Github Repo, JSFiddle, Codepen, etc.'/>
 
             <button className="button-primary" onClick={this.handleClick.bind(this)}>Help!</button>
             <p className="ask-questions__p">(*) These are the only mandatory fields but the more information you give the tutors, the better they will understand your problem.</p>
