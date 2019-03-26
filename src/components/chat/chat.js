@@ -21,7 +21,8 @@ class Chat extends Component {
     minutes: 0,
     seconds: 0,
     secondsString: '00',
-    overTime: 'white'
+    overTime: 'white',
+    clockReset: true
   }
 
   componentDidMount() {
@@ -30,7 +31,12 @@ class Chat extends Component {
 
     this.props.socket.on('join room', (participants) => {
       if (participants === 2) {
-        this.setState({tutorJoined: true}, () => this.startTimer());
+
+        if (this.state.clockReset) {
+          this.setState({tutorJoined: true}, () => this.startTimer());
+        }
+        this.setState({clockReset:false})
+
         if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
         // if (this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
           const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
@@ -61,26 +67,25 @@ class Chat extends Component {
     if (sessionStorage.getItem('timeStarted')) {
       const newTime = Date.now() - sessionStorage.getItem('timeStarted');
       const secs = Number(((newTime % 60000) / 1000).toFixed(0));
-      const mins= Math.floor(newTime/ 60000);
+      const mins = Math.floor(newTime/ 60000);
       this.setState({
         minutes: mins,
         seconds: secs,
       })
     }
-    setInterval(async () => {
-      this.setState({seconds: this.state.seconds + 1})
-      if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
-      else this.setState({secondsString: this.state.seconds})
 
-      if (this.state.seconds === 60) {
-        await this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
-      }
+      setInterval(async () => {
+        this.setState({seconds: this.state.seconds + 1})
+        if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
+        else this.setState({secondsString: this.state.seconds})
+        if (this.state.seconds === 60) {
+          await this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
+        }
+        if (this.state.minutes === 15) {
+          this.setState({ overTime: 'red'});
+        }
+      }, 1000)
 
-      if (this.state.minutes === 15) {
-        this.setState({ overTime: 'red'});
-      }
-
-    }, 1000)
   }
 
   renderOverlay = () => {
@@ -97,7 +102,6 @@ class Chat extends Component {
 
   hangUp = () => {
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
-
   }
 
   showEndChatModal = () => {
