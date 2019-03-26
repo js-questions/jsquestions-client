@@ -27,7 +27,6 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    //const room = this.props.room; //Amber removed this ... TTD to refractor
     this.props.socket.emit('join room', this.state.roomId)
 
     this.props.socket.on('join room', (participants) => {
@@ -39,7 +38,6 @@ class Chat extends Component {
         this.setState({clockReset:false})
 
         if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
-        // if (this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
           const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
           sessionStorage.setItem('targetOffer', targetOffer);
           this.props.socket.emit('question info', {

@@ -7,11 +7,9 @@ import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
 
 class CodeEditor extends Component {
-
   state = {
     keepChangeEditor: ''
   }
-
   textArea = React.createRef();
 
   componentDidMount() {
@@ -29,7 +27,6 @@ class CodeEditor extends Component {
 
   codeChanged = () => {
     const editorContent = this.codemirror.getDoc().getValue();
-    console.log('editorContent', editorContent) // OMG: undefined for learner
     const data = { code: editorContent, room: this.props.room } // changed property 'text' to 'code' to be more explicit
     if (editorContent !== this.state.keepChangeEditor) {
       this.props.socket.emit('editor', data);
