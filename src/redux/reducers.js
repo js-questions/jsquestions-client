@@ -17,6 +17,14 @@ const users = (state = [], action) => {
   switch(action.type) {
     case 'GET_USERS':
       return action.users;
+    case 'GET_USER':
+      return state.map(user => {
+        if (user.user_id === action.user.user_id) {
+          return action.user;
+        } else {
+          return user;
+        }
+      });
     default:
       return state;
   }

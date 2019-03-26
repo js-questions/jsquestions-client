@@ -8,6 +8,11 @@ export const getUsers = (users) => ({
   users
 })
 
+export const getUser = (user) => ({
+  type: 'GET_USERS',
+  user
+})
+
 export const logout = () => ({
   type: 'LOGOUT',
 })
