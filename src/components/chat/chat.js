@@ -31,9 +31,10 @@ class Chat extends Component {
 
     this.props.socket.on('join room', (participants) => {
       if (participants === 2) {
-        const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by)
         this.setState({tutorJoined: true}, () => this.startTimer());
-        if (this.props.question.learner === this.props.user.user_id) {
+        if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
+        // if (this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
+          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by) // offers prop only exists for the learner
           this.props.socket.emit('question info', {
             question: this.props.question,
             tutor: targetOffer[0].tutor
