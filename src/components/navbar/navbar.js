@@ -1,7 +1,7 @@
 import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
-import { setUser, setToken, logout } from '../../redux/actions.js';
+import { setToken, logout } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
@@ -25,8 +25,7 @@ class Navbar extends React.Component {
 
   componentDidMount = () => {
     this.checkToken();
-    this.props.socket.on('push tutor', ({ question, learner }) => {
-      this.props.setUser(learner);
+    this.props.socket.on('push tutor', (question) => {
       this.setState({socketQuestion: question}, () => this.tutorNotification() );
     })
     this.props.socket.on('cancel call', () => {
@@ -36,7 +35,7 @@ class Navbar extends React.Component {
 
   tutorNotification = () => {
     if (this.state.socketQuestion !== '') {
-      return <TutorNotification question={this.state.socketQuestion} learner={this.props.users.filter(user => user.user_id === this.state.socketQuestion.learner)[0]} />
+      return <TutorNotification question={this.state.socketQuestion} />
     } else {
       return '';
     }
@@ -143,14 +142,12 @@ class Navbar extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user,
-  users: state.users,
+  user: state.user
 })
 
 const mapDispatchToProps = (dispatch) => ({
   setToken: (token) => dispatch(setToken(token)),
   logout: () => dispatch(logout()),
-  setUser: (user) => dispatch(setUser(user)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

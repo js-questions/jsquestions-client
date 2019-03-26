@@ -3,14 +3,9 @@ export const setToken = (token) => ({
   token
 })
 
-export const setUsers = (users) => ({
-  type: 'SET_USERS',
+export const getUsers = (users) => ({
+  type: 'GET_USERS',
   users
-})
-
-export const setUser = (user) => ({
-  type: 'SET_USER',
-  user
 })
 
 export const logout = () => ({
