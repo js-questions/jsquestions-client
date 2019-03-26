@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './chat.scss';
+import './codeeditor.scss';
+
+import logo from '../../assets/square-logo.png';
 
 import { connect } from 'react-redux';
 import { updateChatQuestion } from '../../redux/actions.js';
@@ -74,9 +77,11 @@ class Chat extends Component {
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
       return <Overlay closeOverlay={(counter) => {
         clearInterval(counter);
-        const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by)
-        this.props.socket.emit('cancel call', targetOffer[0].tutor)
-        this.props.history.goBack()
+        if (this.props.question.learner) { // prevents chat from crashing when the timer runs out
+          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by)
+          this.props.history.goBack()
+          this.props.socket.emit('cancel call', targetOffer[0].tutor)
+        }
       }
       }/>
     }
@@ -106,16 +111,28 @@ class Chat extends Component {
         {this.state.tutorJoined ? null : this.renderOverlay()}
 
         <div className="chat-header">
+          <div className="left">
+            <img src={logo} width="40px" alt="logo"/>
+            <p>Live Help Session</p>
+          </div>
+          <div className="right">
+            <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
+            <button className="end-call-button" onClick={this.hangUp}>End Call</button>        
+          </div>
+        </div>
+
+        {/* <div className="chat-info">
           <h1>{this.props.question.title}</h1>
           <p>{this.props.question.description}</p>
-          <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
-
-          <button className="button-primary" onClick={this.hangUp}>End Call</button>
-        </div>
+        </div> */}
 
         <div className="chat-body">
           <CodeEditor socket={this.props.socket} room={this.state.roomId}/>
           <ChatMessages socket={this.props.socket} room={this.state.roomId} />
+        </div>
+
+        <div className="chat-footer">
+          <p>Troubleshooting - I need to report a problem</p>
         </div>
 
         {this.showEndChatModal()}

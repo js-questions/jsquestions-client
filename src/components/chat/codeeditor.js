@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './chat.scss';
 
+
 import CodeMirror from 'codemirror';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/mode/javascript/javascript';
@@ -17,11 +18,12 @@ class CodeEditor extends Component {
   componentDidMount() {
     this.codemirror =  CodeMirror.fromTextArea(this.textArea.current, {
       mode: "javascript",
-      theme: "default",
+      theme: "midnight",
       lineNumbers: true,
       content: this.textArea.current,
     })
-    this.codemirror.setSize(null, '79.8vh');
+    this.codemirror.setOption('theme', 'material');
+    this.codemirror.setSize('65vw', '80vh');
     this.codemirror.on('blur', this.codeChanged);
     this.props.socket.on('editor', (data) => this.codemirror.getDoc().setValue(data.code)); // handles received text
     this.props.socket.on('newUser', this.updateCode); // this code is not working - what was its purpose?
