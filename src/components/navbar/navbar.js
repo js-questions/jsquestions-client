@@ -95,7 +95,7 @@ class Navbar extends React.Component {
 
           <img src={titleImage} alt="JS QUESTIONS"/>
           <form>
-            <input id="searchTerm" type="text" placeholder="What do you need help with?" onChange={this.updateInput}/>
+            <input id="searchTerm" type="text" maxLength="200" placeholder="What do you need help with?" onChange={this.updateInput}/>
             <div  className="navbar-item searchTerm-button">
               <Link className="navbar__link" to={{pathname: '/ask', state: {title: this.state.questionTitle}}}>?</Link>
             </div>

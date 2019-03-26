@@ -52,7 +52,7 @@ class ChatMessages extends Component {
       <div className="chat-box">
         <div id="messages"></div>
         <form action="">
-          <input autoComplete="off" ref={input => this.message = input}
+          <input maxLength="200" autoComplete="off" ref={input => this.message = input}
             onKeyPress={this.detectEnter}/>
           <button onClick={this.clickButton} type="button">
             Send
