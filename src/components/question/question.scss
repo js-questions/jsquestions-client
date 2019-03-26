@@ -31,6 +31,13 @@
   flex-direction: column;
 }
 
+.question__container div p {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 550px;
+}
+
 
 .question__container h4 {
   margin-right: 15px;

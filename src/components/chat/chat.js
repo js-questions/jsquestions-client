@@ -24,7 +24,8 @@ class Chat extends Component {
     minutes: 0,
     seconds: 0,
     secondsString: '00',
-    overTime: 'white'
+    overTime: 'white',
+    timerId: null,
   }
 
   componentDidMount() {
@@ -33,9 +34,10 @@ class Chat extends Component {
 
     this.props.socket.on('join room', (participants) => {
       if (participants === 2) {
-        const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by)
         this.setState({tutorJoined: true}, () => this.startTimer());
-        if (this.props.question.learner === this.props.user.user_id) {
+        if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
+        // if (this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
+          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by) // offers prop only exists for the learner
           this.props.socket.emit('question info', {
             question: this.props.question,
             tutor: targetOffer[0].tutor
@@ -55,7 +57,7 @@ class Chat extends Component {
   }
 
   startTimer = () => {
-    setInterval(async () => {
+    const intervalId = setInterval(async () => {
       this.setState({seconds: this.state.seconds + 1})
       if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
       else this.setState({secondsString: this.state.seconds})
@@ -67,8 +69,8 @@ class Chat extends Component {
       if (this.state.minutes === 15) {
         this.setState({ overTime: 'red'});
       }
-
     }, 1000)
+    this.setState({ timerId: intervalId });
   }
 
   renderOverlay = () => {
@@ -93,6 +95,10 @@ class Chat extends Component {
     if (this.state.showFeedbackModal) {
       return <ModalEndChat closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
     }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.timerId);
   }
 
   render() {

@@ -31,7 +31,7 @@ function ModalOfferHelp(props) {
         <h3>{props.modalRef.title}</h3>
         <div>{props.modalRef.description}</div>
         <form>
-          <input type='text' placeholder='Explain how you can help' onChange={(event) => setModalInfo({...modalInfo, questionid: props.modalRef.questionid, message: event.target.value})} />
+          <input type='text' placeholder='Explain how you can help' maxLength="200" onChange={(event) => setModalInfo({...modalInfo, questionid: props.modalRef.questionid, message: event.target.value})} />
           <p>Waiting time [min]: </p>
           <select className="modal-waiting-time" onChange={(event) => {
           const time = event.target.value * 6000 + Date.now();
