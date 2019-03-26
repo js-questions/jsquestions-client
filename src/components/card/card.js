@@ -4,7 +4,7 @@ import './card.scss';
 class Card extends Component {
 
   render() {
-
+    if (this.props.tutor) {
       return (
         <div className="card-container">
           <div className="card-avatar">
@@ -12,7 +12,7 @@ class Card extends Component {
             <p>{this.props.tutor.username}</p>
           </div>
           <div className="card-body">
-            <p className="expiryDate">This offer expires in: {this.props.expirationDate}</p>
+            {/* <p className="expiryDate">This offer expires in: {this.props.expirationDate}</p> */}
             <h4>Message:</h4>
             <p>{this.props.offer.message}</p>
             <p className="karmaEarned">{this.props.tutor.karma} <span role="img" aria-label="karma">🙏</span> earned so far</p>
@@ -23,7 +23,10 @@ class Card extends Component {
           </div>
         </div>
       )
+    } else {
+      return 'Loading...'
     }
   }
+}
 
 export default Card;

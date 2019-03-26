@@ -9,6 +9,11 @@ export const logout = () => ({
   type: 'LOGOUT',
 })
 
+export const getUsers = (users) => ({
+  type: 'GET_USERS',
+  users
+})
+
 export const requestOffers = (questionid) => ({
   type: 'REQUEST_OFFERS',
   questionid
@@ -19,6 +24,11 @@ export const updateOffers = (offers) => ({
   offers
 })
 
+export const updateOffer = (offer) => ({
+  type: 'UPDATE_OFFER',
+  offer
+})
+
 export const removeOffer = (id) => ({
   type: 'REJECT_OFFER',
   id
@@ -27,6 +37,11 @@ export const removeOffer = (id) => ({
 export const updateQuestion = (question) => ({
   type: 'UPDATE_QUESTION',
   question
+})
+
+export const updateQuestions = (questions) => ({
+  type: 'UPDATE_QUESTIONS',
+  questions
 })
 
 export const updateTutors = (tutor) => ({
