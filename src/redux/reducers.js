@@ -15,16 +15,21 @@ const user = (state = {}, action) => {
 
 const users = (state = [], action) => {
   switch(action.type) {
-    case 'GET_USERS':
+    case 'SET_USERS':
       return action.users;
-    case 'GET_USER':
-      return state.map(user => {
-        if (user.user_id === action.user.user_id) {
-          return action.user;
-        } else {
-          return user;
-        }
-      });
+    case 'SET_USER':
+      // If the user is already in the Store...
+      if ((state.filter(user => user.user_id === action.user.user_id)).length) {
+        return state.map(user => {
+          if (user.user_id === action.user.user_id) {
+            return action.user;
+          } else {
+            return user;
+          }
+        });
+      } else {
+        return [ ...state, action.user ]
+      }
     default:
       return state;
   }

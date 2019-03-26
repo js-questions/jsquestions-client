@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './question-posted.scss';
 import { connect } from 'react-redux';
-import { getUsers, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer } from '../../redux/actions.js';
+import { setUsers, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer } from '../../redux/actions.js';
 import Card from '../card/card.js';
 
 class QuestionPosted extends Component {
@@ -22,7 +22,7 @@ class QuestionPosted extends Component {
         'Authorization' : 'Bearer ' + this.state.token,
     }})
       .then(res => res.json())
-      .then(users => this.props.getUsers(users))
+      .then(users => this.props.setUsers(users))
   }
 
   handleClick = (e, tutorId, offerId) => {
@@ -89,6 +89,6 @@ const mapStateToProps = (state) => ({
   question: state.question
 })
 
-const mapDispatchToProps = { getUsers, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer };
+const mapDispatchToProps = { setUsers, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionPosted);

@@ -3,13 +3,13 @@ export const setToken = (token) => ({
   token
 })
 
-export const getUsers = (users) => ({
-  type: 'GET_USERS',
+export const setUsers = (users) => ({
+  type: 'SET_USERS',
   users
 })
 
-export const getUser = (user) => ({
-  type: 'GET_USERS',
+export const setUser = (user) => ({
+  type: 'SET_USER',
   user
 })
 
