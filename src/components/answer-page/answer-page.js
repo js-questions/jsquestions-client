@@ -137,9 +137,9 @@ class AnswerPage extends Component {
     }
   }
 
-  componentWillMount() {
-    this.getUsers();
-    this.getQuestions();
+  componentWillMount = async () => {
+    await this.getUsers();
+    await this.getQuestions();
   }
   toggleButton = (e, id) => {
     if (e.currentTarget.className==='answer-page__filter-unselected') {

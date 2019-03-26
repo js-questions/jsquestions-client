@@ -6,7 +6,6 @@ import '../../phone.scss';
 class TutorInvitation extends Component {
 
   render() {
-    console.log(this.props.question)
     return (
       <div className="backdrop">
         <div className="modal">

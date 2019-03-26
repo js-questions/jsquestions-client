@@ -12,10 +12,10 @@ class MyQuestions extends Component {
     }
   }
 
-  getUsers = () => {
+  getUsers = async () => {
     const token = localStorage.getItem('token');
     if (token) {
-      fetch(`http://localhost:4000/users/`, {
+      await fetch(`http://localhost:4000/users/`, {
         method: 'GET',
         headers : {
           'Authorization' : 'Bearer ' + token,
@@ -30,9 +30,9 @@ class MyQuestions extends Component {
     }
   }
 
-  componentWillMount (){
+  componentWillMount = async () => {
     const token = localStorage.getItem('token');
-    this.getUsers();
+    await this.getUsers();
     fetch(`http://localhost:4000/questions/asked`, {
       method: 'GET',
       headers : {
@@ -46,7 +46,6 @@ class MyQuestions extends Component {
   }
 
   renderQuestions = () => {
-    this.getUsers();
     if (this.state.questions.length > 0) {
       return this.state.questions.map((question, index) => {
         let learner = this.state.allUsers.filter(user => { return user.user_id===question.learner})[0];
