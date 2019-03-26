@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import './chat.scss';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+
+
 class ChatMessages extends Component {
 
   componentDidMount() {
@@ -18,7 +22,16 @@ class ChatMessages extends Component {
       messageDate.className += ' messageDate';
       if (currentId === msg.id) messages.className += ' myMessage';
       else messages.className += ' elseMessage';
+      this.scrollToBottom();
     });
+  }
+
+  scrollToBottom = () => {
+    const messages = document.getElementById('messages');
+    let shouldScroll = messages.scrollTop + messages.clientHeight === messages.scrollHeight;
+    if (!shouldScroll) {
+      messages.scrollTop = messages.scrollHeight;
+    }
   }
 
   clickButton = (e) => {
@@ -51,11 +64,11 @@ class ChatMessages extends Component {
     return (
       <div className="chat-box">
         <div id="messages"></div>
-        <form action="">
-          <input autoComplete="off" ref={input => this.message = input}
+        <form className="form-wrapper" action="">
+          <textarea wrap="hard" placeholder="Type your message" className="message-field" autoComplete="off" ref={input => this.message = input}
             onKeyPress={this.detectEnter}/>
-          <button onClick={this.clickButton} type="button">
-            Send
+          <button onClick={this.clickButton} className="send-icon" type="button">
+            <FontAwesomeIcon icon={faPaperPlane} />
           </button>
         </form>
       </div>

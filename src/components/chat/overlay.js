@@ -4,7 +4,7 @@ import '../log-in/log-in.scss';
 class Overlay extends Component {
 
   state = {
-    startTime: 60
+    startTime: 5
   }
 
   componentDidMount() {

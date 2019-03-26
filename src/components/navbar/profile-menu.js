@@ -27,6 +27,7 @@ class ProfileMenu extends Component {
     localStorage.removeItem('token');
     this.props.toggleMenu();
     this.props.logout();
+    this.props.socket.emit('offline user', this.props.user.user_id);
   }
 
   handleClickOutside(event) {

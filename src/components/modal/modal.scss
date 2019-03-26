@@ -35,6 +35,7 @@
   justify-content: space-around;
 }
 
+
 .button-close {
   align-self: flex-end;
   padding: 5px;
@@ -117,4 +118,28 @@
   text-decoration: none;
   color: $secondary;
   font-weight: bold;
+}
+
+.offer-help__form {
+  width: 80%;
+  height: 60%;
+}
+
+.offer-help__form input{
+  width: 80%;
+  margin-bottom: 10%;
+}
+
+.offer-help-select-time {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10%;
+}
+
+.offer-help-select-time p {
+  margin-right: 15px;
+}
+
+.button-offer-help {
+  width: 100px;
 }

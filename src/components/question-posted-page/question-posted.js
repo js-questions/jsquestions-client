@@ -1,19 +1,28 @@
 import React, { Component } from 'react';
 import './question-posted.scss';
 import { connect } from 'react-redux';
-import { getUsers, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer } from '../../redux/actions.js';
+import { setUsers, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer } from '../../redux/actions.js';
 import Card from '../card/card.js';
 
 class QuestionPosted extends Component {
   state = {
     questionid: window.location.pathname.replace(/\D/g, ""),
-    token: localStorage.getItem('token'),
+    token: localStorage.getItem('token')
   }
 
   componentDidMount() {
-    this.props.fetchQuestionAndOffers(this.state.questionid);
     this.fetchUsers();
+    this.props.fetchQuestionAndOffers(this.state.questionid, this.state.token);
     this.props.socket.on('offer sent', (offer) => this.props.updateOffer(offer))
+  }
+
+  fetchUsers = () => {
+    fetch(`http://localhost:4000/users`, {
+      headers : {
+        'Authorization' : 'Bearer ' + this.state.token,
+    }})
+      .then(res => res.json())
+      .then(users => this.props.setUsers(users))
   }
 
   handleClick = (e, tutorId, offerId) => {
@@ -23,15 +32,6 @@ class QuestionPosted extends Component {
       pathname: `/chat/${this.props.question.room_id}/${this.props.question.question_id}/learner`,
       state: {question: this.props.question}
     })
-  }
-
-  fetchUsers = () => {
-    fetch(`http://localhost:4000/users`, {
-      headers : {
-        'Authorization' : 'Bearer ' + this.state.token,
-    }})
-      .then(res => res.json())
-      .then(users => this.props.getUsers(users))
   }
 
   alertTutor = async (token, tutorId, offerId) => { // also sending offerId
@@ -50,8 +50,9 @@ class QuestionPosted extends Component {
     .then(res => res.json())
     .then(question => {
       this.props.updateQuestion(question);
+      const learner = this.props.user;
       question.tutor = tutorId; // adding the tutorId to the question
-      this.props.socket.emit('chat now', question)
+      this.props.socket.emit('chat now', { question, learner })
     })
   }
 
@@ -66,7 +67,6 @@ class QuestionPosted extends Component {
   rejectOffer = (offerid) => {
     this.props.rejectOffer(offerid);
   }
-
 
   render() {
     return (
@@ -89,10 +89,6 @@ const mapStateToProps = (state) => ({
   question: state.question
 })
 
-const mapDispatchToProps = { getUsers, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer };
-
-// const mapDispatchToProps = (dispatch) => ({
-//   fetchOffers: (questionid) => dispatch(fetchOffers(questionid))
-// })
+const mapDispatchToProps = { setUsers, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionPosted);

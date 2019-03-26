@@ -92,8 +92,8 @@ class Login extends Component {
             <h2>Sign Up</h2>
             <form onSubmit={this.handleSignup} className="form-style">
               <input type='text' minLength="4" maxLength="12" placeholder='Username' value={this.state.username} onChange={(event) => this.setState({username: event.target.value})} required />
-              <input type='email' placeholder='E-mail address' value={this.state.email} onChange={(event) => this.setState({email: event.target.value})} required />
-              <input type='password' minLength="6" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" title="Please include at least 1 uppercase character, 1 lowercase character, and 1 number" placeholder='Password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value})} required />
+              <input type='email' placeholder='E-mail address' maxLength="200" value={this.state.email} onChange={(event) => this.setState({email: event.target.value})} required />
+              <input type='password' minLength="6" maxLength="200" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" title="Please include at least 1 uppercase character, 1 lowercase character, and 1 number" placeholder='Password' value={this.state.password} onChange={(event) => this.setState({password: event.target.value})} required />
               <button className="button-primary">Sign up</button>
             </form>
             <p>{this.state.signUpError}</p>

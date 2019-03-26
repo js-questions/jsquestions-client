@@ -3,6 +3,14 @@ import './card.scss';
 
 class Card extends Component {
 
+  checkAvailability() {
+    if (this.props.tutor.available) {
+      return (<button className="button-primary" onClick={this.props.chatNow}>chat now</button>)
+    } else {
+      return (<button className="button-primary" disabled onClick={this.props.chatNow}>sorry offline</button>)
+    }
+  }
+
   render() {
     if (this.props.tutor) {
       return (
@@ -18,7 +26,7 @@ class Card extends Component {
             <p className="karmaEarned">{this.props.tutor.karma} <span role="img" aria-label="karma">🙏</span> earned so far</p>
           </div>
           <div className="card-action">
-            <button className="button-primary" onClick={this.props.chatNow}>chat now</button>
+            {this.checkAvailability()}
             <button className="button-secondary" onClick={this.props.rejectOffer}>No thanks!</button>
           </div>
         </div>

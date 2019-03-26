@@ -4,6 +4,7 @@ import './modal.scss';
 class ModalEndChat extends Component {
   state = {
     feedback: 0,
+    karmaClicked: false
     // questionid: this.props.modalRef.questionid,
     // expiration: Date.now() + 30
   }
@@ -12,7 +13,7 @@ class ModalEndChat extends Component {
     const token = localStorage.getItem('token');
     const body = {
       "karma": this.state.feedback,
-      "credits": 50
+      "credits": 50,
     }
 
     fetch(`http://localhost:4000/questions/${this.props.questionId}/feedback`, {
@@ -43,6 +44,8 @@ class ModalEndChat extends Component {
   setFeedback = (e, num) => {
     e.preventDefault();
     this.setState({feedback: num})
+    if (!this.state.karmaClicked) this.setState({karmaClicked: true})
+
   }
 
   render() {
@@ -73,7 +76,7 @@ class ModalEndChat extends Component {
                 <button className="button-karma" onClick={(e) => this.setFeedback(e, 1)}><span role="img" aria-label="karma">🙏</span></button>
                 <button className="button-karma" onClick={(e) => this.setFeedback(e, 3)}><span role="img" aria-label="karma">🙏🙏🙏</span></button>
               </div>
-              <button className="button-primary" onClick={(e)=> this.chatFeedback(e)}>SUBMIT</button>
+              <button className="button-primary" disabled={!this.state.karmaClicked} onClick={(e)=> this.chatFeedback(e)}>SUBMIT</button>
             </form>
           </div>
         </div>
