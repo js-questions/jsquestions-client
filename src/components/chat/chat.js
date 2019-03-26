@@ -67,19 +67,19 @@ class Chat extends Component {
     if (sessionStorage.getItem('timeStarted')) {
       const newTime = Date.now() - sessionStorage.getItem('timeStarted');
       const secs = Number(((newTime % 60000) / 1000).toFixed(0));
-      const mins = Math.floor(newTime/ 60000);
+      const mins= Math.floor(newTime/ 60000);
       this.setState({
         minutes: mins,
         seconds: secs,
       })
     }
 
-      setInterval(async () => {
+      setInterval( () => {
         this.setState({seconds: this.state.seconds + 1})
         if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
         else this.setState({secondsString: this.state.seconds})
         if (this.state.seconds === 60) {
-          await this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
+          this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
         }
         if (this.state.minutes === 15) {
           this.setState({ overTime: 'red'});
@@ -102,6 +102,7 @@ class Chat extends Component {
 
   hangUp = () => {
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
+
   }
 
   showEndChatModal = () => {
