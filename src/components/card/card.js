@@ -4,7 +4,6 @@ import './card.scss';
 class Card extends Component {
 
   checkAvailability() {
-    console.log('this.props.tutor.available ', this.props.tutor.available)
     if (this.props.tutor.available) {
       return (<button className="button-primary" onClick={this.props.chatNow}>chat now</button>)
     } else {
@@ -14,7 +13,6 @@ class Card extends Component {
 
   render() {
     if (this.props.tutor) {
-      console.log('this.props.tutor ', this.props.tutor)
       return (
         <div className="card-container">
           <div className="card-avatar">
