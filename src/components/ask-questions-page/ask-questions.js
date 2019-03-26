@@ -71,10 +71,10 @@ class AskQuestions extends Component {
   }
 
   componentWillUnmount() {
-    //The below componentWillUnmount is needed for warning issues with React
-    this.setState = ()=> {
-      return;
-    };
+    // The below componentWillUnmount is needed for warning issues with React
+    // this.setState = () => {
+    //   return;
+    // };
   }
 
   render() {

@@ -53,7 +53,7 @@ class AnswerPage extends Component {
       .then(res => res.json())
       .then(res => {
         this.setState({
-          offlineUsers: res.filter(user => {
+          offlineUsers: res.filter(user => {  // [Rod] We should set it to the redux store instead
             return user.available === null;
           })
         });
