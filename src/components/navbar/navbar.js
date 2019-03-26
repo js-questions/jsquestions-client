@@ -99,7 +99,7 @@ class Navbar extends React.Component {
         <div className="landing-page-body">
 
           <img src={titleImage} alt="JS QUESTIONS"/>
-          <form>
+          <form className="question-bar">
             <input id="searchTerm" type="text" maxLength="200" placeholder="What do you need help with?" onChange={this.updateInput}/>
             <NavLink to={{pathname: '/ask', state: {title: this.state.questionTitle}}} className="navbar-item searchTerm-button">?</NavLink>
           </form>

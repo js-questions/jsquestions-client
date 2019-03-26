@@ -35,6 +35,10 @@ input {
   width: 100%;
 }
 
+input:focus textarea:focus {
+  outline: none;
+}
+
 textarea {
   border: solid 1px $grey-light;
   border-radius: 4px;
