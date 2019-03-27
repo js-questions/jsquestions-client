@@ -1,13 +1,21 @@
 import { combineReducers } from 'redux';
-import jwt_decode from 'jwt-decode';
 
 const user = (state = {}, action) => {
   switch(action.type) {
-    case 'SET_TOKEN':
-      const decoded = jwt_decode(action.token);
-      return decoded;
+    case 'SET_USER':
+      // return action.user;
+      return {
+        ...action.user,
+        ...state
+      };
     case 'LOGOUT':
       return {};
+    case 'UPDATE_KARMA':
+      let updated = {
+        ...state,
+        karma: state.karma + action.karma
+      }
+      return updated;
     default:
       return state;
   }
@@ -17,7 +25,7 @@ const users = (state = [], action) => {
   switch(action.type) {
     case 'SET_USERS':
       return action.users;
-    case 'SET_USER':
+    case 'ADD_NEW_USER':
       // If the user is already in the Store...
       if ((state.filter(user => user.user_id === action.user.user_id)).length) {
         return state.map(user => {

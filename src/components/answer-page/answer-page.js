@@ -123,8 +123,18 @@ class AnswerPage extends Component {
     }
     //Renders questions
     else if (this.state.questions.length > 0) {
-      // const questionsFiltered = this.state.questions.filter((question, index) => question.status!=='closed');
-      return this.state.questions.map((question, index) => {
+      const questionsHelpNow = this.state.questions.filter((question) => question.status==='help-now' && this.state.offlineUsers.filter(user => user.user_id===question.learner).length===0);
+      const questionsPending = this.state.questions.filter((question) => question.status==='pending' && this.state.offlineUsers.filter(user => user.user_id===question.learner).length===0);
+      const questionsClosed = this.state.questions.filter((question) => question.status==='closed' && this.state.offlineUsers.filter(user => user.user_id===question.learner).length===0);
+      const questionsOffline = this.state.questions.filter((question) => this.state.offlineUsers.filter(user => user.user_id===question.learner).length>0);
+
+      const questionsSorted = [];
+      if (questionsHelpNow && questionsHelpNow.length>0) questionsHelpNow.forEach(el => questionsSorted.push(el));
+      if (questionsPending && questionsPending.length>0) questionsPending.forEach(el => questionsSorted.push(el));
+      if (questionsClosed && questionsClosed.length>0) questionsClosed.forEach(el => questionsSorted.push(el));
+      if (questionsOffline && questionsOffline.length>0) questionsOffline.forEach(el => questionsSorted.push(el));
+
+      return questionsSorted.map((question, index) => {
         let user = this.state.allUsers.filter(user => { return user.user_id===question.learner})[0];
         return (
           <div className="question-container" key={index} >

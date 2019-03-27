@@ -5,7 +5,7 @@ import './codeeditor.scss';
 import logo from '../../assets/square-logo.png';
 
 import { connect } from 'react-redux';
-import { updateChatQuestion } from '../../redux/actions.js';
+import { updateChatQuestion, updateKarma } from '../../redux/actions.js';
 
 import CodeEditor from './codeeditor';
 import ChatMessages from './chat-messages';
@@ -36,10 +36,9 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    console.log("all needs should be here", this.props)
-    this.setChatDetails();
-
     this.props.socket.emit('join room', this.state.roomId)
+
+    this.setChatDetails();
 
     // Notify that user is online (since navbar is not render)
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
@@ -51,53 +50,28 @@ class Chat extends Component {
           this.setState({tutorJoined: true}, () => this.startTimer());
         }
         this.setState({clockReset:false})
-  
+
         if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
           const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
+          this.setState({targetTutor: targetOffer[0].tutor});
           sessionStorage.setItem('targetOffer', targetOffer);
-          
           this.props.socket.emit('question info', {
             question: this.props.question,
             tutor: sessionStorage.getItem('targetOffer')
           })
         }
+      } else {
+        this.setState({tutorJoined: false});
       }
-      else this.setState({tutorJoined: false});
-           
     });
 
-    // STORE THE QUESTION INFO TO THE REDUX STATE AND THE CHATROOM 
-    // ?? I DON'T THINK THIS WORKS
+    // STORE THE QUESTION INFO TO THE REDUX STATE AND THE CHATROOM
     this.props.socket.on('question info', (data) => {
       this.props.updateChatQuestion(data);
     })
 
     //HANG-UP
     this.props.socket.on('hang up', () => {this.setState({showFeedbackModal: true})})
-  }
-
-  setChatDetails = () => {
-    //this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor
-    //this.props.question.answered_by IS NULL ON LEARNER
-    console.log('users', this.props.users)
-    //const test = this.props.users.find(user => user.user_id === this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor);
-    this.setState({
-      questionTitle: this.props.question.title,
-      questionDescription: this.props.question.description,
-      questionResources: this.props.question.resources,
-      questionCode: this.props.question.code,
-      questionLearner: this.props.question.learner,
-    })
-    // if (this.state.tutorOrLearner === 'tutor'){
-    //   this.setState({
-    //     questionTutor: this.props.users.find(user => user.user_id === this.props.question.learner).username
-    //   })
-    // } else {
-    //   this.setState({
-    //     questionTutor: 'TUTOR ID HERE'
-    //   })
-    // }
-    console.log(this.state)
   }
 
   startTimer = () => {
@@ -132,7 +106,6 @@ class Chat extends Component {
   }
 
   renderOverlay = () => {
-    console.log(this.state.tutorJoined)
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
       return <Overlay closeOverlay={(counter) => {
         clearInterval(counter);
@@ -150,11 +123,39 @@ class Chat extends Component {
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
   }
 
+  setChatDetails = () => {
+    //this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor
+    //this.props.question.answered_by IS NULL ON LEARNER
+    console.log('users', this.props.users)
+    //const test = this.props.users.find(user => user.user_id === this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor);
+    this.setState({
+      questionTitle: this.props.question.title,
+      questionDescription: this.props.question.description,
+      questionResources: this.props.question.resources,
+      questionCode: this.props.question.code,
+      questionLearner: this.props.question.learner,
+    })
+    // if (this.state.tutorOrLearner === 'tutor'){
+    //   this.setState({
+    //     questionTutor: this.props.users.find(user => user.user_id === this.props.question.learner).username
+    //   })
+    // } else {
+    //   this.setState({
+    //     questionTutor: 'TUTOR ID HERE'
+    //   })
+    // }
+    console.log(this.state)
+  }
+
+  updateKarma = (karma) => {
+    this.props.socket.emit('update karma', {tutor: this.state.targetTutor, karma: karma })
+  }
+
   showEndChatModal = () => {
     if (this.state.showFeedbackModal) {
       sessionStorage.removeItem('timeStarted');
       sessionStorage.removeItem('targetOffer');
-      return <ModalEndChat closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
+      return <ModalEndChat updateKarma={this.updateKarma} closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
     }
   }
 
@@ -168,6 +169,7 @@ class Chat extends Component {
   render() {
     return(
       <div className="chat-component">
+
         {this.state.tutorJoined ? null : this.renderOverlay()}
 
         <div className="chat-header">
@@ -177,7 +179,7 @@ class Chat extends Component {
           </div>
           <div className="right">
             <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
-            <button className="end-call-button" onClick={this.hangUp}>End Call</button>        
+            <button className="end-call-button" onClick={this.hangUp}>End Call</button>
           </div>
         </div>
 
@@ -195,15 +197,15 @@ class Chat extends Component {
           {this.state.questionTutor}
         </div>
 
-        <div>
-          <div className="chat-body">
-            <CodeEditor socket={this.props.socket} room={this.state.roomId}/>
-            <ChatMessages socket={this.props.socket} room={this.state.roomId} />
-          </div>
 
-          <div className="chat-footer">
-            <p>Troubleshooting - I need to report a problem</p>
-          </div>
+
+        <div className="chat-body">
+          <CodeEditor socket={this.props.socket} room={this.state.roomId}/>
+          <ChatMessages socket={this.props.socket} room={this.state.roomId} />
+        </div>
+
+        <div className="chat-footer">
+          <p>Troubleshooting - I need to report a problem</p>
         </div>
 
         {this.showEndChatModal()}
@@ -222,7 +224,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  updateChatQuestion: (question) => dispatch(updateChatQuestion(question))
+  updateChatQuestion: (question) => dispatch(updateChatQuestion(question)),
+  updateKarma: (karma) => dispatch(updateKarma(karma))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);
