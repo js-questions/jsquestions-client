@@ -55,7 +55,11 @@ class Navbar extends React.Component {
 
   loginProcess = () => {
     if (!this.props.user.username) {
-      return (<div className="navbar-item" onClick={this.toggleSignUp}><span userExists={true} className="log-in">Log In</span><button userExists={false} className="button-primary">Sign Up</button></div>)
+      return (
+      <div className="navbar-item" onClick={this.toggleSignUp}>
+        <span className="log-in">Log In</span>
+        <button className="button-primary">Sign Up</button>
+      </div>)
     }
     else {
       return (
@@ -138,7 +142,7 @@ class Navbar extends React.Component {
         {this.landingPageNavbar()}
         {this.showSignupModal()}
         {this.tutorNotification()}
-        
+
       </div>
     )
   }
