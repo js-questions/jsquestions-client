@@ -26,7 +26,7 @@ const users = (state = [], action) => {
   switch(action.type) {
     case 'SET_USERS':
       return action.users;
-    case 'SET_USER':
+    case 'ADD_NEW_USER':
       // If the user is already in the Store...
       if ((state.filter(user => user.user_id === action.user.user_id)).length) {
         return state.map(user => {

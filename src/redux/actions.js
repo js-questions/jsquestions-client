@@ -8,8 +8,8 @@ export const setUsers = (users) => ({
   users
 })
 
-export const setUser = (user) => ({
-  type: 'SET_USER',
+export const addNewUser = (user) => ({
+  type: 'ADD_NEW_USER',
   user
 })
 
