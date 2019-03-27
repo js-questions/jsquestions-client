@@ -36,7 +36,6 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    console.log("all needs should be here", this.props)
     this.setChatDetails();
 
     this.props.socket.emit('join room', this.state.roomId)
@@ -51,11 +50,11 @@ class Chat extends Component {
           this.setState({tutorJoined: true}, () => this.startTimer());
         }
         this.setState({clockReset:false})
-  
+
         if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
           const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
           sessionStorage.setItem('targetOffer', targetOffer);
-          
+
           this.props.socket.emit('question info', {
             question: this.props.question,
             tutor: sessionStorage.getItem('targetOffer')
@@ -63,10 +62,10 @@ class Chat extends Component {
         }
       }
       else this.setState({tutorJoined: false});
-           
+
     });
 
-    // STORE THE QUESTION INFO TO THE REDUX STATE AND THE CHATROOM 
+    // STORE THE QUESTION INFO TO THE REDUX STATE AND THE CHATROOM
     // ?? I DON'T THINK THIS WORKS
     this.props.socket.on('question info', (data) => {
       this.props.updateChatQuestion(data);
@@ -79,7 +78,6 @@ class Chat extends Component {
   setChatDetails = () => {
     //this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor
     //this.props.question.answered_by IS NULL ON LEARNER
-    console.log('users', this.props.users)
     //const test = this.props.users.find(user => user.user_id === this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor);
     this.setState({
       questionTitle: this.props.question.title,
@@ -97,7 +95,6 @@ class Chat extends Component {
     //     questionTutor: 'TUTOR ID HERE'
     //   })
     // }
-    console.log(this.state)
   }
 
   startTimer = () => {
@@ -132,7 +129,6 @@ class Chat extends Component {
   }
 
   renderOverlay = () => {
-    console.log(this.state.tutorJoined)
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
       return <Overlay closeOverlay={(counter) => {
         clearInterval(counter);
@@ -177,7 +173,7 @@ class Chat extends Component {
           </div>
           <div className="right">
             <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
-            <button className="end-call-button" onClick={this.hangUp}>End Call</button>        
+            <button className="end-call-button" onClick={this.hangUp}>End Call</button>
           </div>
         </div>
 
