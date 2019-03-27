@@ -19,7 +19,8 @@ class Navbar extends React.Component {
       showMenu: false,
       socketQuestion: '',
       questionTitle: '',
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      login: true
     }
     this.updateInput = this.updateInput.bind(this);
   }
@@ -54,8 +55,26 @@ class Navbar extends React.Component {
     }
   }
 
-  toggleSignUp = () => {
-    this.setState({showSignup: !this.state.showSignup})
+  toggleSignUp = (e) => {
+    if (e) {
+      if (e.target.className === 'log-in') { // if user clicked log-in from the landing page
+        this.setState({showSignup: !this.state.showSignup, login: true});
+      } else {
+        this.setState({showSignup: !this.state.showSignup, login: false});
+      }
+    } else { 
+      this.setState({showSignup: !this.state.showSignup})
+    }
+  }
+
+  switchLogin = () => {
+    this.setState({login: !this.state.login});
+  }
+
+  showSignupModal = () => {
+    if (this.state.showSignup) {
+      return <Login switch={this.switchLogin} login={this.state.login} close={this.toggleSignUp}/>
+    }
   }
 
   checkToken = () => {
@@ -68,9 +87,9 @@ class Navbar extends React.Component {
   loginProcess = () => {
     if (!this.props.user.username) {
       return (
-      <div className="navbar-item" onClick={this.toggleSignUp}>
-        <span className="log-in">Log In</span>
-        <button className="button-primary">Sign Up</button>
+      <div className="navbar-item" >
+        <span onClick={this.toggleSignUp} className="log-in">Log In</span>
+        <button onClick={this.toggleSignUp} className="button-primary">Sign Up</button>
       </div>)
     }
     else {
@@ -90,12 +109,6 @@ class Navbar extends React.Component {
           </div>
         </div>
       )
-    }
-  }
-
-  showSignupModal = () => {
-    if (this.state.showSignup) {
-      return <Login close={this.toggleSignUp}/>
     }
   }
 
