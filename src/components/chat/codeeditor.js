@@ -12,28 +12,35 @@ class CodeEditor extends Component {
     keepChangeEditor: ''
   }
   textArea = React.createRef();
+  checker = false;
 
   componentDidMount() {
+    document.addEventListener('keyup', (e) => {
+      this.checker = false;
+    })
+    document.addEventListener('keydown', (e) => {
+      this.checker = true;
+    })
+    this.props.socket.on('editor', (data) => this.codemirror.getDoc().setValue(data.code)); // handles received text
     this.codemirror =  CodeMirror.fromTextArea(this.textArea.current, {
       mode: "javascript",
       theme: "midnight",
       lineNumbers: true,
       content: this.textArea.current,
     })
-
+    this.codemirror.on('changes', this.codeChanged);
     this.codemirror.setOption('theme', 'material');
     this.codemirror.setSize('65vw', '80vh');
-    this.codemirror.on('change', this.codeChanged);
-
-    this.props.socket.on('editor', (data) => this.codemirror.getDoc().setValue(data.code)); // handles received text
   }
 
   codeChanged = () => {
-    const editorContent = this.codemirror.getDoc().getValue();
-    const data = { code: editorContent, room: this.props.room } // changed property 'text' to 'code' to be more explicit
-    if (editorContent !== this.state.keepChangeEditor) {
-      this.props.socket.emit('editor', data);
-      this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()});
+    if (this.checker) {
+      const editorContent = this.codemirror.getDoc().getValue();
+      const data = { code: editorContent, room: this.props.room } // changed property 'text' to 'code' to be more explicit
+      if (editorContent !== this.state.keepChangeEditor) {
+        this.props.socket.emit('editor', data);
+        this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()});
+      }
     }
     this.codemirror.focus();
     this.codemirror.setCursor(this.codemirror.lineCount(), 0);
