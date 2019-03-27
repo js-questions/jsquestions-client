@@ -60,7 +60,7 @@ class QuestionPosted extends Component {
     const offers = this.props.offers;
     return offers.map((offer) => {
       const tutor = this.props.users.find(user => user.user_id === offer.tutor)
-      return <div key={offer.offer_id}><Card tutor={tutor} offer={offer} rejectOffer={() => this.rejectOffer(offer.offer_id)} chatNow={(e) => this.handleClick(e, tutor.user_id, offer.offer_id)}/></div>
+      if (offer.linked_question === +this.state.questionid) return <div key={offer.offer_id}><Card tutor={tutor} offer={offer} rejectOffer={() => this.rejectOffer(offer.offer_id)} chatNow={(e) => this.handleClick(e, tutor.user_id, offer.offer_id)}/></div>
     });
   }
 
