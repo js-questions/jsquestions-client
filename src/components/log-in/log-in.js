@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../modal/modal.scss';
 import './log-in.scss';
+import './../../index.scss';
 import btoa from 'btoa';
 import { setToken } from '../../redux/actions.js';
 import { connect } from 'react-redux';

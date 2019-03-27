@@ -35,6 +35,10 @@ input {
   width: 100%;
 }
 
+input:focus textarea:focus {
+  outline: none;
+}
+
 textarea {
   border: solid 1px $grey-light;
   border-radius: 4px;
@@ -47,9 +51,8 @@ textarea {
 .button-primary {
   background-color: $primary;
   border-radius: 40px;
-  padding: 10px 0;
-  min-width: 150px;
-  min-height: 50px;
+  padding: 12px 25px;
+  width: auto !important;
   font-weight: 700;
   font-family: -apple-system, 'Montserrat', "Roboto", "Helvetica Neue", sans-serif;
   font-size: 1.5rem;

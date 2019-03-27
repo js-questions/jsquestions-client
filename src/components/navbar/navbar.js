@@ -5,7 +5,7 @@ import { setUser, setToken, logout } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import ProfileMenu from './profile-menu';
 import TutorNotification from '../modal/modal-tutor-notification.js';
 import titleImage from '../../assets/hero-logo.png';
@@ -55,7 +55,7 @@ class Navbar extends React.Component {
 
   loginProcess = () => {
     if (!this.props.user.username) {
-      return (<div className="navbar-item" onClick={this.toggleSignUp}>Sign up/Log in</div>)
+      return (<div className="navbar-item" onClick={this.toggleSignUp}><span userExists={true} className="log-in">Log In</span><button userExists={false} className="button-primary">Sign Up</button></div>)
     }
     else {
       return (
@@ -83,9 +83,13 @@ class Navbar extends React.Component {
     }
   }
 
+  toggleProfileMenu = () => {
+    this.setState({showMenu: !this.state.showMenu})
+  }
+
   showMenu = () => {
     if (this.state.showMenu) {
-      return <ProfileMenu user={this.props.user} logout={this.props.logout}/>
+      return <ProfileMenu user={this.props.user} toggleMenu={this.toggleProfileMenu} logout={this.props.logout}/>
     }
   }
 
@@ -95,11 +99,9 @@ class Navbar extends React.Component {
         <div className="landing-page-body">
 
           <img src={titleImage} alt="JS QUESTIONS"/>
-          <form>
+          <form className="question-bar">
             <input id="searchTerm" type="text" maxLength="200" placeholder="What do you need help with?" onChange={this.updateInput}/>
-            <div  className="navbar-item searchTerm-button">
-              <Link className="navbar__link" to={{pathname: '/ask', state: {title: this.state.questionTitle}}}>?</Link>
-            </div>
+            <NavLink to={{pathname: '/ask', state: {title: this.state.questionTitle}}} className="navbar-item searchTerm-button">?</NavLink>
           </form>
           <h3>For when Stack Overflow and the Internet just aren't enough.</h3>
           <h2>Want to help others?</h2>
@@ -131,11 +133,12 @@ class Navbar extends React.Component {
             <div className="navbar-item navbar__underline"><Link className="navbar__link" to='/answer'>Help others.</Link></div>
           </div>
           {this.loginProcess()}
+          {this.showMenu()}
         </div>
         {this.landingPageNavbar()}
         {this.showSignupModal()}
         {this.tutorNotification()}
-        {this.showMenu()}
+        
       </div>
     )
   }
