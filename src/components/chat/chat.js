@@ -67,7 +67,7 @@ class Chat extends Component {
     });
 
     // STORE THE QUESTION INFO TO THE REDUX STATE AND THE CHATROOM 
-    // ?? I DON'T THINK THIS WORKS
+    //// ?? I DON'T THINK THIS WORKS ??
     this.props.socket.on('question info', (data) => {
       this.props.updateChatQuestion(data);
     })
@@ -76,18 +76,31 @@ class Chat extends Component {
     this.props.socket.on('hang up', () => {this.setState({showFeedbackModal: true})})
   }
 
-  setChatDetails = () => {
+  setChatDetails = async () => {
     //this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor
     //this.props.question.answered_by IS NULL ON LEARNER
     console.log('users', this.props.users)
     //const test = this.props.users.find(user => user.user_id === this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor);
-    this.setState({
-      questionTitle: this.props.question.title,
-      questionDescription: this.props.question.description,
-      questionResources: this.props.question.resources,
-      questionCode: this.props.question.code,
-      questionLearner: this.props.question.learner,
-    })
+    if (!sessionStorage.getItem('chatDetails')){
+      await this.setState({
+        questionTitle: this.props.question.title,
+        questionDescription: this.props.question.description,
+        questionResources: this.props.question.resources,
+        questionCode: this.props.question.code,
+        // questionLearner: this.props.question.learner,
+      })
+      sessionStorage.setItem('chatDetails', JSON.stringify(this.state))
+    } else {
+      const questionDetails = JSON.parse(sessionStorage.getItem('chatDetails'));
+      this.setState({
+        questionTitle: questionDetails.questionTitle,
+        questionDescription: questionDetails.questionDescription,
+        questionResources: questionDetails.questionResources,
+        questionCode: questionDetails.questionCode,
+        // questionLearner: questionDetails.questionLearner,
+      })
+    }
+
     // if (this.state.tutorOrLearner === 'tutor'){
     //   this.setState({
     //     questionTutor: this.props.users.find(user => user.user_id === this.props.question.learner).username
@@ -97,7 +110,7 @@ class Chat extends Component {
     //     questionTutor: 'TUTOR ID HERE'
     //   })
     // }
-    console.log(this.state)
+
   }
 
   startTimer = () => {
@@ -154,6 +167,7 @@ class Chat extends Component {
     if (this.state.showFeedbackModal) {
       sessionStorage.removeItem('timeStarted');
       sessionStorage.removeItem('targetOffer');
+      sessionStorage.removeItem('chatDetails');
       return <ModalEndChat closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
     }
   }
@@ -180,19 +194,15 @@ class Chat extends Component {
             <button className="end-call-button" onClick={this.hangUp}>End Call</button>        
           </div>
         </div>
-
         <div className="chat-info">
-          <h1>{this.state.questionTitle}</h1>
-          <br/>
-          <p>{this.state.questionDescription}</p>
-          <br/>
-          <p>{this.state.questionResources}</p>
-          <br/>
-          <p>{this.state.questionCode}</p>
-          <br/>
-          <p>{this.state.questionLearner}</p>
-          <br/>
-          {this.state.questionTutor}
+          <div>
+            <p>Title: <span>{this.state.questionTitle}</span></p>
+            <p>Resources: <span>{this.state.questionResources}</span></p>
+            <p>Code Links: <span>{this.state.questionCode}</span></p>
+          </div>
+          <div>
+            <p>Description: <span>{this.state.questionDescription}</span></p>
+          </div>
         </div>
 
         <div>
