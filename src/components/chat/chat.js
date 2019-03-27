@@ -28,24 +28,29 @@ class Chat extends Component {
     clockReset: true,
     timerId: null,
     //questionDetails: null,
-    questionDetails: {
-      title: null,
-      description: null,
-      resources: null,
-      code: null,
-      learner: null,
-      tutor: null //(need to put this in here from answered_by -> match offer.offer_id -> offer.tutor -> users.user_id)
-    }
+    // questionDetails: {
+    //   title: null,
+    //   description: null,
+    //   resources: null,
+    //   code: null,
+    //   learner: null,
+    //   tutor: null //(need to put this in here from answered_by -> match offer.offer_id -> offer.tutor -> users.user_id)
+    // }
+    questionTitle: null,
+    questionDescription: null,
+    questionResources: null,
+    questionCode: null,
+    questionLearner: null,
+    questionTutor:null
   }
 
   componentDidMount() {
-    console.log(this.props)
-    
+    console.log("all needs should be here", this.props)
+    this.setChatDetails();
+
     this.props.socket.emit('join room', this.state.roomId)
 
     this.props.socket.on('join room', (participants) => {
-
-      //OMG: UPDATE TUTORS STORE ON JOIN
       if (participants === 2) {
 
         if (this.state.clockReset) {
@@ -54,7 +59,7 @@ class Chat extends Component {
 
         this.setState({clockReset:false})
         
-        const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
+        const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by);
         sessionStorage.setItem('targetOffer', targetOffer);
 
         this.props.socket.emit('question info', {
@@ -65,14 +70,38 @@ class Chat extends Component {
      
     });
 
-    // STORE THE QUESTION INFO TO THE REDUX STATE AND THE CHATROOM
+    // STORE THE QUESTION INFO TO THE REDUX STATE AND THE CHATROOM 
+    // ?? I DON'T THINK THIS WORKS
     this.props.socket.on('question info', (data) => {
-      console.log("data", data)
       this.props.updateChatQuestion(data);
     })
 
     //HANG-UP
     this.props.socket.on('hang up', () => {this.setState({showFeedbackModal: true})})
+  }
+
+  setChatDetails = () => {
+    // this.setState({
+    //   questionDetails: {
+    //     ...this.state.questionDetails,
+    //     hospital_id: 1,
+    //   },
+    // });
+    
+    // this.setState({
+    //   questionDetails: Object.assign({}, this.state.questionDetails, {
+    //     hospital_id: 1,
+    //   }),
+    // });
+    this.setState({
+      questionTitle: this.props.question.title,
+      questionDescription: this.props.question.description,
+      questionResources: this.props.question.resources,
+      questionCode: this.props.question.code,
+      questionLearner: this.props.question.learner,
+      questionTutor: 3
+    })
+    console.log(this.state.questionDetails)
   }
 
   startTimer = () => {
@@ -142,7 +171,6 @@ class Chat extends Component {
 
     return(
       <div className="chat-component">
-
         {this.state.tutorJoined ? null : this.renderOverlay()}
 
         <div className="chat-header">
@@ -156,18 +184,34 @@ class Chat extends Component {
           </div>
         </div>
 
+        <div>
+          {this.state.questionTitle}
+          <br/>
+          {this.state.questionDescription}
+          <br/>
+          {this.state.questionResources}
+          <br/>
+          {this.state.questionCode}
+          <br/>
+          {this.state.questionLearner}
+          <br/>
+          {this.state.questionTutor}
+        </div>
+
+
         {/* <div className="chat-info">
           <h1>{this.props.question.title}</h1>
           <p>{this.props.question.description}</p>
         </div> */}
+        <div>
+          <div className="chat-body">
+            <CodeEditor socket={this.props.socket} room={this.state.roomId}/>
+            <ChatMessages socket={this.props.socket} room={this.state.roomId} />
+          </div>
 
-        <div className="chat-body">
-          <CodeEditor socket={this.props.socket} room={this.state.roomId}/>
-          <ChatMessages socket={this.props.socket} room={this.state.roomId} />
-        </div>
-
-        <div className="chat-footer">
-          <p>Troubleshooting - I need to report a problem</p>
+          <div className="chat-footer">
+            <p>Troubleshooting - I need to report a problem</p>
+          </div>
         </div>
 
         {this.showEndChatModal()}
