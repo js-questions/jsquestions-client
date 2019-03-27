@@ -1,11 +1,11 @@
 @import '../../colors.scss';
 
 .offerNotSent {
-  border: 2px solid greenyellow;
+  border: 2px solid $green-yellow;
 }
 
 .offerSent {
-  border: 2px solid yellow;
+  border: 2px solid $primary;
 }
 
 .question__container {
@@ -75,7 +75,7 @@
 }
 
 .question__description {
-  margin:  0 15px;
+  word-wrap: break-word;
 }
 
 .availability {
@@ -92,7 +92,16 @@
 }
 
 .online {
-  background-color: greenyellow;
+  background-color: $green-yellow;
+}
+
+.icon__answered {
+  color: $green-yellow-dark;
+  font-size: 3rem;
+}
+
+.icon__not-answered {
+  color: $primary;
 }
 
 

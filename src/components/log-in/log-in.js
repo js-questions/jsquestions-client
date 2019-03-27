@@ -16,7 +16,7 @@ class Login extends Component {
       password: '',
       // url: process.env.REACT_APP_END_POINT_URL,
       url: 'http://localhost:4000',
-      userExists: false,
+      userexists: false,
       loginError: '',
       signUpError: ''
     }
@@ -84,7 +84,7 @@ class Login extends Component {
 
   render() {
 
-    if (!this.state.userExists) {
+    if (!this.state.userexists) {
       return(
         <div className="backdrop">
           <div className="modal">
@@ -97,7 +97,7 @@ class Login extends Component {
               <button className="button-primary">Sign up</button>
             </form>
             <p>{this.state.signUpError}</p>
-            <button className="button-secondary" onClick={() => this.setState({userExists: !this.state.userExists})}>I already have an account</button>
+            <button className="button-secondary" onClick={() => this.setState({userexists: !this.state.userexists})}>I already have an account</button>
           </div>
         </div>
       )
@@ -113,7 +113,7 @@ class Login extends Component {
               <button className="button-primary">Sign in</button>
             </form>
             <p>{this.state.loginError}</p>
-            <button className="button-secondary" onClick={() => this.setState({userExists: !this.state.userExists})}>I don't have an account</button>
+            <button className="button-secondary" onClick={() => this.setState({userexists: !this.state.userexists})}>I don't have an account</button>
           </div>
         </div>
       )

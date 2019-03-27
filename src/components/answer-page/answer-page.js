@@ -119,17 +119,19 @@ class AnswerPage extends Component {
     }
     //Questions being loaded
     else if (this.state.questions === null) {
-      return <div>LOADING</div>
+      return <div>LOADING...</div>
     }
     //Renders questions
     else if (this.state.questions.length > 0) {
+      // const questionsFiltered = this.state.questions.filter((question, index) => question.status!=='closed');
       return this.state.questions.map((question, index) => {
         let user = this.state.allUsers.filter(user => { return user.user_id===question.learner})[0];
         return (
           <div className="question-container" key={index} >
             <Question question={question} user={user} openOfferModal={this.openOfferModal} offlineUsers={this.state.offlineUsers}/>
           </div>
-      )})}
+        )
+        })}
     //No questions to render
     else {
       return <div>There aren't any questions being asked right now :( </div>
@@ -140,7 +142,7 @@ class AnswerPage extends Component {
     await this.getUsers();
     await this.getQuestions();
   }
-  
+
   toggleButton = (e, id) => {
     if (e.currentTarget.className==='answer-page__filter-unselected') {
       e.currentTarget.className='answer-page__filter-selected';

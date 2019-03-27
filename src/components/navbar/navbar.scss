@@ -127,8 +127,8 @@ $searchSize :  50px;
 }
 
 .arrow-up {
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-bottom: 10px solid $primary;
@@ -192,16 +192,16 @@ $searchSize :  50px;
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: $secondary;
+  color: $grey;
 }
 ::-moz-placeholder { /* Firefox 19+ */
-  color: $secondary;
+  color: $grey;
 }
 :-ms-input-placeholder { /* IE 10+ */
-  color: $secondary;
+  color: $grey;
 }
 :-moz-placeholder { /* Firefox 18- */
-  color: $secondary;
+  color: $grey;
 }
 
 #searchTerm::placeholder-shown {
