@@ -14,11 +14,11 @@ class AnswerPage extends Component {
     loggedIn: false,
     showModal: false,
     modalRef: {
-      //Amber TTD: Need to refractor this
-      title: 'Offer help to [name]',
+      //Amber TTD: Need to refactor this
       description: null,
       button: 'Send chat invitation',
-      questionid: null
+      questionid: null,
+      learner: null,
     },
     offlineUsers: null,
     allUsers: null
@@ -89,15 +89,14 @@ class AnswerPage extends Component {
   }
 
   showOfferModal = () => {
-    // if (this.state.showModal) {
-      return <ModalOfferHelp showModal={this.state.showModal} modalRef={this.state.modalRef} closeOfferModal={this.closeOfferModal} sendOffer={this.sendOffer}/>
-    // }
+    return <ModalOfferHelp questions={this.state.questions} users={this.state.allUsers} showModal={this.state.showModal} modalRef={this.state.modalRef} closeOfferModal={this.closeOfferModal} sendOffer={this.sendOffer}/>
   }
 
-  openOfferModal = (questionid) => {
+  openOfferModal = (question) => {
     this.setState( state => {
       // state.showModal = true
-      state.modalRef.questionid = questionid
+      state.modalRef.questionid = question.question_id
+      state.modalRef.learner = question.learner
     })
     this.setState({
       showModal: true

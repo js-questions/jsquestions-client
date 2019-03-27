@@ -27,7 +27,8 @@ class Question extends Component {
     }
 
     //Amber TTD: needs 3 if statement to change if person is not online
-      return <button className={btn_class} disabled={disableFlag} onClick={() => {this.props.openOfferModal(this.props.question.question_id)}}>{btn_text}</button>
+      return <button className={btn_class} disabled={disableFlag} onClick={() => {this.props.openOfferModal(this.props.question)}}>{btn_text}</button>
+      // return <button className={btn_class} disabled={this.state.buttonAlreadyClicked} onClick={() => {this.changeColor(); this.props.openOfferModal(this.props.question)}}>{btn_text}</button>
   }
   renderOfflineButton = () => {
     return <button disabled className="button-offline">Offline</button>

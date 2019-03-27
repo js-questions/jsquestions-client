@@ -15,11 +15,20 @@ function ModalOfferHelp(props) {
     questionid: props.modalRef.questionid,
     expiration: 15 * 6000 + Date.now(),
   })
-
   const backdropAnimation = useSpring({ reverse: !props.showModal, from: {display: 'none'}, to: {display: 'block'}, delay: (_) => !props.showModal ? 500 : 0 })
-  const props2 = useSpring({ reverse: !props.showModal, to: {opacity: 1, width: '600px', height: '600px'}, from: {opacity: 0, width: '0px', height: '0px'}, config: {duration:500}})
-  const props3 = useSpring({ opacity: 1, from: {opacity: 0}, config: {duration:3000}})
-  const props4 = useSpring({ opacity: 1, from: {opacity: 0}, config: {duration:4000}})
+  // const props2 = useSpring({ reverse: !props.showModal, to: {opacity: 1, width: '600px', height: '600px'}, from: {opacity: 0, width: '0px', height: '0px'}, config: {duration:500}})
+  // const props3 = useSpring({ opacity: 1, from: {opacity: 0}, config: {duration:3000}})
+  // const props4 = useSpring({ opacity: 1, from: {opacity: 0}, config: {duration:4000}})
+
+  let currentUser;
+  if (props.users) {
+    currentUser = props.users.filter(user => user.user_id === props.modalRef.learner)[0];
+  }
+
+  let currentQuestion;
+  if (props.questions) {
+    currentQuestion = props.questions.filter(question => question.question_id === props.modalRef.questionid)[0];
+  }
 
   return (
     <animated.div style={backdropAnimation}>
@@ -28,12 +37,13 @@ function ModalOfferHelp(props) {
       <div className="modal">
         {/* <animated.div style={props3}> */}
         <button className="button-close" onClick={()=>props.closeOfferModal()}>X</button>
-        <h3>{props.modalRef.title}</h3>
+        <h3>Offer help to {currentUser ? currentUser.username : 'user'} on:</h3>
+        <h4>{currentQuestion ? currentQuestion.title : 'question'}</h4>
         <form className="offer-help__form">
           <input type='text' placeholder='Explain how you can help' maxLength="200" onChange={(event) => setModalInfo({...modalInfo, questionid: props.modalRef.questionid, message: event.target.value})} />
 
           <div className="offer-help-select-time">
-            <p>Waiting time [min]: </p>
+            <p>I'll be available for the next: </p>
             <select className="modal-waiting-time" onChange={(event) => {
             const time = event.target.value * 6000 + Date.now();
             setModalInfo({...modalInfo, questionid: props.modalRef.questionid, expiration: time})}}>
