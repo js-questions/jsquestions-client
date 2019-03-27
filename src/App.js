@@ -7,6 +7,9 @@ import QuestionPosted from './components/question-posted-page/question-posted';
 import AnswerPage from './components/answer-page/answer-page';
 import MyQuestions from './components/my-questions-page/my-questions';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import { connect } from 'react-redux';
+
+import { updateKarma } from './redux/actions.js';
 
 import Chat from './components/chat/chat.js';
 import openSocket from 'socket.io-client';
@@ -38,6 +41,14 @@ function PrivateRoute({ component: Component, ...rest}) {
 
 class App extends Component {
 
+  componentDidMount() {
+    socket.on('update karma', (data) => {
+      if (data.tutor === this.props.user.user_id) {
+        this.props.updateKarma(data.karma);
+      }
+    })
+  }
+
   render() {
 
     return (
@@ -54,4 +65,12 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  updateKarma: (karma) => dispatch(updateKarma(karma))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
