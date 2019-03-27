@@ -74,7 +74,7 @@ export const rejectOffer = (id) => {
         },
       })
       .then(res => res.json())
-      .then(res => dispatch(removeOffer(id)))
+      .then(() => dispatch(removeOffer(id)))
     }
   }
 }
@@ -92,18 +92,14 @@ export const fetchQuestionAndOffers = (questionid, token) => {
         },
         })
         .then(res => res.json())
-        .then(res => {
-          dispatch(updateQuestion(res.question));
-          dispatch(updateOffers(res.offers));
+        .then(data => {
+          if (!data.error) {
+            dispatch(updateQuestion(data.question));
+            dispatch(updateOffers(data.offers));
+          }
         })
     } else {
       console.log('User needs to log in to see their questions');
     }
   }
 }
-
-
-
-
-
-

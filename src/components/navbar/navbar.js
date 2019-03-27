@@ -39,12 +39,14 @@ class Navbar extends React.Component {
   }
 
   fetchUsers = () => {
-    fetch(`http://localhost:4000/users`, {
-      headers : {
-        'Authorization' : 'Bearer ' + this.state.token,
-    }})
-      .then(res => res.json())
-      .then(users => this.props.setUsers(users))
+    if (this.state.token) {
+      fetch(`http://localhost:4000/users`, {
+        headers : {
+          'Authorization' : 'Bearer ' + this.state.token,
+      }})
+        .then(res => res.json())
+        .then(users => this.props.setUsers(users))
+    }
   }
 
   tutorNotification = () => {
