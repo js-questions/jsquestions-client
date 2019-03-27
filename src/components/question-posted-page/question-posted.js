@@ -68,6 +68,10 @@ class QuestionPosted extends Component {
     this.props.rejectOffer(offerid);
   }
 
+  componentWillMount() {
+    this.props.socket.removeListener('offer sent');
+  }
+
   render() {
     return (
       <div className="question-posted">

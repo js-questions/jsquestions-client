@@ -39,6 +39,10 @@ class CodeEditor extends Component {
     this.codemirror.setCursor(this.codemirror.lineCount(), 0);
   }
 
+  componentWillMount() {
+    this.props.socket.removeListener('editor');
+  }
+
   render() {
     return(
       <div className="editor">

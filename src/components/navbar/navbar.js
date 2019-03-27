@@ -115,6 +115,11 @@ class Navbar extends React.Component {
     this.setState({questionTitle: searchTerm});
   }
 
+  componentWillMount() {
+    this.props.socket.removeListener('push tutor');
+    this.props.socket.removeListener('cancel call');
+  }
+
   render() {
     // Sending token on user refresh
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
