@@ -32,6 +32,9 @@ class Chat extends Component {
   componentDidMount() {
     this.props.socket.emit('join room', this.state.roomId)
 
+    // Notify that user is online (since navbar is not render)
+    this.props.socket.emit('user online', {token: localStorage.getItem('token')});
+
     this.props.socket.on('join room', (participants) => {
       if (participants === 2) {
 
@@ -125,13 +128,13 @@ class Chat extends Component {
   }
 
   componentWillUnmount() {
+    this.props.socket.removeListener('join room');
+    this.props.socket.removeListener('question info');
+    this.props.socket.removeListener('hang up');
     clearInterval(this.state.timerId);
   }
 
   render() {
-    // Notify that user is online (since navbar is not render)
-    this.props.socket.emit('user online', {token: localStorage.getItem('token')});
-
     return(
       <div className="chat-component">
 
