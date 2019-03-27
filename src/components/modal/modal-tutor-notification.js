@@ -3,7 +3,7 @@ import '../log-in/log-in.scss';
 import { Link } from "react-router-dom";
 import '../../phone.scss';
 
-class TutorInvitation extends Component {
+class TutorNotification extends Component {
 
   render() {
     return (
@@ -20,4 +20,4 @@ class TutorInvitation extends Component {
   }
 }
 
-export default TutorInvitation;
+export default TutorNotification;

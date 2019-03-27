@@ -1,7 +1,7 @@
 import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
-import { setUser, setToken, logout } from '../../redux/actions.js';
+import { updateQuestion, setUsers, setUser, setToken, logout } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
@@ -18,7 +18,8 @@ class Navbar extends React.Component {
       openModal: true,
       showMenu: false,
       socketQuestion: '',
-      questionTitle: ''
+      questionTitle: '',
+      token: localStorage.getItem('token')
     }
     this.updateInput = this.updateInput.bind(this);
   }
@@ -32,11 +33,22 @@ class Navbar extends React.Component {
     this.props.socket.on('cancel call', () => {
       this.setState({socketQuestion: ''}, () => this.tutorNotification() );
     })
+    this.fetchUsers();
+  }
+
+  fetchUsers = () => {
+    fetch(`http://localhost:4000/users`, {
+      headers : {
+        'Authorization' : 'Bearer ' + this.state.token,
+    }})
+      .then(res => res.json())
+      .then(users => this.props.setUsers(users))
   }
 
   tutorNotification = () => {
     if (this.state.socketQuestion !== '') {
-      return <TutorNotification question={this.state.socketQuestion} learner={this.props.users.filter(user => user.user_id === this.state.socketQuestion.learner)[0]} />
+      this.props.updateQuestion(this.state.socketQuestion);
+      return <TutorNotification question={this.state.socketQuestion} users={this.props.users} learner={this.props.users.filter(user => user.user_id === this.state.socketQuestion.learner)[0]} />
     } else {
       return '';
     }
@@ -162,6 +174,8 @@ const mapDispatchToProps = (dispatch) => ({
   setToken: (token) => dispatch(setToken(token)),
   logout: () => dispatch(logout()),
   setUser: (user) => dispatch(setUser(user)),
+  setUsers: (users) => dispatch(setUsers(users)),
+  updateQuestion: (question) => dispatch(updateQuestion(question))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
