@@ -62,6 +62,10 @@ class ChatMessages extends Component {
     }
   }
 
+  componentWillMount() {
+    this.props.socket.removeListener('chat message');
+  }
+
   render() {
     return (
       <div className="chat-box">
