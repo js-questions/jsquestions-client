@@ -75,7 +75,7 @@ export const rejectOffer = (id) => {
         },
       })
       .then(res => res.json())
-      .then(res => dispatch(removeOffer(id)))
+      .then(() => dispatch(removeOffer(id)))
     }
   }
 }
