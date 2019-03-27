@@ -1,14 +1,13 @@
 import { combineReducers } from 'redux';
-import jwt_decode from 'jwt-decode';
 
 const user = (state = {}, action) => {
   switch(action.type) {
     case 'SET_USER':
-      const decoded = jwt_decode(action.token);
-      return {
-        ...decoded,
-        ...state,
-      };
+      return action.user;
+      // return {
+      //   ...decoded,
+      //   ...state,
+      // };
     case 'LOGOUT':
       return {};
     case 'UPDATE_KARMA':

@@ -3,6 +3,7 @@ import '../modal/modal.scss';
 import './log-in.scss';
 import './../../index.scss';
 import btoa from 'btoa';
+import jwt_decode from 'jwt-decode';
 import { setUser } from '../../redux/actions.js';
 import { connect } from 'react-redux';
 
@@ -42,8 +43,10 @@ class Login extends Component {
      .then(res => res.json())
      .then(res => {
        if (res.token) {
+        const decoded = jwt_decode(res.token);
+         console.log(decoded);
          localStorage.setItem('token', res.token);
-         this.props.setUser(res.token);
+         this.props.setUser(decoded);
          this.forwardsToQuestionPosted();
          this.props.close();
        } else {
@@ -65,7 +68,8 @@ class Login extends Component {
       .then(res => {
         if (res.token) {
           localStorage.setItem('token', res.token);
-          this.props.setUser(res.token)
+          const decoded = jwt_decode(res.token);
+          this.props.setUser(decoded)
           this.props.close();
           this.forwardsToQuestionPosted();
         } else {
@@ -125,7 +129,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  setUser: (token) => dispatch(setUser(token))
+  setUser: (user) => dispatch(setUser(user))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

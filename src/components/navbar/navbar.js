@@ -1,7 +1,7 @@
 import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
-import { addNewUser, setToken, logout } from '../../redux/actions.js';
+import { addNewUser, setUser, logout } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
@@ -9,6 +9,7 @@ import { Link, NavLink } from "react-router-dom";
 import ProfileMenu from './profile-menu';
 import TutorNotification from '../modal/modal-tutor-notification.js';
 import titleImage from '../../assets/hero-logo.png';
+import jwt_decode from 'jwt-decode';
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -49,13 +50,14 @@ class Navbar extends React.Component {
   checkToken = () => {
     const checkToken = localStorage.getItem('token');
     if (checkToken) {
-      return this.props.setToken(checkToken);
+      const decoded = jwt_decode(checkToken);
+      return this.props.setUser(decoded);
     }
   }
 
   loginProcess = () => {
     if (!this.props.user.username) {
-      return (<div className="navbar-item" onClick={this.toggleSignUp}><span userExists={true} className="log-in">Log In</span><button userExists={false} className="button-primary">Sign Up</button></div>)
+      return (<div className="navbar-item" onClick={this.toggleSignUp}><span className="log-in">Log In</span><button className="button-primary">Sign Up</button></div>)
     }
     else {
       return (
@@ -155,7 +157,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  setToken: (token) => dispatch(setToken(token)),
+  setUser: (user) => dispatch(setUser(user)),
   logout: () => dispatch(logout()),
   addNewUser: (user) => dispatch(addNewUser(user))
 })
