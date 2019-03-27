@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './question.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faQuestion } from "@fortawesome/free-solid-svg-icons";
 
 class Question extends Component {
   state = {
@@ -27,6 +30,7 @@ class Question extends Component {
     //disable offerbutton on user offline
     let availability = '';
     let offerButtonExists = '';
+    let tickedIfAnswered = (<div></div>);
 
     if (this.props.offlineUsers) {
       const learnerOffline = this.props.offlineUsers ? this.props.offlineUsers.find(o2 => this.props.question.learner === o2.user_id) : null;
@@ -36,6 +40,12 @@ class Question extends Component {
     } else {
       availability = '';
       offerButtonExists = (<div></div>);
+    }
+
+    if (this.props.answered) {
+      tickedIfAnswered = (<div><FontAwesomeIcon icon={faCheck} className="icon__answered"/></div>);
+    } else if (!this.props.answered && !this.props.question.status) {
+      tickedIfAnswered = (<div><FontAwesomeIcon icon={faQuestion} className="icon__not-answered"/></div>);
     }
 
 
@@ -55,6 +65,7 @@ class Question extends Component {
           <div className="question__description">{this.props.question.description}</div>
         </div>
         {offerButtonExists}
+        {tickedIfAnswered}
       </div>
     );
   }
