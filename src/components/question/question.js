@@ -19,7 +19,7 @@ class Question extends Component {
       btn_text =  "closed";
     } else if (this.props.question.status==="pending"){
       btn_class = "button-primary offerSent";
-      btn_text =  "Sent";
+      btn_text =  "Pending";
       disableFlag = true;
     } else {
       btn_class = "button-offerHelp offerNotSent";
