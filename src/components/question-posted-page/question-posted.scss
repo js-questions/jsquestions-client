@@ -1,11 +1,19 @@
+@import '../../colors.scss';
+
 .question-posted {
   padding: 5%;
 }
 
-.question-posted h1 {
-  margin-bottom: 5% ;
+.question-posted-subtitle {
+  margin: 20px 0 10px 0;
 }
 
-.question-posted h3 {
-  margin-bottom: 2% ;
+.question-posted-text {
+  margin: 0 0 5px 20px;
+}
+
+.question-message {
+  margin-top: 40px;
+  color: $red;
+  font-weight: 700;
 }

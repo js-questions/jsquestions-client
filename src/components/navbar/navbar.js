@@ -1,7 +1,7 @@
 import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
-import { updateQuestion, setUsers, setUser, setToken, logout } from '../../redux/actions.js';
+import { updateQuestion, setUsers, addNewUser, setUser, logout } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
@@ -9,6 +9,7 @@ import { Link, NavLink } from "react-router-dom";
 import ProfileMenu from './profile-menu';
 import TutorNotification from '../modal/modal-tutor-notification.js';
 import titleImage from '../../assets/hero-logo.png';
+import jwt_decode from 'jwt-decode';
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -25,9 +26,9 @@ class Navbar extends React.Component {
   }
 
   componentDidMount = () => {
-    this.checkToken();
+    this.checkUser();
     this.props.socket.on('push tutor', ({ question, learner }) => {
-      this.props.setUser(learner);
+      this.props.addNewUser(learner);
       this.setState({socketQuestion: question}, () => this.tutorNotification() );
     })
     this.props.socket.on('cancel call', () => {
@@ -58,10 +59,17 @@ class Navbar extends React.Component {
     this.setState({showSignup: !this.state.showSignup})
   }
 
-  checkToken = () => {
-    const checkToken = localStorage.getItem('token');
-    if (checkToken) {
-      return this.props.setToken(checkToken);
+  checkUser = () => {
+    if (this.state.token) {
+      const decoded = jwt_decode(this.state.token);
+      fetch(`http://localhost:4000/users/${decoded.user_id}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+        },
+        })
+        .then(res => res.json())
+        .then(res => this.props.setUser(res))
     }
   }
 
@@ -171,9 +179,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  setToken: (token) => dispatch(setToken(token)),
-  logout: () => dispatch(logout()),
   setUser: (user) => dispatch(setUser(user)),
+  logout: () => dispatch(logout()),
+  addNewUser: (user) => dispatch(addNewUser(user)),
   setUsers: (users) => dispatch(setUsers(users)),
   updateQuestion: (question) => dispatch(updateQuestion(question))
 })

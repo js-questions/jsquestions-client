@@ -3,7 +3,8 @@ import '../modal/modal.scss';
 import './log-in.scss';
 import './../../index.scss';
 import btoa from 'btoa';
-import { setToken } from '../../redux/actions.js';
+import jwt_decode from 'jwt-decode';
+import { setUser } from '../../redux/actions.js';
 import { connect } from 'react-redux';
 
 class Login extends Component {
@@ -16,7 +17,7 @@ class Login extends Component {
       password: '',
       // url: process.env.REACT_APP_END_POINT_URL,
       url: 'http://localhost:4000',
-      userexists: false,
+      userExists: false,
       loginError: '',
       signUpError: ''
     }
@@ -42,8 +43,9 @@ class Login extends Component {
      .then(res => res.json())
      .then(res => {
        if (res.token) {
+        const decoded = jwt_decode(res.token);
          localStorage.setItem('token', res.token);
-         this.props.setToken(res.token);
+         this.props.setUser(decoded);
          this.forwardsToQuestionPosted();
          this.props.close();
        } else {
@@ -65,14 +67,14 @@ class Login extends Component {
       .then(res => {
         if (res.token) {
           localStorage.setItem('token', res.token);
-          this.props.setToken(res.token)
+          const decoded = jwt_decode(res.token);
+          this.props.setUser(decoded)
           this.props.close();
           this.forwardsToQuestionPosted();
         } else {
           this.setState({loginError: res}, () => console.log(res));
         }
       })
-
   }
 
   forwardsToQuestionPosted = () => {
@@ -84,7 +86,7 @@ class Login extends Component {
 
   render() {
 
-    if (!this.state.userexists) {
+    if (!this.state.userExists) {
       return(
         <div className="backdrop">
           <div className="modal">
@@ -97,7 +99,7 @@ class Login extends Component {
               <button className="button-primary">Sign up</button>
             </form>
             <p>{this.state.signUpError}</p>
-            <button className="button-secondary" onClick={() => this.setState({userexists: !this.state.userexists})}>I already have an account</button>
+            <button className="button-secondary" onClick={() => this.setState({userExists: !this.state.userExists})}>I already have an account</button>
           </div>
         </div>
       )
@@ -113,7 +115,7 @@ class Login extends Component {
               <button className="button-primary">Sign in</button>
             </form>
             <p>{this.state.loginError}</p>
-            <button className="button-secondary" onClick={() => this.setState({userexists: !this.state.userexists})}>I don't have an account</button>
+            <button className="button-secondary" onClick={() => this.setState({userExists: !this.state.userExists})}>I don't have an account</button>
           </div>
         </div>
       )
@@ -126,7 +128,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  setToken: (token) => dispatch(setToken(token))
+  setUser: (user) => dispatch(setUser(user))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
