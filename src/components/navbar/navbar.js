@@ -1,8 +1,7 @@
 import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
-import { addNewUser, setUser, logout } from '../../redux/actions.js';
-import { updateQuestion, setUsers, setUser, setToken, logout } from '../../redux/actions.js';
+import { updateQuestion, setUsers, addNewUser, setUser, logout } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
