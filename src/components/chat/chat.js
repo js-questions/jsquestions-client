@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './chat.scss';
+import './codeeditor.scss';
+
+import logo from '../../assets/square-logo.png';
 
 import { connect } from 'react-redux';
 import { updateChatQuestion } from '../../redux/actions.js';
@@ -21,21 +24,41 @@ class Chat extends Component {
     minutes: 0,
     seconds: 0,
     secondsString: '00',
+<<<<<<< HEAD
     overTime: 'black',
     targetTutor: -1
+=======
+    overTime: 'white',
+    clockReset: true,
+    timerId: null
+>>>>>>> develop
   }
 
   componentDidMount() {
-    //const room = this.props.room; //Amber removed this ... TTD to refractor
     this.props.socket.emit('join room', this.state.roomId)
 
     this.props.socket.on('join room', (participants) => {
       if (participants === 2) {
+<<<<<<< HEAD
         this.setState({tutorJoined: true}, () => this.startTimer());
         if (this.props.question.learner === this.props.user.user_id) {
           this.props.socket.emit('question info', {
             question: this.props.question,
             tutor: this.state.targetTutor
+=======
+
+        if (this.state.clockReset) {
+          this.setState({tutorJoined: true}, () => this.startTimer());
+        }
+        this.setState({clockReset:false})
+
+        if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
+          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
+          sessionStorage.setItem('targetOffer', targetOffer);
+          this.props.socket.emit('question info', {
+            question: this.props.question,
+            tutor: sessionStorage.getItem('targetOffer')
+>>>>>>> develop
           })
         }
       } else {
@@ -54,28 +77,50 @@ class Chat extends Component {
   }
 
   startTimer = () => {
-    setInterval(async () => {
+    if (!sessionStorage.getItem('timeStarted')){
+      sessionStorage.setItem('timeStarted', Date.now());
+    }
+
+    if (sessionStorage.getItem('timeStarted')) {
+      const newTime = Date.now() - sessionStorage.getItem('timeStarted');
+      const secs = Number(((newTime % 60000) / 1000).toFixed(0));
+      const mins= Math.floor(newTime/ 60000);
+      this.setState({
+        minutes: mins,
+        seconds: secs,
+      })
+    }
+
+    const intervalId = setInterval( () => {
       this.setState({seconds: this.state.seconds + 1})
       if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
       else this.setState({secondsString: this.state.seconds})
-
       if (this.state.seconds === 60) {
-        await this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
+        this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
       }
-
       if (this.state.minutes === 15) {
         this.setState({ overTime: 'red'});
       }
-  
     }, 1000)
+
+    this.setState({ timerId: intervalId });
+
   }
-    
+
   renderOverlay = () => {
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
       return <Overlay closeOverlay={(counter) => {
         clearInterval(counter);
+<<<<<<< HEAD
         this.props.socket.emit('cancel call', this.state.targetTutor)
         this.props.history.goBack()
+=======
+        if (this.props.question.learner) { // prevents chat from crashing when the timer runs out
+          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by)
+          this.props.history.goBack()
+          this.props.socket.emit('cancel call', targetOffer[0].tutor)
+        }
+>>>>>>> develop
       }
       }/>
     }
@@ -91,8 +136,18 @@ class Chat extends Component {
 
   showEndChatModal = () => {
     if (this.state.showFeedbackModal) {
+<<<<<<< HEAD
       return <ModalEndChat updateKarma={this.updateKarma} closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
+=======
+      sessionStorage.removeItem('timeStarted');
+      sessionStorage.removeItem('targetOffer');
+      return <ModalEndChat closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
+>>>>>>> develop
     }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.timerId);
   }
 
   render() {
@@ -101,21 +156,32 @@ class Chat extends Component {
 
     return(
       <div className="chat-component">
-    
+
         {this.state.tutorJoined ? null : this.renderOverlay()}
 
         <div className="chat-header">
+          <div className="left">
+            <img src={logo} width="40px" alt="logo"/>
+            <p>Live Help Session</p>
+          </div>
+          <div className="right">
+            <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
+            <button className="end-call-button" onClick={this.hangUp}>End Call</button>        
+          </div>
+        </div>
+
+        {/* <div className="chat-info">
           <h1>{this.props.question.title}</h1>
           <p>{this.props.question.description}</p>
-
-          <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
-
-          <button onClick={this.hangUp}>End Call</button>
-        </div>
+        </div> */}
 
         <div className="chat-body">
           <CodeEditor socket={this.props.socket} room={this.state.roomId}/>
           <ChatMessages socket={this.props.socket} room={this.state.roomId} />
+        </div>
+
+        <div className="chat-footer">
+          <p>Troubleshooting - I need to report a problem</p>
         </div>
 
         {this.showEndChatModal()}

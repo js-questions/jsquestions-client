@@ -1,11 +1,11 @@
 import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
-import { setToken, logout, updateKarma } from '../../redux/actions.js';
+import { updateKarma, setUser, setToken, logout } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import ProfileMenu from './profile-menu';
 import TutorNotification from '../modal/modal-tutor-notification.js';
 import titleImage from '../../assets/hero-logo.png';
@@ -17,13 +17,16 @@ class Navbar extends React.Component {
       showSignup: false,
       openModal: true,
       showMenu: false,
-      socketQuestion: ''
+      socketQuestion: '',
+      questionTitle: ''
     }
+    this.updateInput = this.updateInput.bind(this);
   }
 
   componentDidMount = () => {
     this.checkToken();
-    this.props.socket.on('push tutor', (question) => {
+    this.props.socket.on('push tutor', ({ question, learner }) => {
+      this.props.setUser(learner);
       this.setState({socketQuestion: question}, () => this.tutorNotification() );
     })
     this.props.socket.on('cancel call', () => {
@@ -36,7 +39,7 @@ class Navbar extends React.Component {
 
   tutorNotification = () => {
     if (this.state.socketQuestion !== '') {
-      return <TutorNotification question={this.state.socketQuestion} />
+      return <TutorNotification question={this.state.socketQuestion} learner={this.props.users.filter(user => user.user_id === this.state.socketQuestion.learner)[0]} />
     } else {
       return '';
     }
@@ -55,7 +58,7 @@ class Navbar extends React.Component {
 
   loginProcess = () => {
     if (!this.props.user.username) {
-      return (<div className="navbar-item" onClick={this.toggleSignUp}>Sign up/Log in</div>)
+      return (<div className="navbar-item" onClick={this.toggleSignUp}><span userExists={true} className="log-in">Log In</span><button userExists={false} className="button-primary">Sign Up</button></div>)
     }
     else {
       return (
@@ -83,9 +86,13 @@ class Navbar extends React.Component {
     }
   }
 
+  toggleProfileMenu = () => {
+    this.setState({showMenu: !this.state.showMenu})
+  }
+
   showMenu = () => {
     if (this.state.showMenu) {
-      return <ProfileMenu logout={this.props.logout}/>
+      return <ProfileMenu user={this.props.user} toggleMenu={this.toggleProfileMenu} logout={this.props.logout}/>
     }
   }
 
@@ -95,25 +102,21 @@ class Navbar extends React.Component {
         <div className="landing-page-body">
 
           <img src={titleImage} alt="JS QUESTIONS"/>
-          <form>
-            <input id="searchTerm" type="text" placeholder="What do you need help with?"/>
-            <div className="navbar-item searchTerm-button"><Link className="navbar__link" to='/answer'>?</Link></div>
+          <form className="question-bar">
+            <input id="searchTerm" type="text" maxLength="200" placeholder="What do you need help with?" onChange={this.updateInput}/>
+            <NavLink to={{pathname: '/ask', state: {title: this.state.questionTitle}}} className="navbar-item searchTerm-button">?</NavLink>
           </form>
           <h3>For when Stack Overflow and the Internet just aren't enough.</h3>
           <h2>Want to help others?</h2>
         </div>
       )
-
     }
   }
 
-  handleClick = (e) => {
+  updateInput = (e) => {
     const searchTerm = document.getElementById("searchTerm").value;
-    e.preventDefault();
-    console.log('searchTerm ', searchTerm)
-    // this.props.history.push('/ask', searchTerm);
+    this.setState({questionTitle: searchTerm});
   }
-
 
   render() {
     // Sending token on user refresh
@@ -133,28 +136,31 @@ class Navbar extends React.Component {
         <div className="navbar">
           <div className="navbar__component">
             <div className="navbar-item"><Link to='/'><img src={logo} width="55px" alt="logo"/></Link></div>
-            <div className="navbar-item"><Link className="navbar__link" to='/ask'>Ask for help.</Link></div>
-            <div className="navbar-item"><Link className="navbar__link" to='/answer'>Help others.</Link></div>
+            <div className="navbar-item navbar__underline"><Link className="navbar__link" to='/ask'>Ask for help.</Link></div>
+            <div className="navbar-item navbar__underline"><Link className="navbar__link" to='/answer'>Help others.</Link></div>
           </div>
           {this.loginProcess()}
+          {this.showMenu()}
         </div>
         {this.landingPageNavbar()}
         {this.showSignupModal()}
         {this.tutorNotification()}
-        {this.showMenu()}
+        
       </div>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user
+  user: state.user,
+  users: state.users,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   setToken: (token) => dispatch(setToken(token)),
   logout: () => dispatch(logout()),
   updateKarma: (karma) => dispatch(updateKarma(karma))
+  setUser: (user) => dispatch(setUser(user)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

@@ -1,5 +1,5 @@
 @import '../../colors.scss';
-$searchSize :  45px;
+$searchSize :  50px;
 
 .navbar-box {
   display: flex;
@@ -13,7 +13,7 @@ $searchSize :  45px;
 .navbar-box__landingPage {
   display: flex;
   flex-direction: column;
-  height: 450px;
+  height: 500px;
   background-image:linear-gradient(
     to right bottom,
     $secondary-transparent,
@@ -58,9 +58,40 @@ $searchSize :  45px;
   font-weight: bold;
 }
 
+.navbar__underline {
+  position: relative;
+  text-decoration: none;
+}
+
+.navbar__underline:before  {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: $white;
+  visibility: hidden;
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.navbar__underline:hover:before {
+  visibility: visible;
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
+}
+
 .profile-menu__link {
   text-decoration: none;
   color: $secondary;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.profile-menu__link:hover {
   font-weight: 700;
 }
 
@@ -85,11 +116,25 @@ $searchSize :  45px;
 .profile-menu {
   background-color: $primary;
   width: 140px;
-  height: 90px;
   position: absolute;
-  right: 3%;
-  top: 100px;
+  right: 6%;
+  top: 80px;
   padding: 10px;
+  padding-top: 0px;
+  padding-left: 15px;
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid $primary;
+  position: relative;
+  left: 45px;
+  top: -10px;
 }
 
 .menu-item {
@@ -126,6 +171,10 @@ $searchSize :  45px;
   margin-top: 25px;
 }
 
+.question-bar {
+  margin-bottom: 10px;
+}
+
 #searchTerm {
   height: $searchSize;
   padding: 0;
@@ -135,9 +184,11 @@ $searchSize :  45px;
   border-top-left-radius: $searchSize;
   background-color: rgba(254, 255, 255, 0.8);
   padding: 0 0 0 22px;
-  width: 300px;
+  width: 400px;
   font-size: 1.7rem;
-
+  box-shadow: inset 1px 0px 5px 0px darken(black, 10%);
+  border-bottom: 2px solid gray;
+  border-left: 2px solid gray;
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -159,6 +210,8 @@ $searchSize :  45px;
 
 .searchTerm-button{
   background-color: $primary;
+  color: lighten($primary, 30%);
+  font-weight: 600;
   transition: all 0.3s;
   border: none;
   border-bottom-right-radius: $searchSize;
@@ -166,12 +219,24 @@ $searchSize :  45px;
   height: $searchSize;
   width: $searchSize;
   padding: 0 15px;
+  padding-left: 17px;
+  text-decoration: none;
+  margin-left: -2px;
+  box-shadow: -2px 2px 3px 0px darken(gray, 10%);
+  font-size: 1.2em;
+  border-bottom: 5px solid darken($primary, 20%);
+  border-right: 3px solid darken($primary, 20%)
 }
 
 .searchTerm-button:hover {
   background-color: darken($primary, 5%);
-  box-shadow: inset 2px 2px 2px darken($primary, 40%);
+  box-shadow: 3px 3px 8px 0px darken($secondary, 5%);
 }
 
+.log-in {
+  padding-right: 20px;
+}
 
-
+input:focus {
+  outline: none;
+}

@@ -3,26 +3,38 @@ import './card.scss';
 
 class Card extends Component {
 
+  checkAvailability() {
+    if (this.props.tutor.available) {
+      return (<button className="button-primary" onClick={this.props.chatNow}>chat now</button>)
+    } else {
+      return (<button className="button-primary" disabled onClick={this.props.chatNow}>sorry offline</button>)
+    }
+  }
+
   render() {
+    if (this.props.tutor) {
       return (
         <div className="card-container">
           <div className="card-avatar">
-          <div><img src={this.props.tutor.profileBadge} alt="profile-badge" width="50px"/></div>
-            <div>{this.props.tutor.firstname} {this.props.tutor.lastname}</div>
-            <div>{this.props.tutor.username}</div>
+            <img src={this.props.tutor.profileBadge} alt="profile-badge" width="50px"/>
+            <p>{this.props.tutor.username}</p>
           </div>
           <div className="card-body">
-            <div>{this.props.offer.dateSubmitted}</div>
-            <div>{this.props.offer.message}</div>
-            <div>{this.props.tutor.karma} Karma earned so far</div>
+            {/* <p className="expiryDate">This offer expires in: {this.props.expirationDate}</p> */}
+            <h4>Message:</h4>
+            <p>{this.props.offer.message}</p>
+            <p className="karmaEarned">{this.props.tutor.karma} <span role="img" aria-label="karma">🙏</span> earned so far</p>
           </div>
           <div className="card-action">
-          <button onClick={this.props.chatNow}>chat now</button>
-          <button onClick={this.props.rejectOffer}>No thanks!</button>
+            {this.checkAvailability()}
+            <button className="button-secondary" onClick={this.props.rejectOffer}>No thanks!</button>
           </div>
         </div>
       )
-    } 
+    } else {
+      return 'Loading...'
+    }
   }
+}
 
 export default Card;

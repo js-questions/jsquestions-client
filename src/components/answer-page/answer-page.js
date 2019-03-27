@@ -3,6 +3,8 @@ import './answer-page.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
+import { connect } from 'react-redux';
+import { updateQuestions, updateOffer } from '../../redux/actions.js';
 import Question from '../question/question';
 import ModalOfferHelp from './../modal/modal-offer-help';
 
@@ -18,7 +20,8 @@ class AnswerPage extends Component {
       button: 'Send chat invitation',
       questionid: null
     },
-    offlineUsers: null
+    offlineUsers: null,
+    allUsers: null
   }
 
   getQuestions = async () => {
@@ -33,27 +36,32 @@ class AnswerPage extends Component {
         'Content-Type': 'application/json'
       }})
     .then(res => res.json())
-    .then(res=> this.setState({
+    .then(res => this.setState({
       questions: res
     }))
-    console.log(this.state.questions)
   }
 
   getUsers = () => {
     const token = localStorage.getItem('token');
-
-    fetch(`http://localhost:4000/users/`, {
-      method: 'GET', 
-      headers : { 
-        'Authorization' : 'Bearer ' + token,
-        'Content-Type': 'application/json'
-      }})
-    .then(res => res.json())
-    .then(res=> this.setState({
-      offlineUsers: res.filter(user => {
-        return user.available === null;
+    if (token) {
+      fetch(`http://localhost:4000/users/`, {
+        method: 'GET',
+        headers : {
+          'Authorization' : 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        }})
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          offlineUsers: res.filter(user => {  // [Rod] We should set it to the redux store instead
+            return user.available === null;
+          })
+        });
+        this.setState({
+          allUsers: res
+        });
       })
-    }))
+    }
   }
 
   sendOffer = (details) => {
@@ -70,13 +78,20 @@ class AnswerPage extends Component {
           "expiration": details.expiration
         })
       })
+        .then(res => res.json())
+        .then(offer => {
+          this.props.updateOffer(offer);
+          const currentQuestion = this.state.questions.filter(question => question.question_id === offer.linked_question);
+          this.props.socket.emit('offer sent', { offer, learner_id: currentQuestion[0].learner })
+        })
+
     //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
   }
 
   showOfferModal = () => {
-    if (this.state.showModal) {
-      return <ModalOfferHelp modalRef={this.state.modalRef} closeOfferModal={this.closeOfferModal} sendOffer={this.sendOffer}/>
-    }
+    // if (this.state.showModal) {
+      return <ModalOfferHelp showModal={this.state.showModal} modalRef={this.state.modalRef} closeOfferModal={this.closeOfferModal} sendOffer={this.sendOffer}/>
+    // }
   }
 
   openOfferModal = (questionid) => {
@@ -98,8 +113,6 @@ class AnswerPage extends Component {
     //Amber TTD: need a way to cancel offer help sent question comonent button change
   }
 
-
-
   renderQuestions = () => {
     //User is not logged in
     if (!this.state.loggedIn) {
@@ -112,21 +125,23 @@ class AnswerPage extends Component {
     //Renders questions
     else if (this.state.questions.length > 0) {
       return this.state.questions.map((question, index) => {
+        let user = this.state.allUsers.filter(user => { return user.user_id===question.learner})[0];
         return (
           <div className="question-container" key={index} >
-            <Question question={question} openOfferModal={this.openOfferModal} offlineUsers={this.state.offlineUsers}/> 
+            <Question question={question} user={user} openOfferModal={this.openOfferModal} offlineUsers={this.state.offlineUsers}/>
           </div>
-      )})} 
+      )})}
     //No questions to render
     else {
       return <div>There aren't any questions being asked right now :( </div>
     }
   }
 
-  componentWillMount() {
-    this.getUsers();
-    this.getQuestions();
+  componentWillMount = async () => {
+    await this.getUsers();
+    await this.getQuestions();
   }
+  
   toggleButton = (e, id) => {
     if (e.currentTarget.className==='answer-page__filter-unselected') {
       e.currentTarget.className='answer-page__filter-selected';
@@ -168,4 +183,14 @@ class AnswerPage extends Component {
   }
 }
 
-export default AnswerPage;
+const mapStateToProps = (state) => ({
+  user: state.user,
+  questions: state.questions
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  updateOffer: (offer) => dispatch(updateOffer(offer)),
+  updateQuestions: (questions) => dispatch(updateQuestions(questions)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AnswerPage);

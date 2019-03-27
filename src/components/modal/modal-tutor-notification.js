@@ -6,14 +6,15 @@ import '../../phone.scss';
 class TutorInvitation extends Component {
 
   render() {
-    console.log()
+    console.log('Tutor invitation modal is receiving', this.props)
+    // We need to add the learner and question information to this modal. Styling.
     return (
       <div className="backdrop">
         <div className="modal">
-          <h1>HEYYY</h1>
-          <p>Modal Body</p>
-          <Link onClick={this.props.enterChatroom} to={`/chat/${this.props.question.room_id}/${this.props.question.question_id}/tutor`}>Modal Button</Link>
-          <i className="Phone is-animating"></i>
+          <h2>Incoming call!</h2>
+          <Link className="link-style" onClick={this.props.enterChatroom} to={`/chat/${this.props.question.room_id}/${this.props.question.question_id}/tutor`}>
+            <i className="Phone is-animating"></i>
+          </Link>
         </div>
       </div>
     )

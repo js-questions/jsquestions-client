@@ -1,32 +1,43 @@
 import React, { Component } from 'react';
 import './question-posted.scss';
 import { connect } from 'react-redux';
-import { fetchQuestionAndOffers, updateQuestion, rejectOffer } from '../../redux/actions.js';
+import { setUsers, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer } from '../../redux/actions.js';
 import Card from '../card/card.js';
 
 class QuestionPosted extends Component {
   state = {
-    questionid: window.location.pathname.replace(/\D/g, "")
+    questionid: window.location.pathname.replace(/\D/g, ""),
+    token: localStorage.getItem('token')
   }
 
   componentDidMount() {
-    this.props.fetchQuestionAndOffers(this.state.questionid);
+    this.fetchUsers();
+    this.props.fetchQuestionAndOffers(this.state.questionid, this.state.token);
+    this.props.socket.on('offer sent', (offer) => this.props.updateOffer(offer))
+  }
+
+  fetchUsers = () => {
+    fetch(`http://localhost:4000/users`, {
+      headers : {
+        'Authorization' : 'Bearer ' + this.state.token,
+    }})
+      .then(res => res.json())
+      .then(users => this.props.setUsers(users))
   }
 
   handleClick = (e, tutorId, offerId) => {
     e.preventDefault();
-    const token = localStorage.getItem('token');
-    this.alertTutor(token, tutorId, offerId);
+    this.alertTutor(this.state.token, tutorId, offerId);
     this.props.history.push({
       pathname: `/chat/${this.props.question.room_id}/${this.props.question.question_id}/learner`,
       state: {question: this.props.question}
-    }) 
+    })
   }
 
   alertTutor = async (token, tutorId, offerId) => { // also sending offerId
     await fetch(`http://localhost:4000/questions/${this.state.questionid}`, {
-      method: 'PUT', 
-      headers : { 
+      method: 'PUT',
+      headers : {
         'Authorization' : 'Bearer ' + token,
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -39,39 +50,32 @@ class QuestionPosted extends Component {
     .then(res => res.json())
     .then(question => {
       this.props.updateQuestion(question);
+      const learner = this.props.user;
       question.tutor = tutorId; // adding the tutorId to the question
-      this.props.socket.emit('chat now', question)
+      this.props.socket.emit('chat now', { question, learner })
     })
-
   }
 
   renderOffers = () => {
     const offers = this.props.offers;
-    const tutors = this.props.tutors;
-      return offers.map((offer, index) => {
-        if (tutors[index]) {
-          return <div key={offer.offer_id}><Card tutor={tutors[index]} offer={offer} rejectOffer={() => this.rejectOffer(offer.offer_id)}chatNow={(e) => this.handleClick(e, tutors[index].user_id, offer.offer_id)}/></div>
-        } else {
-          return '';
-        }
-      });
+    return offers.map((offer) => {
+      const tutor = this.props.users.find(user => user.user_id === offer.tutor)
+      return <div key={offer.offer_id}><Card tutor={tutor} offer={offer} rejectOffer={() => this.rejectOffer(offer.offer_id)} chatNow={(e) => this.handleClick(e, tutor.user_id, offer.offer_id)}/></div>
+    });
   }
 
   rejectOffer = (offerid) => {
-    console.log('offer clicked', offerid)
     this.props.rejectOffer(offerid);
   }
 
-
-//Amber TTD: Check how user is being sent to backend in the chat component into socket...COMPLETED need to talk to Natalia about requests
   render() {
-
     return (
-      <div>
+      <div className="question-posted">
         <h1>Question: {this.props.question.title}</h1>
-        <h2>Description: {this.props.question.description}</h2>
+        <h3>Description:</h3>
+        <p>{this.props.question.description}</p>
         <div>
-          {this.renderOffers()}
+          {this.props.users && this.props.offers ? this.renderOffers() : 'Loading...'}
         </div>
       </div>
     )
@@ -80,15 +84,11 @@ class QuestionPosted extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  users: state.users,
   offers: state.offers,
-  tutors: state.tutors,
   question: state.question
 })
 
-const mapDispatchToProps = { fetchQuestionAndOffers, updateQuestion, rejectOffer };
-
-// const mapDispatchToProps = (dispatch) => ({
-//   fetchOffers: (questionid) => dispatch(fetchOffers(questionid))
-// })
+const mapDispatchToProps = { setUsers, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionPosted);
