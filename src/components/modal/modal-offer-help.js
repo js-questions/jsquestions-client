@@ -9,12 +9,23 @@ const offerHelp = (e, modalInfo, props) => {
   props.closeOfferModal()
 }
 
+let disableButton = true; // disable submit button if no input
+
+
 function ModalOfferHelp(props) {
   const [modalInfo, setModalInfo ] = React.useState({
     message: null,
     questionid: props.modalRef.questionid,
     expiration: 15 * 6000 * 10 + Date.now(),
   })
+
+  const onChangeInput = (event) => {
+    if (event.target.value) disableButton = false;
+    else disableButton = true;
+    setModalInfo({...modalInfo, questionid: props.modalRef.questionid, message: event.target.value, disableButton: true});
+    return true;
+  }
+
   const backdropAnimation = useSpring({ reverse: !props.showModal, from: {display: 'none'}, to: {display: 'block'}, delay: (_) => !props.showModal ? 500 : 0 })
   // const props2 = useSpring({ reverse: !props.showModal, to: {opacity: 1, width: '600px', height: '600px'}, from: {opacity: 0, width: '0px', height: '0px'}, config: {duration:500}})
   // const props3 = useSpring({ opacity: 1, from: {opacity: 0}, config: {duration:3000}})
@@ -40,7 +51,7 @@ function ModalOfferHelp(props) {
         <h3>Offer help to {currentUser ? currentUser.username : 'user'} on:</h3>
         <h4>{currentQuestion ? currentQuestion.title : 'question'}</h4>
         <form className="offer-help__form">
-          <input type='text' placeholder='Explain how you can help' maxLength="200" onChange={(event) => setModalInfo({...modalInfo, questionid: props.modalRef.questionid, message: event.target.value})} />
+          <input type='text' placeholder='Explain how you can help' maxLength="200" onChange={onChangeInput} required/>
 
           <div className="offer-help-select-time">
             <p>I'll be available for the next: </p>
@@ -64,7 +75,7 @@ function ModalOfferHelp(props) {
 
 
           {/* <animated.div style={props4}> */}
-          <button className="button-primary button-offer-help" onClick={(e)=> offerHelp(e, modalInfo, props)}>{props.modalRef.button}</button>
+          <button type='submit' disabled={disableButton} className="button-primary button-offer-help" onClick={(e)=> offerHelp(e, modalInfo, props)}>{props.modalRef.button}</button>
           {/* </animated.div> */}
         </form>
         {/* </animated.div> */}
