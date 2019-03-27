@@ -27,6 +27,12 @@ class Chat extends Component {
     overTime: 'white',
     clockReset: true,
     timerId: null,
+    questionTitle: null,
+    questionDescription: null,
+    questionResources: null,
+    questionCode: null,
+    questionLearner: null,
+    questionTutor:null
   }
 
   componentDidMount() {
