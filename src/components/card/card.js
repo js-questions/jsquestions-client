@@ -27,6 +27,23 @@ class Card extends Component {
     return hours + ":" + minutes;
   }
 
+  expiredOrNot () {
+    if (this.msToTime() !== 'EXPIRED') {
+      return (
+        <div className="card-action">
+          {this.checkAvailability()}
+          <button className="button-secondary">No thanks!</button>
+        </div>
+      )
+    } else {
+      return (
+        <div className="card-action">
+          <button className="button-primary" disabled>EXPIRED</button>
+        </div>
+      )
+    }
+  }
+
   render() {
     if (this.props.tutor) {
       return (
@@ -41,10 +58,7 @@ class Card extends Component {
             <p>{this.props.offer.message}</p>
             <p className="karmaEarned">{this.props.tutor.karma} <span role="img" aria-label="karma">🙏</span> earned so far</p>
           </div>
-          <div className="card-action">
-            {this.checkAvailability()}
-            <button className="button-secondary" onClick={this.props.rejectOffer}>No thanks!</button>
-          </div>
+          {this.expiredOrNot()}
         </div>
       )
     } else {
