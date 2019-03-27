@@ -1,6 +1,6 @@
-export const setToken = (token) => ({
-  type: 'SET_TOKEN',
-  token
+export const setUser = (user) => ({
+  type: 'SET_USER',
+  user
 })
 
 export const setUsers = (users) => ({
@@ -8,8 +8,8 @@ export const setUsers = (users) => ({
   users
 })
 
-export const setUser = (user) => ({
-  type: 'SET_USER',
+export const addNewUser = (user) => ({
+  type: 'ADD_NEW_USER',
   user
 })
 
@@ -52,10 +52,9 @@ export const updateTutors = (tutor) => ({
   tutor
 })
 
-export const updateKarma = (karma, user) => ({
+export const updateKarma = (karma) => ({
   type: 'UPDATE_KARMA',
-  karma,
-  user
+  karma
 });
 
 export const updateChatQuestion = (question) => ({
