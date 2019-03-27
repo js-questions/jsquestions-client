@@ -1,7 +1,7 @@
 import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
-import { updateQuestion, setUsers, setUser, setToken, logout } from '../../redux/actions.js';
+import { updateQuestion, setUsers, addNewUser, setUser, logout } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
@@ -9,6 +9,7 @@ import { Link, NavLink } from "react-router-dom";
 import ProfileMenu from './profile-menu';
 import TutorNotification from '../modal/modal-tutor-notification.js';
 import titleImage from '../../assets/hero-logo.png';
+import jwt_decode from 'jwt-decode';
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -19,15 +20,16 @@ class Navbar extends React.Component {
       showMenu: false,
       socketQuestion: '',
       questionTitle: '',
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      login: true
     }
     this.updateInput = this.updateInput.bind(this);
   }
 
   componentDidMount = () => {
-    this.checkToken();
+    this.checkUser();
     this.props.socket.on('push tutor', ({ question, learner }) => {
-      this.props.setUser(learner);
+      this.props.addNewUser(learner);
       this.setState({socketQuestion: question}, () => this.tutorNotification() );
     })
     this.props.socket.on('cancel call', () => {
@@ -54,23 +56,48 @@ class Navbar extends React.Component {
     }
   }
 
-  toggleSignUp = () => {
-    this.setState({showSignup: !this.state.showSignup})
+  toggleSignUp = (e) => {
+    if (e) {
+      if (e.target.className === 'log-in') { // if user clicked log-in from the landing page
+        this.setState({showSignup: !this.state.showSignup, login: true});
+      } else {
+        this.setState({showSignup: !this.state.showSignup, login: false});
+      }
+    } else { 
+      this.setState({showSignup: !this.state.showSignup})
+    }
   }
 
-  checkToken = () => {
-    const checkToken = localStorage.getItem('token');
-    if (checkToken) {
-      return this.props.setToken(checkToken);
+  switchLogin = () => {
+    this.setState({login: !this.state.login});
+  }
+
+  showSignupModal = () => {
+    if (this.state.showSignup) {
+      return <Login switch={this.switchLogin} login={this.state.login} close={this.toggleSignUp}/>
+    }
+  }
+
+  checkUser = () => {
+    if (this.state.token) {
+      const decoded = jwt_decode(this.state.token);
+      fetch(`http://localhost:4000/users/${decoded.user_id}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+        },
+        })
+        .then(res => res.json())
+        .then(res => this.props.setUser(res))
     }
   }
 
   loginProcess = () => {
     if (!this.props.user.username) {
       return (
-      <div className="navbar-item" onClick={this.toggleSignUp}>
-        <span className="log-in">Log In</span>
-        <button className="button-primary">Sign Up</button>
+      <div className="navbar-item" >
+        <span onClick={this.toggleSignUp} className="log-in">Log In</span>
+        <button onClick={this.toggleSignUp} className="button-primary">Sign Up</button>
       </div>)
     }
     else {
@@ -90,12 +117,6 @@ class Navbar extends React.Component {
           </div>
         </div>
       )
-    }
-  }
-
-  showSignupModal = () => {
-    if (this.state.showSignup) {
-      return <Login close={this.toggleSignUp}/>
     }
   }
 
@@ -171,9 +192,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  setToken: (token) => dispatch(setToken(token)),
-  logout: () => dispatch(logout()),
   setUser: (user) => dispatch(setUser(user)),
+  logout: () => dispatch(logout()),
+  addNewUser: (user) => dispatch(addNewUser(user)),
   setUsers: (users) => dispatch(setUsers(users)),
   updateQuestion: (question) => dispatch(updateQuestion(question))
 })
