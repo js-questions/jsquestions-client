@@ -159,29 +159,6 @@ class Chat extends Component {
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
   }
 
-  setChatDetails = () => {
-    //this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor
-    //this.props.question.answered_by IS NULL ON LEARNER
-    console.log('users', this.props.users)
-    //const test = this.props.users.find(user => user.user_id === this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor);
-    this.setState({
-      questionTitle: this.props.question.title,
-      questionDescription: this.props.question.description,
-      questionResources: this.props.question.resources,
-      questionCode: this.props.question.code,
-      questionLearner: this.props.question.learner,
-    })
-    // if (this.state.tutorOrLearner === 'tutor'){
-    //   this.setState({
-    //     questionTutor: this.props.users.find(user => user.user_id === this.props.question.learner).username
-    //   })
-    // } else {
-    //   this.setState({
-    //     questionTutor: 'TUTOR ID HERE'
-    //   })
-    // }
-  }
-
   updateKarma = (karma) => {
     this.props.socket.emit('update karma', {tutor: this.state.targetTutor, karma: karma })
   }
