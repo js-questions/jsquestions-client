@@ -13,7 +13,7 @@ function ModalOfferHelp(props) {
   const [modalInfo, setModalInfo ] = React.useState({
     message: null,
     questionid: props.modalRef.questionid,
-    expiration: 15 * 6000 + Date.now(),
+    expiration: 15 * 6000 * 10 + Date.now(),
   })
   const backdropAnimation = useSpring({ reverse: !props.showModal, from: {display: 'none'}, to: {display: 'block'}, delay: (_) => !props.showModal ? 500 : 0 })
   // const props2 = useSpring({ reverse: !props.showModal, to: {opacity: 1, width: '600px', height: '600px'}, from: {opacity: 0, width: '0px', height: '0px'}, config: {duration:500}})
@@ -45,7 +45,7 @@ function ModalOfferHelp(props) {
           <div className="offer-help-select-time">
             <p>I'll be available for the next: </p>
             <select className="modal-waiting-time" onChange={(event) => {
-            const time = event.target.value * 6000 + Date.now();
+            const time = event.target.value * 6000 * 10 + Date.now();
             setModalInfo({...modalInfo, questionid: props.modalRef.questionid, expiration: time})}}>
               <option value='15'>15 min</option>
               <option value='30'>30 min</option>
