@@ -1,6 +1,6 @@
-export const setToken = (token) => ({
-  type: 'SET_TOKEN',
-  token
+export const setUser = (user) => ({
+  type: 'SET_USER',
+  user
 })
 
 export const setUsers = (users) => ({
@@ -8,8 +8,8 @@ export const setUsers = (users) => ({
   users
 })
 
-export const setUser = (user) => ({
-  type: 'SET_USER',
+export const addNewUser = (user) => ({
+  type: 'ADD_NEW_USER',
   user
 })
 
@@ -52,10 +52,9 @@ export const updateTutors = (tutor) => ({
   tutor
 })
 
-export const updateKarma = (karma, user) => ({
+export const updateKarma = (karma) => ({
   type: 'UPDATE_KARMA',
-  karma,
-  user
+  karma
 });
 
 export const updateChatQuestion = (question) => ({
@@ -75,7 +74,7 @@ export const rejectOffer = (id) => {
         },
       })
       .then(res => res.json())
-      .then(res => dispatch(removeOffer(id)))
+      .then(() => dispatch(removeOffer(id)))
     }
   }
 }
@@ -93,18 +92,14 @@ export const fetchQuestionAndOffers = (questionid, token) => {
         },
         })
         .then(res => res.json())
-        .then(res => {
-          dispatch(updateQuestion(res.question));
-          dispatch(updateOffers(res.offers));
+        .then(data => {
+          if (!data.error) {
+            dispatch(updateQuestion(data.question));
+            dispatch(updateOffers(data.offers));
+          }
         })
     } else {
       console.log('User needs to log in to see their questions');
     }
   }
 }
-
-
-
-
-
-
