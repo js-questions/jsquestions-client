@@ -46,21 +46,21 @@ class Chat extends Component {
 
         if (this.state.clockReset) {
           this.setState({tutorJoined: true}, () => this.startTimer());
-        } else this.setState({tutorJoined: false});
-
-        this.setState({ clockReset:false })
-        
-        if (this.state.tutorOrLearner === 'tutor') {
-          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); 
-          sessionStorage.setItem('targetOffer', targetOffer);
+        }
+        this.setState({clockReset:false})
   
+        if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
+          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
+          sessionStorage.setItem('targetOffer', targetOffer);
+          
           this.props.socket.emit('question info', {
             question: this.props.question,
             tutor: sessionStorage.getItem('targetOffer')
           })
         }
       }
-     
+      else this.setState({tutorJoined: false});
+           
     });
 
     // STORE THE QUESTION INFO TO THE REDUX STATE AND THE CHATROOM 
@@ -189,7 +189,7 @@ class Chat extends Component {
           <br/>
           <p>{this.state.questionLearner}</p>
           <br/>
-          {/* {this.state.questionTutor} */}
+          {this.state.questionTutor}
         </div>
 
         <div>
