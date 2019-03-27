@@ -117,15 +117,6 @@ class Chat extends Component {
 
   updateKarma = (karma) => {
     this.props.socket.emit('update karma', {tutor: this.state.targetTutor, karma: karma })
-    // const token = localStorage.getItem('token');
-    // fetch(`http://localhost:4000/users/${this.state.targetTutor}`, {
-    //   method: 'GET',
-    //   headers: {
-    //     'Authorization': 'Bearer ' + token,
-    //   },
-    //   })
-    //   .then(res => res.json())
-    //   .then((res) => console.log('updated user', res))
   }
 
   showEndChatModal = () => {

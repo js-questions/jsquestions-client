@@ -29,12 +29,14 @@ class MyQuestions extends Component {
 
   renderQuestions = () => {
     if (this.state.questions.length > 0) {
+      // sort questions by open first and closed after
+      this.state.questions.sort(function(a, b){return a.answered - b.answered})
       return this.state.questions.map((question, index) => {
         let user = this.props.user;
         return (
           <div key={index}>
             <Link className="question__link" to={{pathname: `/question-posted/${question.question_id}`}}>
-              <Question question={question} user={user}/>
+              <Question question={question} user={user} answered={question.answered}/>
             </Link>
           </div>
     )})}

@@ -2,6 +2,7 @@ import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
 import { addNewUser, setUser, logout } from '../../redux/actions.js';
+import { updateQuestion, setUsers, setUser, setToken, logout } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
@@ -20,12 +21,13 @@ class Navbar extends React.Component {
       showMenu: false,
       socketQuestion: '',
       questionTitle: '',
+      token: localStorage.getItem('token')
     }
     this.updateInput = this.updateInput.bind(this);
   }
 
   componentDidMount = () => {
-    this.checkToken();
+    this.checkUser();
     this.props.socket.on('push tutor', ({ question, learner }) => {
       this.props.addNewUser(learner);
       this.setState({socketQuestion: question}, () => this.tutorNotification() );
@@ -33,11 +35,22 @@ class Navbar extends React.Component {
     this.props.socket.on('cancel call', () => {
       this.setState({socketQuestion: ''}, () => this.tutorNotification() );
     })
+    this.fetchUsers();
+  }
+
+  fetchUsers = () => {
+    fetch(`http://localhost:4000/users`, {
+      headers : {
+        'Authorization' : 'Bearer ' + this.state.token,
+    }})
+      .then(res => res.json())
+      .then(users => this.props.setUsers(users))
   }
 
   tutorNotification = () => {
     if (this.state.socketQuestion !== '') {
-      return <TutorNotification question={this.state.socketQuestion} learner={this.props.users.filter(user => user.user_id === this.state.socketQuestion.learner)[0]} />
+      this.props.updateQuestion(this.state.socketQuestion);
+      return <TutorNotification question={this.state.socketQuestion} users={this.props.users} learner={this.props.users.filter(user => user.user_id === this.state.socketQuestion.learner)[0]} />
     } else {
       return '';
     }
@@ -47,14 +60,13 @@ class Navbar extends React.Component {
     this.setState({showSignup: !this.state.showSignup})
   }
 
-  checkToken = () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decoded = jwt_decode(token);
+  checkUser = () => {
+    if (this.state.token) {
+      const decoded = jwt_decode(this.state.token);
       fetch(`http://localhost:4000/users/${decoded.user_id}`, {
         method: 'GET',
         headers: {
-          'Authorization': 'Bearer ' + token,
+          'Authorization': 'Bearer ' + this.state.token,
         },
         })
         .then(res => res.json())
@@ -64,7 +76,11 @@ class Navbar extends React.Component {
 
   loginProcess = () => {
     if (!this.props.user.username) {
-      return (<div className="navbar-item" onClick={this.toggleSignUp}><span className="log-in">Log In</span><button className="button-primary">Sign Up</button></div>)
+      return (
+      <div className="navbar-item" onClick={this.toggleSignUp}>
+        <span className="log-in">Log In</span>
+        <button className="button-primary">Sign Up</button>
+      </div>)
     }
     else {
       return (
@@ -109,7 +125,7 @@ class Navbar extends React.Component {
 
           <img src={titleImage} alt="JS QUESTIONS"/>
           <form className="question-bar">
-            <input id="searchTerm" type="text" maxLength="200" placeholder="What do you need help with?" onChange={this.updateInput}/>
+            <input id="searchTerm" type="text" maxLength="200" autoComplete="off" placeholder="What do you need help with?" onChange={this.updateInput}/>
             <NavLink to={{pathname: '/ask', state: {title: this.state.questionTitle}}} className="navbar-item searchTerm-button">?</NavLink>
           </form>
           <h3>For when Stack Overflow and the Internet just aren't enough.</h3>
@@ -152,7 +168,7 @@ class Navbar extends React.Component {
         {this.landingPageNavbar()}
         {this.showSignupModal()}
         {this.tutorNotification()}
-        
+
       </div>
     )
   }
@@ -166,7 +182,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setUser: (user) => dispatch(setUser(user)),
   logout: () => dispatch(logout()),
-  addNewUser: (user) => dispatch(addNewUser(user))
+  addNewUser: (user) => dispatch(addNewUser(user)),
+  setUsers: (users) => dispatch(setUsers(users)),
+  updateQuestion: (question) => dispatch(updateQuestion(question))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

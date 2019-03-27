@@ -44,7 +44,6 @@ class Login extends Component {
      .then(res => {
        if (res.token) {
         const decoded = jwt_decode(res.token);
-         console.log(decoded);
          localStorage.setItem('token', res.token);
          this.props.setUser(decoded);
          this.forwardsToQuestionPosted();

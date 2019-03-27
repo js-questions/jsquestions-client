@@ -85,7 +85,7 @@ class AskQuestions extends Component {
         <div className="ask-questions__form-box">
           <form className="ask-questions__form">
             <h4>Title (*)</h4>
-            <input maxLength="200" value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} placeholder='My title is...' />
+            <input maxLength="200" value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} autoComplete="off" placeholder='My title is...' />
 
             <h4>Describe your problem</h4>
             <textarea maxLength="1000" onChange={(event) => this.setState({describeProblem: event.target.value})} placeholder='What problem are you having? What do you want to achieve?'/>
@@ -95,7 +95,7 @@ class AskQuestions extends Component {
   Codepens, etc. here.'/>
 
             <h4>Link to Code</h4>
-            <input maxLength="200" onChange={(event) => this.setState({codeLink: event.target.value})} placeholder='Ex: Github Repo, JSFiddle, Codepen, etc.'/>
+            <input maxLength="200" onChange={(event) => this.setState({codeLink: event.target.value})} autoComplete="off" placeholder='Ex: Github Repo, JSFiddle, Codepen, etc.'/>
 
             <button className="button-primary" onClick={this.handleClick.bind(this)}>Help!</button>
             <p className="ask-questions__p">(*) These are the only mandatory fields but the more information you give the tutors, the better they will understand your problem.</p>

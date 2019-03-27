@@ -3,15 +3,14 @@ import '../log-in/log-in.scss';
 import { Link } from "react-router-dom";
 import '../../phone.scss';
 
-class TutorInvitation extends Component {
+class TutorNotification extends Component {
 
   render() {
-    console.log('Tutor invitation modal is receiving', this.props)
-    // We need to add the learner and question information to this modal. Styling.
     return (
       <div className="backdrop">
         <div className="modal">
-          <h2>Incoming call!</h2>
+          <h2 className="modal__incoming-call">Incoming call from {this.props.learner.username}!</h2>
+          <p className="modal__incoming-call">{this.props.question.title}</p>
           <Link className="link-style" onClick={this.props.enterChatroom} to={`/chat/${this.props.question.room_id}/${this.props.question.question_id}/tutor`}>
             <i className="Phone is-animating"></i>
           </Link>
@@ -21,4 +20,4 @@ class TutorInvitation extends Component {
   }
 }
 
-export default TutorInvitation;
+export default TutorNotification;

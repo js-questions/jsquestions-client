@@ -72,3 +72,49 @@ textarea {
   transform: translateY(2px);
 }
 
+.button-offline {
+  background-color: $grey-light;
+  border-radius: 40px;
+  padding: 12px 25px;
+  width: auto !important;
+  font-weight: 700;
+  font-family: -apple-system, 'Montserrat', "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 1.5rem;
+  border: none;
+  box-shadow: 0 3px rgba(black, .4);
+  outline:none;
+}
+
+.button-closed {
+  background-color: $red-transparent;
+  border-radius: 40px;
+  padding: 12px 25px;
+  width: auto !important;
+  font-weight: 700;
+  font-family: -apple-system, 'Montserrat', "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 1.5rem;
+  border: none;
+  box-shadow: 0 3px rgba($red-transparent, .4);
+  outline:none;
+}
+
+.button-offerHelp {
+  background-color: $green-transparent;
+  border-radius: 40px;
+  padding: 12px 25px;
+  width: auto !important;
+  font-weight: 700;
+  font-family: -apple-system, 'Montserrat', "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 1.5rem;
+  border: none;
+  box-shadow: 0 4px rgba(green, .4);
+  outline:none;
+  cursor: pointer;
+}
+
+.button-offerHelp:hover {
+  cursor: pointer;
+  background-color: darken($green-transparent, 18%);;
+}
+
+
