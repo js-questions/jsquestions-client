@@ -3,7 +3,7 @@ import jwt_decode from 'jwt-decode';
 
 const user = (state = {}, action) => {
   switch(action.type) {
-    case 'SET_TOKEN':
+    case 'SET_USER':
       const decoded = jwt_decode(action.token);
       return {
         ...decoded,

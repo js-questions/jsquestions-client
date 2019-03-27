@@ -3,7 +3,7 @@ import '../modal/modal.scss';
 import './log-in.scss';
 import './../../index.scss';
 import btoa from 'btoa';
-import { setToken } from '../../redux/actions.js';
+import { setUser } from '../../redux/actions.js';
 import { connect } from 'react-redux';
 
 class Login extends Component {
@@ -43,7 +43,7 @@ class Login extends Component {
      .then(res => {
        if (res.token) {
          localStorage.setItem('token', res.token);
-         this.props.setToken(res.token);
+         this.props.setUser(res.token);
          this.forwardsToQuestionPosted();
          this.props.close();
        } else {
@@ -65,14 +65,13 @@ class Login extends Component {
       .then(res => {
         if (res.token) {
           localStorage.setItem('token', res.token);
-          this.props.setToken(res.token)
+          this.props.setUser(res.token)
           this.props.close();
           this.forwardsToQuestionPosted();
         } else {
           this.setState({loginError: res}, () => console.log(res));
         }
       })
-
   }
 
   forwardsToQuestionPosted = () => {
@@ -126,7 +125,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  setToken: (token) => dispatch(setToken(token))
+  setUser: (token) => dispatch(setUser(token))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

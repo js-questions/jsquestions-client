@@ -1,6 +1,6 @@
-export const setToken = (token) => ({
-  type: 'SET_TOKEN',
-  token
+export const setUser = (user) => ({
+  type: 'SET_USER',
+  user
 })
 
 export const setUsers = (users) => ({
