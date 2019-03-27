@@ -119,11 +119,6 @@ class Navbar extends React.Component {
     // Sending token on user refresh
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
 
-    // this.props.socket.on('update karma', (data) => {
-    //   this.props.updateKarma(data.karma);
-    //   console.log('updated user', this.props.user);
-    // })
-
     // Apply different class depending if we are in the landing page or not
     let classNavbarBox = '';
     if (this.props.landingPage) classNavbarBox='navbar-box__landingPage';

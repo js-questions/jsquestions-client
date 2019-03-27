@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { updateQuestions } from '../../redux/actions.js';
 import { connect } from 'react-redux';
 import './my-questions.scss';
 import Question from './../question/question';

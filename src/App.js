@@ -42,11 +42,8 @@ function PrivateRoute({ component: Component, ...rest}) {
 class App extends Component {
 
   componentDidMount() {
-    console.log('App did mount');
     socket.on('update karma', (data) => {
-      console.log('update karma', data.tutor, this.props.user.user_id);  
       if (data.tutor === this.props.user.user_id) {
-        console.log('dispatching');
         this.props.updateKarma(data.karma);
       }
     })

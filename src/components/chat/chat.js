@@ -113,7 +113,6 @@ class Chat extends Component {
   }
 
   updateKarma = (karma) => {
-    console.log('karma updated')
     this.props.socket.emit('update karma', {tutor: this.state.targetTutor, karma: karma })
   }
 
