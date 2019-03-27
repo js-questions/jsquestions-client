@@ -124,8 +124,8 @@ class AnswerPage extends Component {
     }
     //Renders questions
     else if (this.state.questions.length > 0) {
-      const questionsFiltered = this.state.questions.filter((question, index) => question.status!=='closed');
-      return questionsFiltered.map((question, index) => {
+      // const questionsFiltered = this.state.questions.filter((question, index) => question.status!=='closed');
+      return this.state.questions.map((question, index) => {
         let user = this.state.allUsers.filter(user => { return user.user_id===question.learner})[0];
         return (
           <div className="question-container" key={index} >

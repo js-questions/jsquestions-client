@@ -10,18 +10,29 @@ class Question extends Component {
   }
 
   renderOfferButton = () => {
-    let btn_class = this.state.buttonAlreadyClicked ? "button-primary offerSent" : "button-primary offerNotSent";
-    let btn_text = this.state.buttonAlreadyClicked ? "Sent" : "Offer Help";
+    let btn_class = '';
+    let btn_text = '';
+    let disableFlag = false;
+    if (this.props.question.status==="closed") {
+      disableFlag = true;
+      btn_class = "button-closed";
+      btn_text =  "closed";
+    } else if (this.props.question.status==="pending"){
+      btn_class = "button-primary offerSent";
+      btn_text =  "Sent";
+      disableFlag = true;
+    } else {
+      btn_class = "button-offerHelp offerNotSent";
+      btn_text = "Offer Help";
+    }
+
     //Amber TTD: needs 3 if statement to change if person is not online
-      return <button className={btn_class} disabled={this.state.buttonAlreadyClicked} onClick={() => {this.changeColor(); this.props.openOfferModal(this.props.question.question_id)}}>{btn_text}</button>
+      return <button className={btn_class} disabled={disableFlag} onClick={() => {this.props.openOfferModal(this.props.question.question_id)}}>{btn_text}</button>
   }
   renderOfflineButton = () => {
-    return <button disabled className="button-primary">Sorry OFFLINE</button>
+    return <button disabled className="button-offline">Offline</button>
   }
 
-  changeColor = () => {
-    this.setState({buttonAlreadyClicked: true})
-  }
 
   //Amber TTD: there needs to be a way on page refresh that these will stay the same
 
