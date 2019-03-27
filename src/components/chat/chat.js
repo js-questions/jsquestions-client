@@ -32,6 +32,8 @@ class Chat extends Component {
   componentDidMount() {
     this.props.socket.emit('join room', this.state.roomId)
 
+    this.setChatDetails();
+
     // Notify that user is online (since navbar is not render)
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
 
@@ -115,6 +117,30 @@ class Chat extends Component {
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
   }
 
+  setChatDetails = () => {	
+    //this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor	
+    //this.props.question.answered_by IS NULL ON LEARNER	
+    console.log('users', this.props.users)	
+    //const test = this.props.users.find(user => user.user_id === this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor);	
+    this.setState({	
+      questionTitle: this.props.question.title,	
+      questionDescription: this.props.question.description,	
+      questionResources: this.props.question.resources,	
+      questionCode: this.props.question.code,	
+      questionLearner: this.props.question.learner,	
+    })	
+    // if (this.state.tutorOrLearner === 'tutor'){	
+    //   this.setState({	
+    //     questionTutor: this.props.users.find(user => user.user_id === this.props.question.learner).username	
+    //   })	
+    // } else {	
+    //   this.setState({	
+    //     questionTutor: 'TUTOR ID HERE'	
+    //   })	
+    // }	
+    console.log(this.state)	
+  }
+
   updateKarma = (karma) => {
     this.props.socket.emit('update karma', {tutor: this.state.targetTutor, karma: karma })
   }
@@ -151,10 +177,21 @@ class Chat extends Component {
           </div>
         </div>
 
-        {/* <div className="chat-info">
-          <h1>{this.props.question.title}</h1>
-          <p>{this.props.question.description}</p>
-        </div> */}
+        <div className="chat-info">	        
+          <h1>{this.state.questionTitle}</h1>	          
+          <br/>	         
+          <p>{this.state.questionDescription}</p>	        
+          <br/>	
+          <p>{this.state.questionResources}</p>	
+          <br/>	
+          <p>{this.state.questionCode}</p>	
+          <br/>	
+          <p>{this.state.questionLearner}</p>	
+          <br/>	
+          {this.state.questionTutor}	
+        </div>
+
+       
 
         <div className="chat-body">
           <CodeEditor socket={this.props.socket} room={this.state.roomId}/>
@@ -174,6 +211,7 @@ class Chat extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  users: state.users,
   question: state.question,
   offers: state.offers,
   tutors: state.tutors,
