@@ -26,34 +26,48 @@ class Chat extends Component {
     secondsString: '00',
     overTime: 'white',
     clockReset: true,
-    timerId: null
+    timerId: null,
+    //questionDetails: null,
+    questionDetails: {
+      title: null,
+      description: null,
+      resources: null,
+      code: null,
+      learner: null,
+      tutor: null //(need to put this in here from answered_by -> match offer.offer_id -> offer.tutor -> users.user_id)
+    }
   }
 
   componentDidMount() {
+    console.log(this.props)
+    
     this.props.socket.emit('join room', this.state.roomId)
 
     this.props.socket.on('join room', (participants) => {
+
+      //OMG: UPDATE TUTORS STORE ON JOIN
       if (participants === 2) {
 
         if (this.state.clockReset) {
           this.setState({tutorJoined: true}, () => this.startTimer());
-        }
-        this.setState({clockReset:false})
+        } else this.setState({tutorJoined: false});
 
-        if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
-          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
-          sessionStorage.setItem('targetOffer', targetOffer);
-          this.props.socket.emit('question info', {
-            question: this.props.question,
-            tutor: sessionStorage.getItem('targetOffer')
-          })
-        }
+        this.setState({clockReset:false})
+        
+        const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
+        sessionStorage.setItem('targetOffer', targetOffer);
+
+        this.props.socket.emit('question info', {
+          question: this.props.question,
+          tutor: sessionStorage.getItem('targetOffer')
+        })
       }
-      else this.setState({tutorJoined: false});
+     
     });
 
     // STORE THE QUESTION INFO TO THE REDUX STATE AND THE CHATROOM
     this.props.socket.on('question info', (data) => {
+      console.log("data", data)
       this.props.updateChatQuestion(data);
     })
 
@@ -165,6 +179,7 @@ class Chat extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  users: state.users,
   question: state.question,
   offers: state.offers,
   tutors: state.tutors,

@@ -3,7 +3,7 @@ import '../log-in/log-in.scss';
 import { Link } from "react-router-dom";
 import '../../phone.scss';
 
-class TutorInvitation extends Component {
+class TutorNotification extends Component {
 
   render() {
     console.log('Tutor invitation modal is receiving', this.props)
@@ -21,4 +21,9 @@ class TutorInvitation extends Component {
   }
 }
 
-export default TutorInvitation;
+export default TutorNotification;
+
+//OMG: NEED TO UPDATE THE STORE HERE
+//users -DONE
+// Offers- done?
+// question
