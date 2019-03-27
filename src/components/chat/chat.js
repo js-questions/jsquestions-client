@@ -123,28 +123,28 @@ class Chat extends Component {
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
   }
 
-  setChatDetails = () => {	
-    //this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor	
-    //this.props.question.answered_by IS NULL ON LEARNER	
-    console.log('users', this.props.users)	
-    //const test = this.props.users.find(user => user.user_id === this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor);	
-    this.setState({	
-      questionTitle: this.props.question.title,	
-      questionDescription: this.props.question.description,	
-      questionResources: this.props.question.resources,	
-      questionCode: this.props.question.code,	
-      questionLearner: this.props.question.learner,	
-    })	
-    // if (this.state.tutorOrLearner === 'tutor'){	
-    //   this.setState({	
-    //     questionTutor: this.props.users.find(user => user.user_id === this.props.question.learner).username	
-    //   })	
-    // } else {	
-    //   this.setState({	
-    //     questionTutor: 'TUTOR ID HERE'	
-    //   })	
-    // }	
-    console.log(this.state)	
+  setChatDetails = () => {
+    //this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor
+    //this.props.question.answered_by IS NULL ON LEARNER
+    console.log('users', this.props.users)
+    //const test = this.props.users.find(user => user.user_id === this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor);
+    this.setState({
+      questionTitle: this.props.question.title,
+      questionDescription: this.props.question.description,
+      questionResources: this.props.question.resources,
+      questionCode: this.props.question.code,
+      questionLearner: this.props.question.learner,
+    })
+    // if (this.state.tutorOrLearner === 'tutor'){
+    //   this.setState({
+    //     questionTutor: this.props.users.find(user => user.user_id === this.props.question.learner).username
+    //   })
+    // } else {
+    //   this.setState({
+    //     questionTutor: 'TUTOR ID HERE'
+    //   })
+    // }
+    console.log(this.state)
   }
 
   updateKarma = (karma) => {
@@ -152,7 +152,7 @@ class Chat extends Component {
   }
 
   showEndChatModal = () => {
-    if (this.state.showFeedbackModal) {      
+    if (this.state.showFeedbackModal) {
       sessionStorage.removeItem('timeStarted');
       sessionStorage.removeItem('targetOffer');
       return <ModalEndChat updateKarma={this.updateKarma} closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
@@ -179,25 +179,25 @@ class Chat extends Component {
           </div>
           <div className="right">
             <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
-            <button className="end-call-button" onClick={this.hangUp}>End Call</button>        
+            <button className="end-call-button" onClick={this.hangUp}>End Call</button>
           </div>
         </div>
 
-        <div className="chat-info">	        
-          <h1>{this.state.questionTitle}</h1>	          
-          <br/>	         
-          <p>{this.state.questionDescription}</p>	        
-          <br/>	
-          <p>{this.state.questionResources}</p>	
-          <br/>	
-          <p>{this.state.questionCode}</p>	
-          <br/>	
-          <p>{this.state.questionLearner}</p>	
-          <br/>	
-          {this.state.questionTutor}	
+        <div className="chat-info">
+          <h1>{this.state.questionTitle}</h1>
+          <br/>
+          <p>{this.state.questionDescription}</p>
+          <br/>
+          <p>{this.state.questionResources}</p>
+          <br/>
+          <p>{this.state.questionCode}</p>
+          <br/>
+          <p>{this.state.questionLearner}</p>
+          <br/>
+          {this.state.questionTutor}
         </div>
 
-       
+
 
         <div className="chat-body">
           <CodeEditor socket={this.props.socket} room={this.state.roomId}/>
