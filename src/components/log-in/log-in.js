@@ -85,8 +85,7 @@ class Login extends Component {
   }
 
   render() {
-
-    if (!this.state.userExists) {
+    if (!this.props.login) {
       return(
         <div className="backdrop">
           <div className="modal">
@@ -99,7 +98,7 @@ class Login extends Component {
               <button className="button-primary">Sign up</button>
             </form>
             <p>{this.state.signUpError}</p>
-            <button className="button-secondary" onClick={() => this.setState({userExists: !this.state.userExists})}>I already have an account</button>
+            <button className="button-secondary" onClick={this.props.switch}>I already have an account</button>
           </div>
         </div>
       )
@@ -115,7 +114,7 @@ class Login extends Component {
               <button className="button-primary">Sign in</button>
             </form>
             <p>{this.state.loginError}</p>
-            <button className="button-secondary" onClick={() => this.setState({userExists: !this.state.userExists})}>I don't have an account</button>
+            <button className="button-secondary" onClick={this.props.switch}>I don't have an account</button>
           </div>
         </div>
       )
