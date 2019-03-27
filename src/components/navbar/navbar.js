@@ -48,10 +48,17 @@ class Navbar extends React.Component {
   }
 
   checkToken = () => {
-    const checkToken = localStorage.getItem('token');
-    if (checkToken) {
-      const decoded = jwt_decode(checkToken);
-      return this.props.setUser(decoded);
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded = jwt_decode(token);
+      fetch(`http://localhost:4000/users/${decoded.user_id}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+        },
+        })
+        .then(res => res.json())
+        .then(res => this.props.setUser(res))
     }
   }
 

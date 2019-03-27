@@ -3,11 +3,11 @@ import { combineReducers } from 'redux';
 const user = (state = {}, action) => {
   switch(action.type) {
     case 'SET_USER':
-      return action.user;
-      // return {
-      //   ...decoded,
-      //   ...state,
-      // };
+      // return action.user;
+      return {
+        ...action.user,
+        ...state
+      };
     case 'LOGOUT':
       return {};
     case 'UPDATE_KARMA':
