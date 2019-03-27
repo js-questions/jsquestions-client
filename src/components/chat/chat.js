@@ -5,7 +5,7 @@ import './codeeditor.scss';
 import logo from '../../assets/square-logo.png';
 
 import { connect } from 'react-redux';
-import { updateChatQuestion } from '../../redux/actions.js';
+import { updateChatQuestion, updateKarma } from '../../redux/actions.js';
 
 import CodeEditor from './codeeditor';
 import ChatMessages from './chat-messages';
@@ -24,14 +24,9 @@ class Chat extends Component {
     minutes: 0,
     seconds: 0,
     secondsString: '00',
-<<<<<<< HEAD
-    overTime: 'black',
-    targetTutor: -1
-=======
     overTime: 'white',
     clockReset: true,
-    timerId: null
->>>>>>> develop
+    timerId: null,
   }
 
   componentDidMount() {
@@ -39,13 +34,6 @@ class Chat extends Component {
 
     this.props.socket.on('join room', (participants) => {
       if (participants === 2) {
-<<<<<<< HEAD
-        this.setState({tutorJoined: true}, () => this.startTimer());
-        if (this.props.question.learner === this.props.user.user_id) {
-          this.props.socket.emit('question info', {
-            question: this.props.question,
-            tutor: this.state.targetTutor
-=======
 
         if (this.state.clockReset) {
           this.setState({tutorJoined: true}, () => this.startTimer());
@@ -54,16 +42,15 @@ class Chat extends Component {
 
         if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
           const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
+          this.setState({targetTutor: targetOffer[0].tutor});
           sessionStorage.setItem('targetOffer', targetOffer);
           this.props.socket.emit('question info', {
             question: this.props.question,
             tutor: sessionStorage.getItem('targetOffer')
->>>>>>> develop
           })
         }
       } else {
-        const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by)
-        this.setState({tutorJoined: false, targetTutor: targetOffer[0].tutor});
+        this.setState({tutorJoined: false});
       }
     });
 
@@ -111,16 +98,11 @@ class Chat extends Component {
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
       return <Overlay closeOverlay={(counter) => {
         clearInterval(counter);
-<<<<<<< HEAD
-        this.props.socket.emit('cancel call', this.state.targetTutor)
-        this.props.history.goBack()
-=======
         if (this.props.question.learner) { // prevents chat from crashing when the timer runs out
           const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by)
           this.props.history.goBack()
           this.props.socket.emit('cancel call', targetOffer[0].tutor)
         }
->>>>>>> develop
       }
       }/>
     }
@@ -131,18 +113,15 @@ class Chat extends Component {
   }
 
   updateKarma = (karma) => {
+    console.log('karma updated')
     this.props.socket.emit('update karma', {tutor: this.state.targetTutor, karma: karma })
   }
 
   showEndChatModal = () => {
-    if (this.state.showFeedbackModal) {
-<<<<<<< HEAD
-      return <ModalEndChat updateKarma={this.updateKarma} closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
-=======
+    if (this.state.showFeedbackModal) {      
       sessionStorage.removeItem('timeStarted');
       sessionStorage.removeItem('targetOffer');
-      return <ModalEndChat closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
->>>>>>> develop
+      return <ModalEndChat updateKarma={this.updateKarma} closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
     }
   }
 
@@ -199,7 +178,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  updateChatQuestion: (question) => dispatch(updateChatQuestion(question))
+  updateChatQuestion: (question) => dispatch(updateChatQuestion(question)),
+  updateKarma: (karma) => dispatch(updateKarma(karma))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

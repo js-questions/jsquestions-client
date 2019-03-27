@@ -18,7 +18,7 @@ class Navbar extends React.Component {
       openModal: true,
       showMenu: false,
       socketQuestion: '',
-      questionTitle: ''
+      questionTitle: '',
     }
     this.updateInput = this.updateInput.bind(this);
   }
@@ -32,9 +32,6 @@ class Navbar extends React.Component {
     this.props.socket.on('cancel call', () => {
       this.setState({socketQuestion: ''}, () => this.tutorNotification() );
     })
-    // this.props.socket.on('update karma', (data) => {
-    //   this.props.updateKarma(data.karma);
-    // })
   }
 
   tutorNotification = () => {
@@ -122,9 +119,10 @@ class Navbar extends React.Component {
     // Sending token on user refresh
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
 
-    this.props.socket.on('update karma', (data) => {
-      this.props.updateKarma(data.karma);
-    })
+    // this.props.socket.on('update karma', (data) => {
+    //   this.props.updateKarma(data.karma);
+    //   console.log('updated user', this.props.user);
+    // })
 
     // Apply different class depending if we are in the landing page or not
     let classNavbarBox = '';
@@ -159,8 +157,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setToken: (token) => dispatch(setToken(token)),
   logout: () => dispatch(logout()),
-  updateKarma: (karma) => dispatch(updateKarma(karma))
-  setUser: (user) => dispatch(setUser(user)),
+  updateKarma: (karma) => dispatch(updateKarma(karma)),
+  setUser: (user) => dispatch(setUser(user))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

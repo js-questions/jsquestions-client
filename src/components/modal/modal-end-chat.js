@@ -25,7 +25,7 @@ class ModalEndChat extends Component {
       body: JSON.stringify(body)
     })
       .then(res => res.json())
-      .then(res => this.props.updateKarma(this.state.feedback));
+      .then(() => this.props.updateKarma(this.state.feedback));
   }
 
   chatFeedback = (e) => {
@@ -45,11 +45,7 @@ class ModalEndChat extends Component {
   setFeedback = (e, num) => {
     e.preventDefault();
     this.setState({feedback: num})
-<<<<<<< HEAD
-=======
     if (!this.state.karmaClicked) this.setState({karmaClicked: true})
-
->>>>>>> develop
   }
 
   render() {

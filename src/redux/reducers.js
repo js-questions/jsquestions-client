@@ -5,9 +5,10 @@ const user = (state = {}, action) => {
   switch(action.type) {
     case 'SET_TOKEN':
       const decoded = jwt_decode(action.token);
-      return decoded;
-    case 'SET_USER':
-      return action.user;
+      return {
+        ...decoded,
+        ...state,
+      };
     case 'LOGOUT':
       return {};
     case 'UPDATE_KARMA':
