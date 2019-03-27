@@ -9,7 +9,8 @@ class AskQuestions extends Component {
       relatedResources : '',
       codeLink : '',
       showSignup: false,
-      storedQuestion: null
+      storedQuestion: null,
+      login: true
     }
 
   handleClick = (e) => {
@@ -47,8 +48,12 @@ class AskQuestions extends Component {
 
   showSignupModal = () => {
     if (this.state.showSignup) {
-      return <Login close={this.toggleSignUp} signedIn={this.signedIn}/>;
+      return <Login switch={this.switchLogin} login={this.state.login} close={this.toggleSignUp}/>
     }
+  }
+
+  switchLogin = () => {
+    this.setState({login: !this.state.login});
   }
 
   toggleSignUp = () => {
