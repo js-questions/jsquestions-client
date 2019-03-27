@@ -27,15 +27,6 @@ class Chat extends Component {
     overTime: 'white',
     clockReset: true,
     timerId: null,
-    //questionDetails: null,
-    // questionDetails: {
-    //   title: null,
-    //   description: null,
-    //   resources: null,
-    //   code: null,
-    //   learner: null,
-    //   tutor: null //(need to put this in here from answered_by -> match offer.offer_id -> offer.tutor -> users.user_id)
-    // }
     questionTitle: null,
     questionDescription: null,
     questionResources: null,
@@ -57,15 +48,17 @@ class Chat extends Component {
           this.setState({tutorJoined: true}, () => this.startTimer());
         } else this.setState({tutorJoined: false});
 
-        this.setState({clockReset:false})
+        this.setState({ clockReset:false })
         
-        const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by);
-        sessionStorage.setItem('targetOffer', targetOffer);
-
-        this.props.socket.emit('question info', {
-          question: this.props.question,
-          tutor: sessionStorage.getItem('targetOffer')
-        })
+        if (this.state.tutorOrLearner === 'tutor') {
+          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); 
+          sessionStorage.setItem('targetOffer', targetOffer);
+  
+          this.props.socket.emit('question info', {
+            question: this.props.question,
+            tutor: sessionStorage.getItem('targetOffer')
+          })
+        }
       }
      
     });
@@ -81,27 +74,27 @@ class Chat extends Component {
   }
 
   setChatDetails = () => {
-    // this.setState({
-    //   questionDetails: {
-    //     ...this.state.questionDetails,
-    //     hospital_id: 1,
-    //   },
-    // });
-    
-    // this.setState({
-    //   questionDetails: Object.assign({}, this.state.questionDetails, {
-    //     hospital_id: 1,
-    //   }),
-    // });
+    //this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor
+    //this.props.question.answered_by IS NULL ON LEARNER
+    console.log('users', this.props.users)
+    //const test = this.props.users.find(user => user.user_id === this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor);
     this.setState({
       questionTitle: this.props.question.title,
       questionDescription: this.props.question.description,
       questionResources: this.props.question.resources,
       questionCode: this.props.question.code,
       questionLearner: this.props.question.learner,
-      questionTutor: 3
     })
-    console.log(this.state.questionDetails)
+    // if (this.state.tutorOrLearner === 'tutor'){
+    //   this.setState({
+    //     questionTutor: this.props.users.find(user => user.user_id === this.props.question.learner).username
+    //   })
+    // } else {
+    //   this.setState({
+    //     questionTutor: 'TUTOR ID HERE'
+    //   })
+    // }
+    console.log(this.state)
   }
 
   startTimer = () => {
@@ -136,6 +129,7 @@ class Chat extends Component {
   }
 
   renderOverlay = () => {
+    console.log(this.state.tutorJoined)
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
       return <Overlay closeOverlay={(counter) => {
         clearInterval(counter);
@@ -184,25 +178,20 @@ class Chat extends Component {
           </div>
         </div>
 
-        <div>
-          {this.state.questionTitle}
+        <div className="chat-info">
+          <h1>{this.state.questionTitle}</h1>
           <br/>
-          {this.state.questionDescription}
+          <p>{this.state.questionDescription}</p>
           <br/>
-          {this.state.questionResources}
+          <p>{this.state.questionResources}</p>
           <br/>
-          {this.state.questionCode}
+          <p>{this.state.questionCode}</p>
           <br/>
-          {this.state.questionLearner}
+          <p>{this.state.questionLearner}</p>
           <br/>
-          {this.state.questionTutor}
+          {/* {this.state.questionTutor} */}
         </div>
 
-
-        {/* <div className="chat-info">
-          <h1>{this.props.question.title}</h1>
-          <p>{this.props.question.description}</p>
-        </div> */}
         <div>
           <div className="chat-body">
             <CodeEditor socket={this.props.socket} room={this.state.roomId}/>
