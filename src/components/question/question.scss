@@ -75,7 +75,7 @@
 }
 
 .question__description {
-  margin:  0 15px;
+  word-wrap: break-word;
 }
 
 .availability {
@@ -102,7 +102,6 @@
 
 .icon__not-answered {
   color: $primary;
-  font-size: 3rem;
 }
 
 
