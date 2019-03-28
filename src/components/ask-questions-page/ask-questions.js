@@ -10,13 +10,22 @@ class AskQuestions extends Component {
       codeLink : '',
       showSignup: false,
       storedQuestion: null,
-      login: true
+      login: true,
     }
+
+  componentDidMount() {
+    //populates input field on user searched term from landing page
+    if (this.props.location.state) {
+      this.setState({
+        title: this.props.location.state.title
+      })
+     
+    }
+  }
 
   handleClick = (e) => {
     const token = localStorage.getItem('token');
     e.preventDefault();
-
     if (!token) {
       //forces user to sign up before continuing
       this.setState({
@@ -66,14 +75,7 @@ class AskQuestions extends Component {
     this.props.history.push(`/question-posted/${this.state.storedQuestion.question_id}`, this.state.storedQuestion);
   }
 
-  componentDidMount() {
-    //populates input field on user searched term from landing page
-    if (this.props.location.state) {
-      this.setState({
-        title: this.props.location.state.title
-      })
-    }
-  }
+
 
   componentWillUnmount() {
     // The below componentWillUnmount is needed for warning issues with React
@@ -83,14 +85,13 @@ class AskQuestions extends Component {
   }
 
   render() {
-
     return (
       <div className="ask-questions">
         <h1>Ask a Question</h1>
         <div className="ask-questions__form-box">
           <form className="ask-questions__form">
             <h4>Title (*)</h4>
-            <input maxLength="200" value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} autoComplete="off" placeholder='My title is...' />
+            <input className={this.state.title ? 'bold-input' : 'no-input'} maxLength="200" value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} autoComplete="off" placeholder='My title is...' />
 
             <h4>Describe your problem</h4>
             <textarea maxLength="1000" onChange={(event) => this.setState({describeProblem: event.target.value})} placeholder='What problem are you having? What do you want to achieve?'/>
