@@ -5,8 +5,6 @@ class ModalEndChat extends Component {
   state = {
     feedback: 0,
     karmaClicked: false
-    // questionid: this.props.modalRef.questionid,
-    // expiration: Date.now() + 30
   }
 
   closesQuestion = () => {
@@ -30,7 +28,6 @@ class ModalEndChat extends Component {
 
   chatFeedback = (e) => {
     e.preventDefault();
-    // this.props.sendOffer(this.state) //Amber TTD: put feedback in here
     this.props.closeChatModal()
     
     if (this.props.tutorOrLearner === 'tutor'){
