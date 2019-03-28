@@ -198,12 +198,12 @@ class Chat extends Component {
         <div className="chat-info">
           <div>
             <p>Title: <span>{this.state.questionTitle}</span></p>
-            <p>Resources: <span>{this.state.questionResources}</span></p>
-            <p>Code Links: <span>{this.state.questionCode}</span></p>
+            {/* <p>Resources: <span>{this.state.questionResources}</span></p>
+            <p>Code Links: <span>{this.state.questionCode}</span></p> */}
           </div>
-          <div>
+          {/* <div>
             <p>Description: <span>{this.state.questionDescription}</span></p>
-          </div>
+          </div> */}
         </div>
 
 
