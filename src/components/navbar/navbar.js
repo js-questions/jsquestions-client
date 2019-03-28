@@ -114,7 +114,7 @@ class Navbar extends React.Component {
             <img src={token} className="navbar-icon" width="18px" alt="tokens"/>
           </div>
           <div className="navbar__userInfo">
-            <img src={this.props.user.profileBadge} width="50px" alt="profile-badge" onClick={() => this.setState({showMenu: !this.state.showMenu})}/>
+            <img src={this.props.user.profileBadge} width="50px" className="profile-badge" alt="profile-badge" onClick={() => this.setState({showMenu: !this.state.showMenu})}/>
             <p id="username">{this.props.user.username}</p>
           </div>
         </div>
