@@ -143,7 +143,7 @@ class Navbar extends React.Component {
             <NavLink to={{pathname: '/ask', state: {title: this.state.questionTitle}}} className="navbar-item searchTerm-button">?</NavLink>
           </form>
           <h3>For when Stack Overflow and the Internet just aren't enough.</h3>
-          <h2>Want to help others?</h2>
+          <h2><Link className="link navbar__underline" to="/answer">Want to help others?</Link></h2>
         </div>
       )
     }
