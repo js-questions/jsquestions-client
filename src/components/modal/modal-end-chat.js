@@ -23,16 +23,18 @@ function ModalEndChat(props){
       method: 'PUT',
       headers : {
         'Authorization' : 'Bearer ' + token,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(body)
       })
       .then(res => res.json())
       .then(res => props.closeQuestion(res))
-      .then(res => props.updateKarma(feedback.feedback))
+      .then(() => props.updateKarma(feedback.feedback))
   }
   
   const chatFeedback = (e) => {
     e.preventDefault();
+    console.log("eeeee", e)
     props.closeChatModal()
     if (props.tutorOrLearner === 'tutor'){
       props.history.push('/answer');
