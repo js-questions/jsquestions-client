@@ -25,9 +25,10 @@ function ModalOfferHelp(props) {
     setModalInfo({...modalInfo, questionid: props.modalRef.questionid, message: event.target.value, disableButton: true});
     return true;
   }
-
+  var scrollY = window.pageYOffset;
+  console.log('scrolly', scrollY)
   const showHide = useSpring({ reverse: !props.showModal, from: {display: 'none'}, to: {display: 'flex'}, delay: (_) => !props.showModal ? 500 : 0 })
-  const modal = useSpring({ reverse: !props.showModal, to: {opacity: 1, top: '30%'}, from: {opacity: 0, top: '-46%', right: '25%', left: '25%'}, config: {duration: !props.showModal ? 500 : 500}})
+  const modal = useSpring({ reverse: !props.showModal, to: {opacity: 1, top: `${scrollY + 200}px `}, from: {opacity: 0, top: '-1000px', right: '25%', left: '25%'}, config: {duration: !props.showModal ? 500 : 500}})
 
   let currentUser;
   if (props.users) {
