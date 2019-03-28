@@ -37,14 +37,21 @@ export const removeOffer = (id) => ({
   id
 })
 
-export const updateQuestion = (question) => ({
-  type: 'UPDATE_QUESTION',
+// updates the status of the question in the questionsarray after it's closed
+export const updateQuestionStatus = (question) => ({
+  type: 'UPDATE_QUESTION_STATUS',
   question
 })
 
 export const updateQuestions = (questions) => ({
   type: 'UPDATE_QUESTIONS',
   questions
+})
+
+// update the tutor notification question
+export const updateQuestion = (question) => ({
+  type: 'UPDATE_QUESTION',
+  question
 })
 
 export const updateTutors = (tutor) => ({
@@ -56,11 +63,6 @@ export const updateKarma = (karma) => ({
   type: 'UPDATE_KARMA',
   karma
 });
-
-export const updateChatQuestion = (question) => ({
-  type: 'CHATROOM_QUESTION',
-  question
-})
 
 export const rejectOffer = (id) => {
   return function (dispatch) {

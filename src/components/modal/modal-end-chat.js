@@ -25,6 +25,7 @@ class ModalEndChat extends Component {
       body: JSON.stringify(body)
     })
       .then(res => res.json())
+      .then(res => this.props.closeQuestion(res))
       .then(() => this.props.updateKarma(this.state.feedback));
   }
 

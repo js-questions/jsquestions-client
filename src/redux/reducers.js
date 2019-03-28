@@ -61,7 +61,16 @@ const offers = (state = [], action) => {
 
 const questions = (state = [], action) => {
   switch(action.type) {
-    case 'UPDATE_QUESTIONS':
+    case 'UPDATE_QUESTION_STATUS': // updates the question answered status in the array of questions
+      let questions = [...state]
+      const id = action.question.question_id;
+      for (let i=0; i < questions.length; i++) {
+        if (questions[i].question_id === id) {
+          questions[i].answered= true;
+        }
+      }
+      return questions;
+    case 'UPDATE_QUESTIONS': // updates questions after fetching from database
       return action.questions;
     default:
       return state;
@@ -71,8 +80,6 @@ const questions = (state = [], action) => {
 const question = (state = [], action) => {
   switch(action.type) {
     case 'UPDATE_QUESTION':
-      return action.question;
-    case 'CHATROOM_QUESTION':
       return action.question;
     default:
       return state;
