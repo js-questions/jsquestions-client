@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './question-posted.scss';
 import { connect } from 'react-redux';
-import { setUsers, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer } from '../../redux/actions.js';
+import { setUsers, addNewUser, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer } from '../../redux/actions.js';
 import Card from '../card/card.js';
 
 class QuestionPosted extends Component {
@@ -13,7 +13,10 @@ class QuestionPosted extends Component {
   componentDidMount() {
     this.fetchUsers();
     this.props.fetchQuestionAndOffers(this.state.questionid, this.state.token);
-    this.props.socket.on('offer sent', (offer) => this.props.updateOffer(offer))
+    this.props.socket.on('offer sent', ({ offer, updateTutor }) => {
+      this.props.updateOffer(offer);
+      this.props.addNewUser(updateTutor)
+    })
   }
 
   fetchUsers = () => {
@@ -115,6 +118,6 @@ const mapStateToProps = (state) => ({
   question: state.question
 })
 
-const mapDispatchToProps = { setUsers, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer };
+const mapDispatchToProps = { setUsers, addNewUser, fetchQuestionAndOffers, updateQuestion, rejectOffer, updateOffer };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionPosted);
