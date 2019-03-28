@@ -6,12 +6,6 @@ import './my-questions.scss';
 import Question from './../question/question';
 
 class MyQuestions extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      questions: []
-    }
-  }
 
   componentWillMount = async () => {
     const token = localStorage.getItem('token');
@@ -22,16 +16,14 @@ class MyQuestions extends Component {
         'Content-Type': 'application/json'
       }})
     .then(res => res.json())
-    .then(res=> this.setState({
-      questions: res
-    }))
-  }
+    .then(res => this.props.updateQuestions(res))
+    }
 
   renderQuestions = () => {
-    if (this.state.questions.length > 0) {
+    if (this.props.questions.length > 0) {
       // sort questions by open first and closed after
-      this.state.questions.sort(function(a, b){return a.answered - b.answered})
-      return this.state.questions.map((question, index) => {
+      this.props.questions.sort(function(a, b){return a.answered - b.answered})
+      return this.props.questions.map((question, index) => {
         let user = this.props.user;
         return (
           <div key={index}>
@@ -60,8 +52,14 @@ class MyQuestions extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user
+  user: state.user,
+  questions: state.questions
 })
 
-export default connect(mapStateToProps)(MyQuestions);
+const mapDispatchToProps = (dispatch) => ({
+  updateQuestions: (question) => dispatch(updateQuestions(question)),
+
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyQuestions);
 

@@ -12,50 +12,28 @@ function ModalEndChat(props){
     feedback: 0
   })
 
-
-
-
   const closesQuestion = () => {
-    console.log("props", props)
-    console.log("feedback", feedback)
-    
     const token = localStorage.getItem('token');
-    console.log("token", token)
     const body = {
-      "karma": feedback,
+      "karma": feedback.feedback,
       "credits": 50,
     }
-  
-      fetch(`http://localhost:4000/questions/${props.questionId}/feedback`, {
-        method: 'PUT',
-        headers : {
-          'Authorization' : 'Bearer ' + token,
-        },
-        body: JSON.stringify(body)
-        })
-        .then(res => res.json())
-        .then(res => props.updateKarma(feedback))
-        .then(omg => console.log(omg))
 
-
-
-    // fetch(`http://localhost:4000/questions/${props.questionId}/feedback`, {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Authorization' : 'Bearer ' + token,
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(body)
-    // })
-    //   .then(res => res.json())
-    //   .then(res => props.closeQuestion(res)) //??
-    //   .then(() => props.updateKarma(feedback));
+    fetch(`http://localhost:4000/questions/${props.questionId}/feedback`, {
+      method: 'PUT',
+      headers : {
+        'Authorization' : 'Bearer ' + token,
+      },
+      body: JSON.stringify(body)
+      })
+      .then(res => res.json())
+      .then(res => props.closeQuestion(res))
+      .then(res => props.updateKarma(feedback.feedback))
   }
   
   const chatFeedback = (e) => {
     e.preventDefault();
     props.closeChatModal()
-    
     if (props.tutorOrLearner === 'tutor'){
       props.history.push('/answer');
     } else {
@@ -70,7 +48,6 @@ function ModalEndChat(props){
     setFeedback({feedback: num})
     if (!karmaClicked) setKarmaClicked({karmaClicked: true})
   }
-
 
   if (props.tutorOrLearner === 'tutor') {
     return (
@@ -105,7 +82,6 @@ function ModalEndChat(props){
       </div>
     )
   }
-
 }
 
 export default ModalEndChat;

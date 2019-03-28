@@ -48,7 +48,7 @@ class AskQuestions extends Component {
 
   showSignupModal = () => {
     if (this.state.showSignup) {
-      return <Login switch={this.switchLogin} login={this.state.login} close={this.toggleSignUp}/>
+      return <Login switch={this.switchLogin} login={this.state.login} close={this.toggleSignUp} signedIn={this.signedIn}/>
     }
   }
 
