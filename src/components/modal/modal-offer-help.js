@@ -26,7 +26,6 @@ function ModalOfferHelp(props) {
     return true;
   }
   var scrollY = window.pageYOffset;
-  console.log('scrolly', scrollY)
   const showHide = useSpring({ reverse: !props.showModal, from: {display: 'none'}, to: {display: 'flex'}, delay: (_) => !props.showModal ? 500 : 0 })
   const modal = useSpring({ reverse: !props.showModal, to: {opacity: 1, top: `${scrollY + 200}px `}, from: {opacity: 0, top: '-1000px', right: '25%', left: '25%'}, config: {duration: !props.showModal ? 500 : 500}})
 
