@@ -1,9 +1,8 @@
 import { combineReducers } from 'redux';
 
-const user = (state = {}, action) => {
+const user = (state = {}, action) => { // me, as the user
   switch(action.type) {
     case 'SET_USER':
-      // return action.user;
       return {
         ...action.user,
         ...state
@@ -21,7 +20,7 @@ const user = (state = {}, action) => {
   }
 }
 
-const users = (state = [], action) => {
+const users = (state = [], action) => { // all the users
   switch(action.type) {
     case 'SET_USERS':
       return action.users;
@@ -43,25 +42,11 @@ const users = (state = [], action) => {
   }
 }
 
-const offers = (state = [], action) => {
+const questions = (state = [], action) => { // questions that you've asked
   switch(action.type) {
-    case 'REQUEST_OFFERS':
-      return [ ...state ];
-    case 'UPDATE_OFFERS':
-      return action.offers; // check that the offers are always up to date
-    case 'UPDATE_OFFER':
-      return [ ...state, action.offer ]
-    case 'REJECT_OFFER':
-      let offers = state.filter((offer => offer.offer_id !== action.id));
-      return offers;
-    default:
-      return state;
-  }
-}
-
-const questions = (state = [], action) => {
-  switch(action.type) {
-    case 'UPDATE_QUESTION_STATUS': // updates the question answered status in the array of questions
+    case 'UPDATE_QUESTIONS': // updates questions after fetching from database
+      return action.questions;
+    case 'UPDATE_QUESTION_STATUS': // updates the question answered status in the array of questions, should be combined eventually with question as a single source of truth
       let questions = [...state]
       const id = action.question.question_id;
       for (let i=0; i < questions.length; i++) {
@@ -70,17 +55,29 @@ const questions = (state = [], action) => {
         }
       }
       return questions;
-    case 'UPDATE_QUESTIONS': // updates questions after fetching from database
-      return action.questions;
     default:
       return state;
   }
 }
 
-const question = (state = [], action) => {
+const question = (state = [], action) => { // for now, sets a specific question (ex: for the tutor notification) - can be refactored
   switch(action.type) {
     case 'UPDATE_QUESTION':
       return action.question;
+    default:
+      return state;
+  }
+}
+
+const offers = (state = [], action) => {
+  switch(action.type) {
+    case 'UPDATE_OFFERS':
+      return action.offers; // fetching latest offers from database and storing up to date version
+    case 'UPDATE_OFFER':
+      return [ ...state, action.offer ]
+    case 'REJECT_OFFER':
+      let offers = state.filter((offer => offer.offer_id !== action.id));
+      return offers;
     default:
       return state;
   }

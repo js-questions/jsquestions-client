@@ -1,26 +1,54 @@
+//-------------------User (Me)-----------------------------------------//
 export const setUser = (user) => ({
   type: 'SET_USER',
   user
 })
 
-export const setUsers = (users) => ({
-  type: 'SET_USERS',
-  users
-})
-
-export const addNewUser = (user) => ({
-  type: 'ADD_NEW_USER',
-  user
-})
+export const updateKarma = (karma) => ({
+  type: 'UPDATE_KARMA',
+  karma
+});
 
 export const logout = () => ({
   type: 'LOGOUT',
 })
 
-export const requestOffers = (questionid) => ({
-  type: 'REQUEST_OFFERS',
-  questionid
+//-------------------Users--------------------------------------------//
+
+// for all users
+export const setUsers = (users) => ({
+  type: 'SET_USERS',
+  users
 })
+
+// setting or updating the users in the array of users
+export const addNewUser = (user) => ({
+  type: 'ADD_NEW_USER',
+  user
+})
+
+
+//------------------Questions You've Asked----------------------------//
+
+// updates the store with the latest questions from the database
+export const updateQuestions = (questions) => ({
+  type: 'UPDATE_QUESTIONS',
+  questions
+})
+
+// updates the status of your question after it's closed
+export const updateQuestionStatus = (question) => ({
+  type: 'UPDATE_QUESTION_STATUS',
+  question
+})
+
+// sets the question you will notify the tutor with
+export const updateQuestion = (question) => ({
+  type: 'UPDATE_QUESTION',
+  question
+})
+
+//----------------Offers--------------------------------------------------//
 
 export const updateOffers = (offers) => ({
   type: 'UPDATE_OFFERS',
@@ -36,33 +64,6 @@ export const removeOffer = (id) => ({
   type: 'REJECT_OFFER',
   id
 })
-
-// updates the status of the question in the questionsarray after it's closed
-export const updateQuestionStatus = (question) => ({
-  type: 'UPDATE_QUESTION_STATUS',
-  question
-})
-
-export const updateQuestions = (questions) => ({
-  type: 'UPDATE_QUESTIONS',
-  questions
-})
-
-// update the tutor notification question
-export const updateQuestion = (question) => ({
-  type: 'UPDATE_QUESTION',
-  question
-})
-
-export const updateTutors = (tutor) => ({
-  type: 'UPDATE_TUTORS',
-  tutor
-})
-
-export const updateKarma = (karma) => ({
-  type: 'UPDATE_KARMA',
-  karma
-});
 
 export const rejectOffer = (id) => {
   return function (dispatch) {
@@ -83,8 +84,6 @@ export const rejectOffer = (id) => {
 
 export const fetchQuestionAndOffers = (questionid, token) => {
   return function (dispatch) {
-    dispatch(requestOffers());
-
     if (token) {
       return fetch(`http://localhost:4000/questions/${questionid}/offers`, {
         method: 'GET',
