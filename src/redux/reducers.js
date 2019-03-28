@@ -29,7 +29,7 @@ const users = (state = [], action) => { // all the users
       if ((state.filter(user => user.user_id === action.user.user_id)).length) {
         return state.map(user => {
           if (user.user_id === action.user.user_id) {
-            return action.user;
+            return { ...user, ...action.user };
           } else {
             return user;
           }
