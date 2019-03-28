@@ -5,7 +5,7 @@ import './codeeditor.scss';
 import logo from '../../assets/square-logo.png';
 
 import { connect } from 'react-redux';
-import { updateChatQuestion, updateKarma } from '../../redux/actions.js';
+import { updateQuestionStatus, updateKarma } from '../../redux/actions.js';
 
 import CodeEditor from './codeeditor';
 import ChatMessages from './chat-messages';
@@ -168,7 +168,7 @@ class Chat extends Component {
       sessionStorage.removeItem('timeStarted');
       sessionStorage.removeItem('targetOffer');
       sessionStorage.removeItem('chatDetails');
-      return <ModalEndChat updateKarma={this.updateKarma} closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
+      return <ModalEndChat closeQuestion={(question) => this.props.updateQuestionStatus(question)} updateKarma={this.updateKarma} closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
     }
   }
 
@@ -228,12 +228,13 @@ const mapStateToProps = (state) => ({
   user: state.user,
   users: state.users,
   question: state.question,
+  questions: state.questions, 
   offers: state.offers,
   tutors: state.tutors,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  updateChatQuestion: (question) => dispatch(updateChatQuestion(question)),
+  updateQuestionStatus: (question) => dispatch(updateQuestionStatus(question)),
   updateKarma: (karma) => dispatch(updateKarma(karma))
 })
 
