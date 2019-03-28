@@ -220,9 +220,9 @@ class Chat extends Component {
           <ChatMessages socket={this.props.socket} room={this.state.roomId} />
         </div>
 
-        <div className="chat-footer">
+        {/* <div className="chat-footer">
           <p>Troubleshooting - I need to report a problem</p>
-        </div>
+        </div> */}
 
         {this.showEndChatModal()}
 
