@@ -25,11 +25,9 @@ function ModalOfferHelp(props) {
     setModalInfo({...modalInfo, questionid: props.modalRef.questionid, message: event.target.value, disableButton: true});
     return true;
   }
-
-  const backdropAnimation = useSpring({ reverse: !props.showModal, from: {display: 'none'}, to: {display: 'block'}, delay: (_) => !props.showModal ? 500 : 0 })
-  // const props2 = useSpring({ reverse: !props.showModal, to: {opacity: 1, width: '600px', height: '600px'}, from: {opacity: 0, width: '0px', height: '0px'}, config: {duration:500}})
-  // const props3 = useSpring({ opacity: 1, from: {opacity: 0}, config: {duration:3000}})
-  // const props4 = useSpring({ opacity: 1, from: {opacity: 0}, config: {duration:4000}})
+  var scrollY = window.pageYOffset;
+  const showHide = useSpring({ reverse: !props.showModal, from: {display: 'none'}, to: {display: 'flex'}, delay: (_) => !props.showModal ? 500 : 0 })
+  const modal = useSpring({ reverse: !props.showModal, to: {opacity: 1, top: `${scrollY + 200}px `}, from: {opacity: 0, top: '-1000px', right: '25%', left: '25%'}, config: {duration: !props.showModal ? 500 : 500}})
 
   let currentUser;
   if (props.users) {
@@ -41,12 +39,14 @@ function ModalOfferHelp(props) {
     currentQuestion = props.questions.filter(question => question.question_id === props.modalRef.questionid)[0];
   }
 
+
+
   return (
-    <animated.div style={backdropAnimation}>
-    <div className="backdrop">
-      {/* <animated.div style={props2}> */}
-      <div className="modal">
-        {/* <animated.div style={props3}> */}
+    <div>
+    <animated.div style={showHide} className="backdrop" onClick={()=>props.closeOfferModal()} >
+    </animated.div>
+    <animated.div style={showHide} >
+        <animated.div className="modal" style={modal}>
         <button className="button-close" onClick={()=>props.closeOfferModal()}>X</button>
         <h3>Offer help to {currentUser ? currentUser.username : 'user'} on:</h3>
         <h4>{currentQuestion ? currentQuestion.title : 'question'}</h4>
@@ -72,17 +72,11 @@ function ModalOfferHelp(props) {
               <option value='180'>3h</option>
             </select>
           </div>
-
-
-          {/* <animated.div style={props4}> */}
           <button type='submit' disabled={disableButton} className="button-primary button-offer-help" onClick={(e)=> offerHelp(e, modalInfo, props)}>{props.modalRef.button}</button>
-          {/* </animated.div> */}
         </form>
-        {/* </animated.div> */}
-      </div>
-      {/* </animated.div> */}
-    </div>
+        </animated.div>
     </animated.div>
+    </div>
   )
 }
 

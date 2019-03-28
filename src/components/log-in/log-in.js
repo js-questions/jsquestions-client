@@ -87,8 +87,8 @@ class Login extends Component {
   render() {
     if (!this.props.login) {
       return(
-        <div className="backdrop">
-          <div className="modal">
+        <div className="backdrop backdrop-login">
+          <div className="modal modal-login">
             <button className="button-close" onClick={this.props.close}>X</button>
             <h2>Sign Up</h2>
             <form onSubmit={this.handleSignup} className="form-style">
@@ -104,8 +104,8 @@ class Login extends Component {
       )
     } else {
       return(
-        <div className="backdrop">
-          <div className="modal">
+        <div className="backdrop backdrop-login">
+          <div className="modal modal-login">
             <button className="button-close" onClick={this.props.close}>X</button>
             <h2>Log in</h2>
             <form onSubmit={this.handleLogin}>
