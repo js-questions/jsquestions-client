@@ -1,13 +1,15 @@
 import React from 'react';
 import './navbar.scss';
 import { connect } from 'react-redux';
-import { setToken } from '../../redux/actions.js';
+import { updateQuestion, setUsers, addNewUser, setUser, logout } from '../../redux/actions.js';
 import Login from '../log-in/log-in.js';
 import logo from '../../assets/square-logo.png';
 import token from '../../assets/token.png';
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import ProfileMenu from './profile-menu';
-import Modal from '../modal/modal.js';
+import TutorNotification from '../modal/modal-tutor-notification.js';
+import titleImage from '../../assets/hero-logo.png';
+import jwt_decode from 'jwt-decode';
 
 class Navbar extends React.Component {
   constructor(props) {
@@ -17,41 +19,88 @@ class Navbar extends React.Component {
       openModal: true,
       showMenu: false,
       socketQuestion: '',
+      questionTitle: '',
+      token: localStorage.getItem('token'),
+      login: true
     }
+    this.updateInput = this.updateInput.bind(this);
   }
 
   componentDidMount = () => {
-    this.checkToken();
-    this.props.socket.on('push tutor', (question) => {
-      console.log("works");
+    this.checkUser();
+    this.props.socket.on('push tutor', ({ question, learner }) => {
+      this.props.addNewUser(learner);
       this.setState({socketQuestion: question}, () => this.tutorNotification() );
-  })
+    })
+    this.props.socket.on('cancel call', () => {
+      this.setState({socketQuestion: ''}, () => this.tutorNotification() );
+    })
+    this.fetchUsers();
+  }
 
-
+  fetchUsers = () => {
+    if (this.state.token) {
+      fetch(`http://localhost:4000/users`, {
+        headers : {
+          'Authorization' : 'Bearer ' + this.state.token,
+      }})
+        .then(res => res.json())
+        .then(users => this.props.setUsers(users))
+    }
   }
 
   tutorNotification = () => {
     if (this.state.socketQuestion !== '') {
-      return <Modal question={this.state.socketQuestion} />
+      this.props.updateQuestion(this.state.socketQuestion);
+      return <TutorNotification question={this.state.socketQuestion} users={this.props.users} learner={this.props.users.filter(user => user.user_id === this.state.socketQuestion.learner)[0]} />
     } else {
       return '';
     }
   }
 
-  toggleSignUp = () => {
-    this.setState({showSignup: !this.state.showSignup})
+  toggleSignUp = (e) => {
+    if (e) {
+      if (e.target.className === 'log-in') { // if user clicked log-in from the landing page
+        this.setState({showSignup: !this.state.showSignup, login: true});
+      } else {
+        this.setState({showSignup: !this.state.showSignup, login: false});
+      }
+    } else { 
+      this.setState({showSignup: !this.state.showSignup})
+    }
   }
 
-  checkToken = () => {
-    const checkToken = localStorage.getItem('token');
-    if (checkToken) {
-      return this.props.setToken(checkToken);
+  switchLogin = () => {
+    this.setState({login: !this.state.login});
+  }
+
+  showSignupModal = () => {
+    if (this.state.showSignup) {
+      return <Login switch={this.switchLogin} login={this.state.login} close={this.toggleSignUp}/>
+    }
+  }
+
+  checkUser = () => {
+    if (this.state.token) {
+      const decoded = jwt_decode(this.state.token);
+      fetch(`http://localhost:4000/users/${decoded.user_id}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+        },
+        })
+        .then(res => res.json())
+        .then(res => this.props.setUser(res))
     }
   }
 
   loginProcess = () => {
     if (!this.props.user.username) {
-      return (<div className="navbar-item" onClick={this.toggleSignUp}>Sign up/Log in</div>)
+      return (
+      <div className="navbar-item" >
+        <span onClick={this.toggleSignUp} className="log-in">Log In</span>
+        <button onClick={this.toggleSignUp} className="button-primary">Sign Up</button>
+      </div>)
     }
     else {
       return (
@@ -73,49 +122,83 @@ class Navbar extends React.Component {
     }
   }
 
-  showSignupModal = () => {
-    if (this.state.showSignup) {
-      return <Login close={this.toggleSignUp}/>
-    }
+  toggleProfileMenu = () => {
+    this.setState({showMenu: !this.state.showMenu})
   }
 
   showMenu = () => {
     if (this.state.showMenu) {
-      return <ProfileMenu/>
+      return <ProfileMenu user={this.props.user} toggleMenu={this.toggleProfileMenu} logout={this.props.logout}/>
     }
   }
 
+  landingPageNavbar = () => {
+    if (this.props.landingPage) {
+      return(
+        <div className="landing-page-body">
+
+          <img src={titleImage} alt="JS QUESTIONS"/>
+          <form className="question-bar">
+            <input id="searchTerm" type="text" maxLength="200" autoComplete="off" placeholder="What do you need help with?" onChange={this.updateInput}/>
+            <NavLink to={{pathname: '/ask', state: {title: this.state.questionTitle}}} className="navbar-item searchTerm-button">?</NavLink>
+          </form>
+          <h3>For when Stack Overflow and the Internet just aren't enough.</h3>
+          <h2>Want to help others?</h2>
+        </div>
+      )
+    }
+  }
+
+  updateInput = (e) => {
+    const searchTerm = document.getElementById("searchTerm").value;
+    this.setState({questionTitle: searchTerm});
+  }
+
+  componentWillMount() {
+    this.props.socket.removeListener('push tutor');
+    this.props.socket.removeListener('cancel call');
+  }
 
   render() {
     // Sending token on user refresh
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
 
+    // Apply different class depending if we are in the landing page or not
+    let classNavbarBox = '';
+    if (this.props.landingPage) classNavbarBox='navbar-box__landingPage';
+    else classNavbarBox='navbar-box';
+
     return(
-      <div>
-        <div>
-          <div className="navbar">
-            <div className="navbar__component">
-              <div className="navbar-item"><Link to='/'><img src={logo} width="55px" alt="logo"/></Link></div>
-              <div className="navbar-item"><Link className="navbar__link" to='/ask'>Ask for help.</Link></div>
-              <div className="navbar-item"><Link className="navbar__link" to='/answer'>Help others.</Link></div>
-            </div>
-            {this.loginProcess()}
+      <div className={classNavbarBox}>
+        <div className="navbar">
+          <div className="navbar__component">
+            <div className="navbar-item"><Link to='/'><img src={logo} width="55px" alt="logo"/></Link></div>
+            <div className="navbar-item navbar__underline"><Link className="navbar__link" to='/ask'>Ask for help.</Link></div>
+            <div className="navbar-item navbar__underline"><Link className="navbar__link" to='/answer'>Help others.</Link></div>
           </div>
-          {this.showSignupModal()}
-          {this.tutorNotification()}
+          {this.loginProcess()}
+          {this.showMenu()}
         </div>
-        {this.showMenu()}
+        {this.landingPageNavbar()}
+        {this.showSignupModal()}
+        {this.tutorNotification()}
+
       </div>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user
+  user: state.user,
+  users: state.users,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  setToken: (token) => dispatch(setToken(token)),
+  setUser: (user) => dispatch(setUser(user)),
+  logout: () => dispatch(logout()),
+  addNewUser: (user) => dispatch(addNewUser(user)),
+  setUsers: (users) => dispatch(setUsers(users)),
+  updateQuestion: (question) => dispatch(updateQuestion(question))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

@@ -5,34 +5,59 @@ import AskQuestions from './components/ask-questions-page/ask-questions';
 import LandingPage from './components/landing-page/landing-page';
 import QuestionPosted from './components/question-posted-page/question-posted';
 import AnswerPage from './components/answer-page/answer-page';
-import QuestionAbout from './components/question-posted-page/question-about';
 import MyQuestions from './components/my-questions-page/my-questions';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import { connect } from 'react-redux';
+
+import { updateKarma } from './redux/actions.js';
 
 import Chat from './components/chat/chat.js';
 import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:4000/');
 
-const Platform = () => (
-  <> 
-    <Navbar socket={socket}/>
+const EntryPage = () => (
+  <>
+    <Navbar socket={socket} landingPage={true}/>
     <Route exact path="/" component={LandingPage}/>
-    <Route path="/ask" component={AskQuestions}/>
-    <Route path="/question-posted/:questionid" render={(props) => <QuestionPosted {...props} socket={socket} />}/>
-    <Route path="/question/:questionid" component={QuestionAbout}/>
-    <Route path="/answer" component={AnswerPage}/>
-    <Route path="/my-questions" component={MyQuestions}/>
   </>
 )
 
+const Platform = () => (
+  <>
+    <Navbar socket={socket} landingPage={false}/>
+    <Route path="/ask" component={AskQuestions}/>
+    <PrivateRoute path="/question-posted/:questionid" component={QuestionPosted}/>
+    <PrivateRoute path="/answer" component={AnswerPage}/>
+    <PrivateRoute path="/my-questions" component={MyQuestions}/>
+  </>
+)
+
+function PrivateRoute({ component: Component, ...rest}) {
+  let token = localStorage.getItem('token');
+  return (
+    <Route {...rest} render={props => token ? (<Component {...props} socket={socket} />) : <Redirect to="/" />} />
+  )
+}
+
 class App extends Component {
+
+  componentDidMount() {
+    socket.on('update karma', (data) => {
+      if (data.tutor === this.props.user.user_id) {
+        this.props.updateKarma(data.karma);
+      }
+    })
+  }
+
   render() {
+
     return (
       <div>
         <Router>
           <Switch>
             <Route path='/chat' render={(props) => <Chat {...props} socket={socket} />}/>
-            <Route path='/' component={Platform} />
+            <Route exact path='/' component={EntryPage} />
+            <Route component={Platform} />
           </Switch>
         </Router>
       </div>
@@ -40,4 +65,12 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  updateKarma: (karma) => dispatch(updateKarma(karma))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

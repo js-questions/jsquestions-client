@@ -27,31 +27,37 @@ code {
 }
 
 input {
-  border: solid 0.5px $grey-light;
+  border: solid 1px $grey-light;
   border-radius: 4px;
   padding: 10px;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
+  font-family: "Montserrat";
+  width: 100%;
+}
+
+input:focus textarea:focus {
+  outline: none;
 }
 
 textarea {
-  border: solid 0.5px $grey-light;
+  border: solid 1px $grey-light;
   border-radius: 4px;
   padding: 10px;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   min-height: 10rem;
+  font-family: "Montserrat";
 }
 
 .button-primary {
   background-color: $primary;
   border-radius: 40px;
-  padding: 10px 0;
-  min-width: 150px;
-  min-height: 50px;
+  padding: 12px 25px;
+  width: auto !important;
   font-weight: 700;
   font-family: -apple-system, 'Montserrat', "Roboto", "Helvetica Neue", sans-serif;
   font-size: 1.5rem;
   border: none;
-  box-shadow: 0 3px $grey;
+  box-shadow: 0 3px rgba(black, .4);
   outline:none;
 }
 
@@ -65,4 +71,54 @@ textarea {
   box-shadow: 0 2px $grey;
   transform: translateY(2px);
 }
+
+.button-offline {
+  background-color: $grey-light;
+  border-radius: 40px;
+  padding: 12px 25px;
+  width: auto !important;
+  font-weight: 700;
+  font-family: -apple-system, 'Montserrat', "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 1.5rem;
+  border: none;
+  box-shadow: 0 3px rgba(black, .4);
+  outline:none;
+}
+
+.button-closed {
+  background-color: $red-transparent;
+  border-radius: 40px;
+  padding: 12px 25px;
+  width: auto !important;
+  font-weight: 700;
+  font-family: -apple-system, 'Montserrat', "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 1.5rem;
+  border: none;
+  box-shadow: 0 3px rgba($red-transparent, .4);
+  outline:none;
+}
+
+.button-offerHelp {
+  background-color: $green-transparent;
+  border-radius: 40px;
+  padding: 12px 25px;
+  width: auto !important;
+  font-weight: 700;
+  font-family: -apple-system, 'Montserrat', "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 1.5rem;
+  border: none;
+  box-shadow: 0 4px rgba(green, .4);
+  outline:none;
+  cursor: pointer;
+}
+
+.button-offerHelp:hover {
+  cursor: pointer;
+  background-color: darken($green-transparent, 18%);;
+}
+
+hr {
+  border-color: $primary;
+}
+
 

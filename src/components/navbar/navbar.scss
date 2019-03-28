@@ -1,10 +1,32 @@
 @import '../../colors.scss';
+$searchSize :  50px;
+
+.navbar-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: $secondary;
+  height: 100px;
+  padding-top: 20px;
+}
+
+.navbar-box__landingPage {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  background-image:linear-gradient(
+    to right bottom,
+    $secondary-transparent,
+    $secondary-transparent),
+    url("../../assets/pairProgramming4.jpeg");
+  background-size: cover;
+  background-position: 0 35%;
+  padding-top: 20px;
+}
 
 .navbar {
   display: flex;
   flex-direction: row;
-  background-color: $secondary;
-  height: 100px;
   justify-content: space-between;
   align-items: center;
   padding: 0 10%;
@@ -23,6 +45,7 @@
   margin-right: 15px;
   color: $white;
   font-weight: bold;
+  font-size: 1.7rem;
 }
 
 .navbar-icon {
@@ -35,6 +58,43 @@
   font-weight: bold;
 }
 
+.navbar__underline {
+  position: relative;
+  text-decoration: none;
+}
+
+.navbar__underline:before  {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: $white;
+  visibility: hidden;
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.navbar__underline:hover:before {
+  visibility: visible;
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
+}
+
+.profile-menu__link {
+  text-decoration: none;
+  color: $secondary;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.profile-menu__link:hover {
+  font-weight: 700;
+}
+
 .navbar__userInfo {
   display: flex;
   flex-direction: column;
@@ -43,7 +103,9 @@
   align-items: center;
 }
 
-
+.navbar__userInfo {
+  font-size: 1.7rem;
+}
 
 #username {
   font-size: .8em;
@@ -52,15 +114,129 @@
 }
 
 .profile-menu {
-  background-color: lightgray;
+  background-color: $primary;
   width: 140px;
-  height: 100px;
   position: absolute;
-  right: 0;
-  top: 50;
+  right: 6%;
+  top: 80px;
   padding: 10px;
+  padding-top: 0px;
+  padding-left: 15px;
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid $primary;
+  position: relative;
+  left: 45px;
+  top: -10px;
 }
 
 .menu-item {
   padding: 2px;
+  color: $secondary;
+  font-weight: 700;
+}
+
+.landing-page-body {
+  display: flex;
+  flex-direction: column;
+  color: $white;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-page-body form {
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-page-body h5 {
+  font-size: 1.2rem;
+}
+
+.landing-page-body h2 {
+  margin-top: 50px;
+}
+
+.landing-page-body img {
+  width: 350px;
+  margin-top: 25px;
+}
+
+.question-bar {
+  margin-bottom: 10px;
+}
+
+#searchTerm {
+  height: $searchSize;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-bottom-left-radius: $searchSize;
+  border-top-left-radius: $searchSize;
+  background-color: rgba(254, 255, 255, 0.8);
+  padding: 0 0 0 22px;
+  width: 400px;
+  font-size: 1.7rem;
+  box-shadow: inset 1px 0px 5px 0px darken(black, 10%);
+  border-bottom: 2px solid gray;
+  border-left: 2px solid gray;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: $grey;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: $grey;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: $grey;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: $grey;
+}
+
+#searchTerm::placeholder-shown {
+  color:rgba(0, 0, 0, 0.4);
+}
+
+.searchTerm-button{
+  background-color: $primary;
+  color: lighten($primary, 30%);
+  font-weight: 600;
+  transition: all 0.3s;
+  border: none;
+  border-bottom-right-radius: $searchSize;
+  border-top-right-radius: $searchSize;
+  height: $searchSize;
+  width: $searchSize;
+  padding: 0 15px;
+  padding-left: 17px;
+  text-decoration: none;
+  margin-left: -2px;
+  box-shadow: -2px 2px 3px 0px darken(gray, 10%);
+  font-size: 1.2em;
+  border-bottom: 5px solid darken($primary, 20%);
+  border-right: 3px solid darken($primary, 20%)
+}
+
+.searchTerm-button:hover {
+  background-color: darken($primary, 5%);
+  box-shadow: 3px 3px 8px 0px darken($secondary, 5%);
+}
+
+.log-in {
+  padding-right: 20px;
+}
+
+input:focus {
+  outline: none;
 }

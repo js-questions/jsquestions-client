@@ -1,134 +1,155 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './chat.scss';
+import './codeeditor.scss';
 
-import CodeMirror from 'codemirror';
-import 'codemirror/addon/edit/matchbrackets';
-import 'codemirror/mode/javascript/javascript';
-import 'codemirror/lib/codemirror.css';
+import logo from '../../assets/square-logo.png';
+
+import { connect } from 'react-redux';
+import { updateChatQuestion, updateKarma } from '../../redux/actions.js';
+
+import CodeEditor from './codeeditor';
+import ChatMessages from './chat-messages';
+
 import Overlay from './overlay';
 import ModalEndChat from './../modal/modal-end-chat';
 
-class Chat extends React.Component {
-
-  textArea = React.createRef();
+class Chat extends Component {
 
   state = {
-    keepChangeEditor: '',
     roomId: this.props.location.pathname.split('/')[2],
     questionId: this.props.location.pathname.split('/')[3],
     tutorOrLearner: this.props.location.pathname.split('/')[4],
-    showModal: false,
+    showFeedbackModal: false,
     tutorJoined: false,
     minutes: 0,
     seconds: 0,
     secondsString: '00',
-    overTime: 'black'
+    overTime: 'white',
+    clockReset: true,
+    timerId: null,
+    questionTitle: null,
+    questionDescription: null,
+    questionResources: null,
+    questionCode: null,
+    questionLearner: null,
+    questionTutor:null
   }
 
   componentDidMount() {
-
-    // this.props.socket.on('join room', () => this.setState({tutorJoined: true}, () => this.startTimer()));
-
-    //const room = this.props.room; //Amber removed this ... TTD to refractor
     this.props.socket.emit('join room', this.state.roomId)
 
+    this.setChatDetails();
+
+    // Notify that user is online (since navbar is not render)
+    this.props.socket.emit('user online', {token: localStorage.getItem('token')});
+
     this.props.socket.on('join room', (participants) => {
-      if (participants === 2) this.setState({tutorJoined: true}, () => this.startTimer());
-      else this.setState({tutorJoined: false});
+      if (participants === 2) {
+
+        if (this.state.clockReset) {
+          this.setState({tutorJoined: true}, () => this.startTimer());
+        }
+        this.setState({clockReset:false})
+
+        if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
+          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
+          this.setState({targetTutor: targetOffer[0].tutor});
+          sessionStorage.setItem('targetOffer', targetOffer);
+          this.props.socket.emit('question info', {
+            question: this.props.question,
+            tutor: sessionStorage.getItem('targetOffer')
+          })
+        }
+      } else {
+        this.setState({tutorJoined: false});
+      }
     });
 
-    // CHAT
-    this.props.socket.on('chat message', (msg) => {
-      let currentId = this.props.socket.id;
-      let oneMessage = document.createElement('div');
-      let messages = document.getElementById('messages').appendChild(oneMessage);
-      oneMessage.className += ' oneMessage';
-      let messageText = document.createElement('div');
-      let messageDate = document.createElement('div');
-      oneMessage.appendChild(messageText);
-      messageText.innerHTML = msg.value;
-      oneMessage.appendChild(messageDate);
-      messageDate.innerHTML = msg.date;
-      messageDate.className += ' messageDate';
-      if (currentId === msg.id) messages.className += ' myMessage';
-      else messages.className += ' elseMessage';
-    });
-
-    // CODE EDITOR
-    this.codemirror =  CodeMirror.fromTextArea(this.textArea.current, {
-      mode: "javascript",
-      theme: "default",
-      lineNumbers: true,
-      content: this.textArea.current,
+    this.props.socket.on('question info', (data) => {
+      this.props.updateChatQuestion(data);
     })
-    this.codemirror.setSize(null, '80vh');
-    this.codemirror.on('blur', this.codeChanged);
-    this.props.socket.on('editor', (data) => this.codemirror.getDoc().setValue(data.code)); // handles received text
-    this.props.socket.on('newUser', this.updateCode); // this code is not working - what was its purpose?
 
     //HANG-UP
-    this.props.socket.on('hang up', () => {
-      this.openChatModal()
-    })
+    this.props.socket.on('hang up', () => {this.setState({showFeedbackModal: true})})
   }
 
-  //WHY WAS THIS HERE? -- This was added by Arol to prevent the editor from continuously re-rendering
-  // shouldComponentUpdate() {
-  //   return false;
-  // }
-
-  updateCode = (data) => {
-    this.codemirror.getDoc().setValue(data.code);
-    this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()})
-  }
-
-  clickButton = (e) => {
-    e.preventDefault();
-    this.sendMessage();
-  }
-
-  detectEnter = (e) => {
-    var code = e.keyCode || e.which;
-    if (code === 13) {
-      e.preventDefault();
-      this.sendMessage();
+  setChatDetails = async () => {
+    //this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor
+    //this.props.question.answered_by IS NULL ON LEARNER
+    console.log('users', this.props.users)
+    //const test = this.props.users.find(user => user.user_id === this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor);
+    if (!sessionStorage.getItem('chatDetails')){
+      await this.setState({
+        questionTitle: this.props.question.title,
+        questionDescription: this.props.question.description,
+        questionResources: this.props.question.resources,
+        questionCode: this.props.question.code,
+        // questionLearner: this.props.question.learner,
+      })
+      sessionStorage.setItem('chatDetails', JSON.stringify(this.state))
+    } else {
+      const questionDetails = JSON.parse(sessionStorage.getItem('chatDetails'));
+      this.setState({
+        questionTitle: questionDetails.questionTitle,
+        questionDescription: questionDetails.questionDescription,
+        questionResources: questionDetails.questionResources,
+        questionCode: questionDetails.questionCode,
+        // questionLearner: questionDetails.questionLearner,
+      })
     }
+
+    // if (this.state.tutorOrLearner === 'tutor'){
+    //   this.setState({
+    //     questionTutor: this.props.users.find(user => user.user_id === this.props.question.learner).username
+    //   })
+    // } else {
+    //   this.setState({
+    //     questionTutor: 'TUTOR ID HERE'
+    //   })
+    // }
+
   }
 
-  sendMessage = () => {
-    const dateNow = new Date();
-    const dateNowFormatted = dateNow.toLocaleString();
-    const msgToSend = {
-      date: dateNowFormatted,
-      id: this.props.socket.id,
-      value: this.message.value,
-      room: this.state.roomId
-    };
-    this.props.socket.emit('chat message', msgToSend);
-    this.message.value = '';
-  }
-
-  codeChanged = () => {
-    const editorContent = this.codemirror.getDoc().getValue();
-    const data = { code: editorContent, room: this.state.roomId } // changed property 'text' to 'code' to be more explicit
-    if (editorContent !== this.state.keepChangeEditor) {
-      this.props.socket.emit('editor', data);
-      this.setState({keepChangeEditor: this.codemirror.getDoc().getValue()});
+  startTimer = () => {
+    if (!sessionStorage.getItem('timeStarted')){
+      sessionStorage.setItem('timeStarted', Date.now());
     }
-    // todo: update the chatmirror so it updates during typing, not just on clicking outside of the box
-    // var myElement = document.getElementById('txtArea');
-    // myElement.focus();
-    // var startPosition = myElement.selectionStart;
-    // var endPosition = myElement.selectionEnd;
-    // console.log('startPosition ', startPosition)
-    // console.log('endPosition ', endPosition)
+
+    if (sessionStorage.getItem('timeStarted')) {
+      const newTime = Date.now() - sessionStorage.getItem('timeStarted');
+      const secs = Number(((newTime % 60000) / 1000).toFixed(0));
+      const mins= Math.floor(newTime/ 60000);
+      this.setState({
+        minutes: mins,
+        seconds: secs,
+      })
+    }
+
+    const intervalId = setInterval( () => {
+      this.setState({seconds: this.state.seconds + 1})
+      if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
+      else this.setState({secondsString: this.state.seconds})
+      if (this.state.seconds === 60) {
+        this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
+      }
+      if (this.state.minutes === 15) {
+        this.setState({ overTime: 'red'});
+      }
+    }, 1000)
+
+    this.setState({ timerId: intervalId });
+
   }
-    
+
   renderOverlay = () => {
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
       return <Overlay closeOverlay={(counter) => {
         clearInterval(counter);
-        this.props.history.goBack()
+        if (this.props.question.learner) { // prevents chat from crashing when the timer runs out
+          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by)
+          this.props.history.goBack()
+          this.props.socket.emit('cancel call', targetOffer[0].tutor)
+        }
       }
       }/>
     }
@@ -136,85 +157,84 @@ class Chat extends React.Component {
 
   hangUp = () => {
     this.props.socket.emit('hang up', {roomId: this.state.roomId});
-    this.setState({
-      showModal: true
-    })
+  }
+
+  updateKarma = (karma) => {
+    this.props.socket.emit('update karma', {tutor: this.state.targetTutor, karma: karma })
   }
 
   showEndChatModal = () => {
-    if (this.state.showModal) {
-      return <ModalEndChat closeChatModal={this.closeChatModal} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
+    if (this.state.showFeedbackModal) {
+      sessionStorage.removeItem('timeStarted');
+      sessionStorage.removeItem('targetOffer');
+      sessionStorage.removeItem('chatDetails');
+      return <ModalEndChat updateKarma={this.updateKarma} closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
     }
   }
 
-  openChatModal = () => {
-    this.setState({
-      showModal: true
-    })
+  componentWillUnmount() {
+    this.props.socket.removeListener('join room');
+    this.props.socket.removeListener('question info');
+    this.props.socket.removeListener('hang up');
+    clearInterval(this.state.timerId);
   }
-
-  closeChatModal = () => {
-    this.setState({
-      showModal: false
-    })
-  }
-
-  startTimer = () => {
-    setInterval(async () => {
-      this.setState({seconds: this.state.seconds + 1})
-      if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
-      else this.setState({secondsString: this.state.seconds})
-
-      if (this.state.seconds === 60) {
-        await this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
-      }
-
-      if (this.state.minutes === 15) {
-        this.setState({ overTime: 'red'});
-      }
-  
-    }, 1000)
-  }
-
 
   render() {
-    // Notify that user is online (since navbar is not render)
-    this.props.socket.emit('user online', {token: localStorage.getItem('token')});
-
     return(
       <div className="chat-component">
-    
+
         {this.state.tutorJoined ? null : this.renderOverlay()}
 
         <div className="chat-header">
-          <h1>Question Title</h1>
-          <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
-          <button onClick={this.hangUp}>End Call</button>
+          <div className="left">
+            <img src={logo} width="40px" alt="logo"/>
+            <p>Live Help Session</p>
+          </div>
+          <div className="right">
+            <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
+            <button className="end-call-button" onClick={this.hangUp}>End Call</button>
+          </div>
         </div>
+        <div className="chat-info">
+          <div>
+            <p>Title: <span>{this.state.questionTitle}</span></p>
+            <p>Resources: <span>{this.state.questionResources}</span></p>
+            <p>Code Links: <span>{this.state.questionCode}</span></p>
+          </div>
+          <div>
+            <p>Description: <span>{this.state.questionDescription}</span></p>
+          </div>
+        </div>
+
+
+
         <div className="chat-body">
-          <div className="editor">
-            <textarea id="txtArea" name="txtArea" ref={this.textArea}/>
-          </div>
-          <div className="chat-box">
-            <div id="messages"></div>
-            <form action="">
-              <input
-                autoComplete="off"
-                ref={input => this.message = input}
-                onKeyPress={this.detectEnter}
-              />
-              <button onClick={this.clickButton} type="button">
-                Send
-              </button>
-            </form>
-          </div>
+          <CodeEditor socket={this.props.socket} room={this.state.roomId}/>
+          <ChatMessages socket={this.props.socket} room={this.state.roomId} />
         </div>
+
+        <div className="chat-footer">
+          <p>Troubleshooting - I need to report a problem</p>
+        </div>
+
         {this.showEndChatModal()}
+
       </div>
     )
   }
 }
 
+const mapStateToProps = (state) => ({
+  user: state.user,
+  users: state.users,
+  question: state.question,
+  offers: state.offers,
+  tutors: state.tutors,
+})
 
+const mapDispatchToProps = (dispatch) => ({
+  updateChatQuestion: (question) => dispatch(updateChatQuestion(question)),
+  updateKarma: (karma) => dispatch(updateKarma(karma))
+})
 
-export default Chat;
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);
