@@ -76,7 +76,6 @@ class Chat extends Component {
   setChatDetails = async () => {
     //this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor
     //this.props.question.answered_by IS NULL ON LEARNER
-    console.log('users', this.props.users)
     //const test = this.props.users.find(user => user.user_id === this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor);
     if (!sessionStorage.getItem('chatDetails')){
       await this.setState({
@@ -168,7 +167,7 @@ class Chat extends Component {
       sessionStorage.removeItem('timeStarted');
       sessionStorage.removeItem('targetOffer');
       sessionStorage.removeItem('chatDetails');
-      return <ModalEndChat closeQuestion={(question) => this.props.updateQuestionStatus(question)} updateKarma={this.updateKarma} closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
+      return <ModalEndChat showModal={this.state.showFeedbackModal} closeQuestion={(question) => this.props.updateQuestionStatus(question)} updateKarma={this.updateKarma} closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
     }
   }
 
