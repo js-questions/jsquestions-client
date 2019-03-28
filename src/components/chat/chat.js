@@ -13,6 +13,8 @@ import ChatMessages from './chat-messages';
 import Overlay from './overlay';
 import ModalEndChat from './../modal/modal-end-chat';
 
+import ShowDetails from './chat-show-details';
+
 class Chat extends Component {
 
   state = {
@@ -32,7 +34,8 @@ class Chat extends Component {
     questionResources: null,
     questionCode: null,
     questionLearner: null,
-    questionTutor:null
+    questionTutor:null,
+    showMoreInfo: false
   }
 
   componentDidMount() {
@@ -171,6 +174,12 @@ class Chat extends Component {
     }
   }
 
+  showDetails = () => {
+    if (this.state.showMoreInfo) {
+      return <ShowDetails all={this.state} closeDetailsModal={() => this.setState({showMoreInfo: false})}/>
+    }
+  }
+
   componentWillUnmount() {
     this.props.socket.removeListener('join room');
     this.props.socket.removeListener('question info');
@@ -196,12 +205,11 @@ class Chat extends Component {
         </div>
         <div className="chat-info">
           <div>
+            {this.showDetails()}
             <p>Title: <span>{this.state.questionTitle}</span></p>
-            <p>Resources: <span>{this.state.questionResources}</span></p>
-            <p>Code Links: <span>{this.state.questionCode}</span></p>
           </div>
           <div>
-            <p>Description: <span>{this.state.questionDescription}</span></p>
+            <button className="button-secondary" onClick={() => this.setState({showMoreInfo: true})}>Show more details</button>
           </div>
         </div>
 
@@ -212,9 +220,9 @@ class Chat extends Component {
           <ChatMessages socket={this.props.socket} room={this.state.roomId} />
         </div>
 
-        <div className="chat-footer">
+        {/* <div className="chat-footer">
           <p>Troubleshooting - I need to report a problem</p>
-        </div>
+        </div> */}
 
         {this.showEndChatModal()}
 
