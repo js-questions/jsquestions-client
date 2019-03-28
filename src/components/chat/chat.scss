@@ -181,6 +181,11 @@
   margin: 5px 15px;
 }
 
+.chat-info button {
+  margin: 5px;
+  float: right;
+}
+
 .chat-info div:nth-child(1){
   display: flex;
   flex-direction: column;
