@@ -13,6 +13,8 @@ import ChatMessages from './chat-messages';
 import Overlay from './overlay';
 import ModalEndChat from './../modal/modal-end-chat';
 
+import ShowDetails from './chat-show-details';
+
 class Chat extends Component {
 
   state = {
@@ -32,7 +34,8 @@ class Chat extends Component {
     questionResources: null,
     questionCode: null,
     questionLearner: null,
-    questionTutor:null
+    questionTutor:null,
+    showMoreInfo: false
   }
 
   componentDidMount() {
@@ -52,12 +55,18 @@ class Chat extends Component {
         this.setState({clockReset:false})
 
         if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) { // added additional check so learner exists
-          const targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
+          let targetOffer;
+          if (sessionStorage.getItem('targetOffer')) {
+            targetOffer = JSON.parse( sessionStorage.getItem('targetOffer'))
+          }
+          else {
+            targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by); // offers prop only exists for the learner
+            sessionStorage.setItem('targetOffer', JSON.stringify(targetOffer));
+          }
           this.setState({targetTutor: targetOffer[0].tutor});
-          sessionStorage.setItem('targetOffer', targetOffer);
           this.props.socket.emit('question info', {
             question: this.props.question,
-            tutor: sessionStorage.getItem('targetOffer')
+            tutor: JSON.parse(sessionStorage.getItem('targetOffer'))
           })
         }
       } else {
@@ -76,7 +85,6 @@ class Chat extends Component {
   setChatDetails = async () => {
     //this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor
     //this.props.question.answered_by IS NULL ON LEARNER
-    console.log('users', this.props.users)
     //const test = this.props.users.find(user => user.user_id === this.props.offers.find(offer => offer.offer_id === this.props.question.answered_by).tutor);
     if (!sessionStorage.getItem('chatDetails')){
       await this.setState({
@@ -168,7 +176,13 @@ class Chat extends Component {
       sessionStorage.removeItem('timeStarted');
       sessionStorage.removeItem('targetOffer');
       sessionStorage.removeItem('chatDetails');
-      return <ModalEndChat closeQuestion={(question) => this.props.updateQuestionStatus(question)} updateKarma={this.updateKarma} closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
+      return <ModalEndChat showModal={this.state.showFeedbackModal} closeQuestion={(question) => this.props.updateQuestionStatus(question)} updateKarma={this.updateKarma} closeChatModal={() => this.setState({showFeedbackModal: false})} history={this.props.history} questionId={this.state.questionId} tutorOrLearner={this.state.tutorOrLearner}/>
+    }
+  }
+
+  showDetails = () => {
+    if (this.state.showMoreInfo) {
+      return <ShowDetails all={this.state} closeDetailsModal={() => this.setState({showMoreInfo: false})}/>
     }
   }
 
@@ -197,12 +211,11 @@ class Chat extends Component {
         </div>
         <div className="chat-info">
           <div>
+            {this.showDetails()}
             <p>Title: <span>{this.state.questionTitle}</span></p>
-            <p>Resources: <span>{this.state.questionResources}</span></p>
-            <p>Code Links: <span>{this.state.questionCode}</span></p>
           </div>
           <div>
-            <p>Description: <span>{this.state.questionDescription}</span></p>
+            <button className="button-secondary" onClick={() => this.setState({showMoreInfo: true})}>Show more details</button>
           </div>
         </div>
 
@@ -213,9 +226,9 @@ class Chat extends Component {
           <ChatMessages socket={this.props.socket} room={this.state.roomId} />
         </div>
 
-        <div className="chat-footer">
+        {/* <div className="chat-footer">
           <p>Troubleshooting - I need to report a problem</p>
-        </div>
+        </div> */}
 
         {this.showEndChatModal()}
 

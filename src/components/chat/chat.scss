@@ -176,9 +176,14 @@
 
 .chat-info {
   display: grid;
-  min-height: 88px;
-  grid-template-columns: 30% 70%;
+  min-height: 30px;
+  grid-template-columns: 60% 40%;
   margin: 5px 15px;
+}
+
+.chat-info button {
+  margin: 5px;
+  float: right;
 }
 
 .chat-info div:nth-child(1){
@@ -204,4 +209,12 @@
 
 .CodeMirror-scroll {
   padding: 0 !important;
+}
+
+.move-center {
+  position: fixed;
+  top: 25%;
+  bottom: 25%;
+  left: 25%;
+  right: 25%;
 }
