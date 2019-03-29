@@ -1,7 +1,13 @@
+/* ----------------------------------------------------------------
+profile-menu component:
+This component displays a dropdown menu from the user avatar in the
+navbar component.
+The menu has three fields: my profile, my questions and logout.
+------------------------------------------------------------------- */
+
 import React, { Component } from 'react';
 import './navbar.scss';
 import { Link } from "react-router-dom";
-
 
 class ProfileMenu extends Component {
 
@@ -12,10 +18,12 @@ class ProfileMenu extends Component {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
+  // Add mousedown listener when component is mounted
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
   }
 
+  // Remove mousedown listener when component is unmounted
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleClickOutside);
   }
@@ -25,12 +33,17 @@ class ProfileMenu extends Component {
   }
 
   handleLogout = () => {
+    // Remove token from storage
     localStorage.removeItem('token');
+    // Hide menu
     this.props.toggleMenu();
-    this.props.socket.emit('offline user', this.props.user.user_id); // this is causing the page to refresh after logout
+     // Emit an 'offline user' message to server through socket-io
+    this.props.socket.emit('offline user', this.props.user.user_id);
+    // Call logout function
     this.props.logout();
   }
 
+  // toggle menu when user clicks outside it
   handleClickOutside(event) {
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
       this.props.toggleMenu();

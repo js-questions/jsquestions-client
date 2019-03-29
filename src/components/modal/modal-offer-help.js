@@ -1,3 +1,12 @@
+/* ------------------------------------------------------------------------------------
+modal-offer-help component:
+This component displays a modal when the Offer Help button is clicked in the
+answer component. This way the tutor can send an offer help request to the learner.
+The modal shows the information of the learner and the question it refers to. It allows
+the tutor to send a message to the learner and select the time the tutor will be
+available for.
+--------------------------------------------------------------------------------------- */
+
 import React from 'react';
 import '../log-in/log-in.scss';
 import './modal.scss';
@@ -9,8 +18,7 @@ const offerHelp = (e, modalInfo, props) => {
   props.closeOfferModal()
 }
 
-let disableButton = true; // disable submit button if no input
-
+let disableButton = true; // disable submit button if no input exists
 
 function ModalOfferHelp(props) {
   const [modalInfo, setModalInfo ] = React.useState({
@@ -19,6 +27,7 @@ function ModalOfferHelp(props) {
     expiration: 15 * 6000 * 10 + Date.now(),
   })
 
+  // Enable send button when the message is not empty
   const onChangeInput = (event) => {
     if (event.target.value) disableButton = false;
     else disableButton = true;
@@ -29,17 +38,17 @@ function ModalOfferHelp(props) {
   const showHide = useSpring({ reverse: !props.showModal, from: {display: 'none'}, to: {display: 'flex'}, delay: (_) => !props.showModal ? 500 : 0 })
   const modal = useSpring({ reverse: !props.showModal, to: {opacity: 1, top: `${scrollY + 200}px `}, from: {opacity: 0, top: '-1000px', right: '25%', left: '25%'}, config: {duration: !props.showModal ? 500 : 500}})
 
+  // Obtain learner information
   let currentUser;
   if (props.users) {
     currentUser = props.users.filter(user => user.user_id === props.modalRef.learner)[0];
   }
 
+  // Obtain question information
   let currentQuestion;
   if (props.questions) {
     currentQuestion = props.questions.filter(question => question.question_id === props.modalRef.questionid)[0];
   }
-
-
 
   return (
     <div>

@@ -1,3 +1,9 @@
+/* -----------------------------------------------------
+question-posted component:
+This component displays question information and the
+existing offers for that specific question.
+-------------------------------------------------------- */
+
 import React, { Component } from 'react';
 import './question-posted.scss';
 import { connect } from 'react-redux';
@@ -12,13 +18,16 @@ class QuestionPosted extends Component {
 
   componentDidMount() {
     this.fetchUsers();
+    // Obtain questions and offers from store
     this.props.fetchQuestionAndOffers(this.state.questionid, this.state.token);
+    // Socket-io listener from server. Update store when message is received.
     this.props.socket.on('offer sent', ({ offer, updateTutor }) => {
       this.props.updateOffer(offer);
       this.props.addNewUser(updateTutor)
     })
   }
 
+  // Send GET request to server for all users and update store
   fetchUsers = () => {
     fetch(`http://localhost:4000/users`, {
       headers : {
@@ -59,6 +68,7 @@ class QuestionPosted extends Component {
     })
   }
 
+  // Render offers. Each offer is a card component
   renderOffers = () => {
     if (!this.props.question.answered) {
       const offers = this.props.offers;
@@ -75,14 +85,17 @@ class QuestionPosted extends Component {
 
   }
 
+  // Remove offer for a specific question in the store
   rejectOffer = (offerid) => {
     this.props.rejectOffer(offerid);
   }
 
+  // Remove 'offer sent' listener
   componentWillMount() {
     this.props.socket.removeListener('offer sent');
   }
 
+  // If no offers exist, display a message. Otherwise display all offers.
   checkOffersExist() {
     if (this.props.users && this.props.offers.length) {
       return this.renderOffers()
