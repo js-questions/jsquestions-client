@@ -136,7 +136,6 @@ class Navbar extends React.Component {
     if (this.props.landingPage) {
       return(
         <div className="landing-page-body">
-
           <img src={titleImage} alt="JS QUESTIONS"/>
           <form className="question-bar">
             <input id="searchTerm" type="text" maxLength="200" autoComplete="off" placeholder="What do you need help with?" onChange={this.updateInput}/>
@@ -202,3 +201,15 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+
+/* ------------------------------------------------------------------- 
+NavBar component:
+This component works with redux to update the user's store with relevant 
+information required across the website. It also works with socket.io
+to trigger the TutorNotification modal where ever the tutor is on the site.
+
+It also displays a part of the landing page where users can type a question
+and be routed to complete a question submission form.
+
+Trigger's the log in modal as well.
+---------------------------------------------------------------------- */

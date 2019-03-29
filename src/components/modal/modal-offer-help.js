@@ -81,7 +81,7 @@ function ModalOfferHelp(props) {
               <option value='180'>3h</option>
             </select>
           </div>
-          <button type='submit' disabled={disableButton} className="button-primary button-offer-help" onClick={(e)=> offerHelp(e, modalInfo, props)}>{props.modalRef.button}</button>
+          <button type='submit' disabled={disableButton} className="button-primary button-offer-help" onClick={(e)=> offerHelp(e, modalInfo, props)}>Send chat invitation</button>
         </form>
         </animated.div>
     </animated.div>

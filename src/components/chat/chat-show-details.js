@@ -17,3 +17,9 @@ function ShowDetails(props) {
 }
 
 export default ShowDetails;
+
+/* ------------------------------------------------------------------- 
+Show details of chat component:
+This component helps each party revisit the question details without 
+it taking up space of the chat.
+---------------------------------------------------------------------- */

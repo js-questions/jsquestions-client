@@ -28,3 +28,9 @@ function TutorNotification (props) {
 }
 
 export default TutorNotification;
+
+/* ------------------------------------------------------------------- 
+Tutor notification component:
+This component appears on the tutor's page where ever they are on the site
+when the learner selects 'chat now' on the question-posted page.
+---------------------------------------------------------------------- */
