@@ -98,3 +98,11 @@ function ModalEndChat(props){
 }
 
 export default ModalEndChat;
+
+/* ------------------------------------------------------------------- 
+End chat modal component:
+This component renders different views for the tutor and the learner;
+the learner will be able to provide feedback on the help session which
+will give the tutor karma.
+This also triggers the transfer of funds from the learner to the tutor.
+---------------------------------------------------------------------- */

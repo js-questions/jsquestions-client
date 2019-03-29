@@ -68,3 +68,12 @@ class Card extends Component {
 }
 
 export default Card;
+
+/* ------------------------------------------------------------------- 
+Card component:
+This component shows offer's on the user's question-posted page. 
+This is where the learner can accept to join a chat with a tutor to 
+chat about their question.
+The offers will show as expired and disable ablility to chat with 
+a tutor.
+---------------------------------------------------------------------- */
