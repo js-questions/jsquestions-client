@@ -1,3 +1,9 @@
+/* --------------------------------------------------------------------------------
+Login component:
+This component displays two different modals for the sign-in and log-in processes.
+Each modal has a button that re-directs the user to the other modal when clicked.
+----------------------------------------------------------------------------------- */
+
 import React, { Component } from 'react';
 import '../modal/modal.scss';
 import './log-in.scss';
@@ -15,7 +21,6 @@ class Login extends Component {
       username: '',
       email: '',
       password: '',
-      // url: process.env.REACT_APP_END_POINT_URL,
       url: 'http://localhost:4000',
       userExists: false,
       loginError: '',
@@ -25,6 +30,7 @@ class Login extends Component {
     this.handleLogin = this.handleLogin.bind(this);
   }
 
+  // Post information in the database and update redux store
   handleSignup (e) {
     e.preventDefault();
     fetch(`${this.state.url}/sign-up`, {
@@ -54,8 +60,10 @@ class Login extends Component {
      })
   }
 
+  // Post information in the database and update redux store
   handleLogin = async (e, res) => {
     e.preventDefault();
+    // Send encoded email/password info to the server with basic authentication
     const payload = btoa(`${this.state.email}:${this.state.password}`);
     fetch(`${this.state.url}/log-in`, {
       method: 'GET',
@@ -85,6 +93,8 @@ class Login extends Component {
   }
 
   render() {
+
+    // Render sign-up modal
     if (!this.props.login) {
       return(
         <div className="backdrop backdrop-login">
@@ -102,6 +112,8 @@ class Login extends Component {
           </div>
         </div>
       )
+
+    // Render log-in modal
     } else {
       return(
         <div className="backdrop backdrop-login">
