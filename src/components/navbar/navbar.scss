@@ -95,6 +95,10 @@ $searchSize :  50px;
   font-weight: 700;
 }
 
+.profile-badge:hover {
+  cursor: pointer;
+}
+
 .navbar__userInfo {
   display: flex;
   flex-direction: column;
@@ -175,6 +179,10 @@ $searchSize :  50px;
   margin-bottom: 10px;
 }
 
+.link {
+  color: white;
+}
+
 #searchTerm {
   height: $searchSize;
   padding: 0;
@@ -183,7 +191,7 @@ $searchSize :  50px;
   border-bottom-left-radius: $searchSize;
   border-top-left-radius: $searchSize;
   background-color: rgba(254, 255, 255, 0.8);
-  padding: 0 0 0 22px;
+  padding: 0 15px 0 22px;
   width: 400px;
   font-size: 1.7rem;
   box-shadow: inset 1px 0px 5px 0px darken(black, 10%);
