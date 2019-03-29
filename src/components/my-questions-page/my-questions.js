@@ -1,9 +1,9 @@
-/* ------------------------------------------------------------------------------------
+/* -----------------------------------------------------
 my-questions component:
 This component displays the questions for each user.
 Each question is a Question component.
 If no questions are available a message is displayed.
---------------------------------------------------------------------------------------- */
+-------------------------------------------------------- */
 
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
