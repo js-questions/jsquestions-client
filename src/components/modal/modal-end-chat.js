@@ -1,89 +1,99 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './modal.scss';
+import { useSpring, animated } from 'react-spring';
 
-class ModalEndChat extends Component {
-  state = {
-    feedback: 0,
+
+function ModalEndChat(props){
+  const [karmaClicked, setKarmaClicked ] = React.useState({
     karmaClicked: false
-    // questionid: this.props.modalRef.questionid,
-    // expiration: Date.now() + 30
-  }
+  })
 
-  closesQuestion = () => {
+  const [feedback, setFeedback] = React.useState({
+    feedback: 0
+  })
+
+  const closesQuestion = () => {
     const token = localStorage.getItem('token');
     const body = {
-      "karma": this.state.feedback,
+      "karma": feedback.feedback,
       "credits": 50,
     }
 
-    fetch(`http://localhost:4000/questions/${this.props.questionId}/feedback`, {
+    fetch(`http://localhost:4000/questions/${props.questionId}/feedback`, {
       method: 'PUT',
-      headers: {
+      headers : {
         'Authorization' : 'Bearer ' + token,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(body)
-    })
+      })
       .then(res => res.json())
-      .then(res => this.props.closeQuestion(res))
-      .then(() => this.props.updateKarma(this.state.feedback));
+      .then(res => props.closeQuestion(res))
+      .then(() => props.updateKarma(feedback.feedback))
   }
-
-  chatFeedback = (e) => {
+  
+  const chatFeedback = (e) => {
     e.preventDefault();
-    // this.props.sendOffer(this.state) //Amber TTD: put feedback in here
-    this.props.closeChatModal()
-    
-    if (this.props.tutorOrLearner === 'tutor'){
-      this.props.history.push('/answer');
+    props.closeChatModal()
+    if (props.tutorOrLearner === 'tutor'){
+      props.history.push('/answer');
     } else {
-      this.closesQuestion();
-      this.props.history.push('/my-questions');
+      closesQuestion();
+      props.history.push('/my-questions');
     }
-
+  
   }
-
-  setFeedback = (e, num) => {
+  
+  const setNewFeedback = (e, num) => {
     e.preventDefault();
-    this.setState({feedback: num})
-    if (!this.state.karmaClicked) this.setState({karmaClicked: true})
+    setFeedback({feedback: num})
+    if (!karmaClicked) setKarmaClicked({karmaClicked: true})
   }
 
-  render() {
-    if (this.props.tutorOrLearner === 'tutor') {
-      return (
-        <div className="backdrop">
-          <div className="modal">
-            <button className="button-close" onClick={()=>this.props.closeChatModal()}>X</button>
+  const showHide = useSpring({ reverse: !props.showModal, from: {display: 'none'}, to: {display: 'flex'}, delay: (_) => !props.showModal ? 500 : 0 })
+  const modal = useSpring({ reverse: !props.showModal, to: {opacity: 1, top: '30%'}, from: {opacity: 0, top: '-46%', right: '25%', left: '25%'}, config: {duration: !props.showModal ? 500 : 500}})
+
+
+  if (props.tutorOrLearner === 'tutor') {
+    return (
+      <div>
+        <animated.div style={showHide} className="backdrop" onClick={()=>props.closeChatModal()} >
+        </animated.div>
+        <animated.div style={showHide} >
+          <animated.div className="modal" style={modal}>
+            <button className="button-close" onClick={()=>props.closeChatModal()}>X</button>
             <h3>Thanks for being a tutor</h3>
             <div>Keep on being awesome. We love you.</div>
             <form>
-              <button className="button-primary" onClick={(e)=> this.chatFeedback(e)}>SUBMIT</button>
+              <button className="button-primary" onClick={(e)=> chatFeedback(e)}>SUBMIT</button>
             </form>
-          </div>
-        </div>
-      )
-    } else {
-      return (
-        <div className="backdrop">
-          <div className="modal">
-            <button className="button-close" onClick={()=>this.props.closeChatModal()}>X</button>
+          </animated.div>
+        </animated.div>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <animated.div style={showHide} className="backdrop" onClick={()=>props.closeChatModal()} >
+        </animated.div>
+        <animated.div style={showHide} >
+          <animated.div className="modal" style={modal}>
+            <button className="button-close" onClick={()=> props.closeChatModal()}>X</button>
             <h3>Hope your Tutor solved your question</h3>
             <div>Feel free to ask more questions or heck help out others if you feel confident!</div>
             <div>Please vote below on how you feel your Tutor did, Karma helps Tutors differencate themselves apart from others.</div>
             <form>
               <div className="modal-karma">
-                <button className="button-karma" onClick={(e) => this.setFeedback(e, 0)}>No Karma</button>
-                <button className="button-karma" onClick={(e) => this.setFeedback(e, 1)}><span role="img" aria-label="karma">🙏</span></button>
-                <button className="button-karma" onClick={(e) => this.setFeedback(e, 3)}><span role="img" aria-label="karma">🙏🙏🙏</span></button>
+                <button className="button-karma" onClick={(e) => setNewFeedback(e, 0)}>No Karma</button>
+                <button className="button-karma" onClick={(e) => setNewFeedback(e, 1)}><span role="img" aria-label="karma">🙏</span></button>
+                <button className="button-karma" onClick={(e) => setNewFeedback(e, 3)}><span role="img" aria-label="karma">🙏🙏🙏</span></button>
               </div>
-              <button className="button-primary" disabled={!this.state.karmaClicked} onClick={(e)=> this.chatFeedback(e)}>SUBMIT</button>
+              <button className="button-primary" disabled={!karmaClicked} onClick={(e)=> chatFeedback(e)}>SUBMIT</button>
             </form>
-          </div>
-        </div>
-      )
-    }
-
+          </animated.div>
+        </animated.div>
+      </div>
+    )
   }
 }
 

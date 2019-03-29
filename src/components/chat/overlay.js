@@ -28,7 +28,7 @@ class Overlay extends Component {
   render() {
     return (
       <div className="backdrop">
-        <div className="modal">
+        <div className="modal modal-still">
           <div>Waiting for Tutor to Join...</div>
           <div id="counter">{this.state.startTime} seconds</div>
         </div>
