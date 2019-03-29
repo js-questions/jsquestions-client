@@ -25,20 +25,16 @@ class Question extends Component {
       btn_class = "button-offerHelp offerNotSent";
       btn_text = "Offer Help";
     }
-
-    //Amber TTD: needs 3 if statement to change if person is not online
-      return <button className={btn_class} disabled={disableFlag} onClick={() => {this.props.openOfferModal(this.props.question)}}>{btn_text}</button>
-      // return <button className={btn_class} disabled={this.state.buttonAlreadyClicked} onClick={() => {this.changeColor(); this.props.openOfferModal(this.props.question)}}>{btn_text}</button>
+    return <button className={btn_class} disabled={disableFlag} onClick={() => {this.props.openOfferModal(this.props.question)}}>{btn_text}</button>
   }
+
   renderOfflineButton = () => {
     return <button disabled className="button-offline">Offline</button>
   }
 
 
-  //Amber TTD: there needs to be a way on page refresh that these will stay the same
 
   render() {
-
     //disable offerbutton on user offline
     let availability = '';
     let offerButtonExists = '';
@@ -85,3 +81,10 @@ class Question extends Component {
 
 export default Question;
 
+
+
+/* ------------------------------------------------------------------- 
+Question component:
+This component is used to render conditional question details information 
+from the answer-page listing and the my-question page listings.
+---------------------------------------------------------------------- */

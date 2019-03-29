@@ -33,3 +33,8 @@ class LandingPage extends Component {
 }
 
 export default LandingPage;
+
+/* ------------------------------------------------------------------- 
+Landing page component:
+This component render's bottom static information of the website.
+---------------------------------------------------------------------- */

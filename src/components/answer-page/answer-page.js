@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './answer-page.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-
 import { connect } from 'react-redux';
 import { updateQuestions, updateOffer } from '../../redux/actions.js';
 import Question from '../question/question';
@@ -14,9 +13,6 @@ class AnswerPage extends Component {
     loggedIn: false,
     showModal: false,
     modalRef: {
-      //Amber TTD: Need to refactor this
-      description: null,
-      button: 'Send chat invitation',
       questionid: null,
       learner: null,
     },
@@ -53,7 +49,7 @@ class AnswerPage extends Component {
       .then(res => res.json())
       .then(res => {
         this.setState({
-          offlineUsers: res.filter(user => {  // [Rod] We should set it to the redux store instead
+          offlineUsers: res.filter(user => {
             return user.available === null;
           })
         });
@@ -65,27 +61,24 @@ class AnswerPage extends Component {
   }
 
   sendOffer = (details) => {
-    //Amber TTD: Needs to have a way if they click and aren't siged in they need to sign in
-      const token = localStorage.getItem('token');
-      fetch(`http://localhost:4000/questions/${details.questionid}/offers`, {
-        method: 'POST',
-        headers: {
-          'Authorization' : 'Bearer ' + token,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "message": details.message,
-          "expiration": details.expiration
-        })
+    const token = localStorage.getItem('token');
+    fetch(`http://localhost:4000/questions/${details.questionid}/offers`, {
+      method: 'POST',
+      headers: {
+        'Authorization' : 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "message": details.message,
+        "expiration": details.expiration
       })
-        .then(res => res.json())
-        .then(offer => {
-          this.props.updateOffer(offer);
-          const currentQuestion = this.state.questions.filter(question => question.question_id === offer.linked_question);
-          this.props.socket.emit('offer sent', { offer, learner_id: currentQuestion[0].learner })
-        })
-
-    //Amber TTD: if there are no responses sent show "there aren't any questions being asked right now"
+    })
+      .then(res => res.json())
+      .then(offer => {
+        this.props.updateOffer(offer);
+        const currentQuestion = this.state.questions.filter(question => question.question_id === offer.linked_question);
+        this.props.socket.emit('offer sent', { offer, learner_id: currentQuestion[0].learner })
+      })
   }
 
   showOfferModal = () => {
@@ -93,15 +86,13 @@ class AnswerPage extends Component {
   }
 
   openOfferModal = (question) => {
-    this.setState( state => {
-      // state.showModal = true
+    this.setState(state => {
       state.modalRef.questionid = question.question_id
       state.modalRef.learner = question.learner
     })
     this.setState({
       showModal: true
     })
-    //TTD DEBUG: The state is not changing when inside the first state change, this is why the other is nessessary
   }
 
   closeOfferModal = () => {
@@ -109,7 +100,6 @@ class AnswerPage extends Component {
     this.setState({
       showModal: false
     })
-    //Amber TTD: need a way to cancel offer help sent question comonent button change
   }
 
   renderQuestions = () => {
@@ -205,3 +195,9 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnswerPage);
+
+/* ------------------------------------------------------------------- 
+Answer page component:
+This component renders all learner questions and displays if the 
+question is closed, open, pending or the user is offline.
+---------------------------------------------------------------------- */
