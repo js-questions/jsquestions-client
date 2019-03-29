@@ -1,3 +1,11 @@
+/* -------------------------------------------------------------------
+Ask-question component:
+This component allows the user to post a question filling a form.
+If the user is not logged in, the help button will redirect the user to
+the sign-in/log-in components.
+Otherwise, it redirects the user to the question-posted components.
+---------------------------------------------------------------------- */
+
 import React, { Component } from 'react';
 import './ask-questions.scss';
 import Login from '../log-in/log-in.js';
@@ -19,7 +27,7 @@ class AskQuestions extends Component {
       this.setState({
         title: this.props.location.state.title
       })
-     
+
     }
   }
 
@@ -73,15 +81,6 @@ class AskQuestions extends Component {
     //sends question to database and then sends user to question posted page
     await this.postQuestion(token);
     this.props.history.push(`/question-posted/${this.state.storedQuestion.question_id}`, this.state.storedQuestion);
-  }
-
-
-
-  componentWillUnmount() {
-    // The below componentWillUnmount is needed for warning issues with React
-    // this.setState = () => {
-    //   return;
-    // };
   }
 
   render() {
