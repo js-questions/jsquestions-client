@@ -1,9 +1,15 @@
+/* -------------------------------------------------------------------
+Chat-messages component:
+This component focuses on displaying the chat messages between to users.
+The style of the message differs if the message belongs to you or the other user.
+Each new message is added to the DOM when the send button is clicked.
+---------------------------------------------------------------------- */
+
 import React, { Component } from 'react';
 import './chat.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-
 
 class ChatMessages extends Component {
 
@@ -84,6 +90,3 @@ class ChatMessages extends Component {
 }
 
 export default ChatMessages;
-
-
-
