@@ -25,7 +25,7 @@ class LandingPage extends Component {
           <button className="button-primary">Join now!</button>
         </div>
         <div className="landing-page__footer">
-          <p>© JS Questions 2019. View our Data Policy and Terms.</p>
+          <p>©JS Questions 2019. View our Data Policy and Terms.</p>
         </div>
       </div>
     )

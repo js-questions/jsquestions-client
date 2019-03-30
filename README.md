@@ -1,11 +1,8 @@
 To start with docker...install set up using back-end set up then...
 
 in terminal run:
-docker build . -t react-docker
+docker-compose up --build
 (Grab some coffee because this will take awhile to complete...)
-
-Then start the front-end server using the following command:
-docker run -p 3000:3000 react-docker
 
 After go to - http://localhost:3000/
 //////////////////////////////////////////////

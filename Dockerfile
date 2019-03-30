@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Run the build
-CMD [ "npm", "start" ];
+CMD [ "npm", "run", "start" ];
 
 # Expose the port
 EXPOSE 3000

@@ -1,8 +1,11 @@
-version: '1'
+version: '3'
 
 services:
 
-  admin:
+  client:
     build: .
+    volumes:
+     - /client/node_modules
+     - .:/client
     ports:
      - "3000:3000"
