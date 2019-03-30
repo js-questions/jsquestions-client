@@ -75,6 +75,7 @@ class QuestionPosted extends Component {
       return offers.map((offer) => {
         const tutor = this.props.users.find(user => user.user_id === offer.tutor)
         if (offer.linked_question === +this.state.questionid) return <div key={offer.offer_id}><Card tutor={tutor} offer={offer} rejectOffer={() => this.rejectOffer(offer.offer_id)} chatNow={(e) => this.handleClick(e, tutor.user_id, offer.offer_id)}/></div>
+        return 'No offers for this question yet';
       });
     } else {
       const dateUpdated = this.props.question.updatedAt.split('T')[0]+ ' '+this.props.question.updatedAt.split('T')[1].split('.')[0];
