@@ -19,16 +19,30 @@ class CodeEditor extends Component {
   textArea = React.createRef();
   checker = false;
 
+  cursorPos = {
+    line: 0,
+    ch: 0
+  }
+
   componentDidMount() {
     document.addEventListener('keyup', (e) => {
       this.checker = false;
+      this.cursorPos = { ...this.codemirror.getCursor() }
     })
+
     document.addEventListener('keydown', (e) => {
       this.checker = true;
     })
+    
+    document.addEventListener('click', (e) => {
+      this.cursorPos = { ...this.codemirror.getCursor() }
+    })
 
     // Server sends editor code through socket io to all users.
-    this.props.socket.on('editor', (data) => this.codemirror.getDoc().setValue(data.code));
+    this.props.socket.on('editor', (data) => {
+      this.codemirror.getDoc().setValue(data.code)
+      this.codemirror.setCursor(this.cursorPos.line, this.cursorPos.ch);
+    });
 
     // Set-up codemirror editor properties
     this.codemirror =  CodeMirror.fromTextArea(this.textArea.current, {
@@ -39,7 +53,7 @@ class CodeEditor extends Component {
     })
 
     // when a user types, call codeChanged function
-    this.codemirror.on('changes', this.codeChanged);
+    this.codemirror.on('change', this.codeChanged);
 
     // set editor theme
     this.codemirror.setOption('theme', 'material');
@@ -60,7 +74,6 @@ class CodeEditor extends Component {
       }
     }
     this.codemirror.focus();
-    this.codemirror.setCursor(this.codemirror.lineCount(), 0);
   }
 
   // When the component unmounts, remove listener
@@ -73,7 +86,6 @@ class CodeEditor extends Component {
       <div className="editor">
         <textarea id="txtArea" name="txtArea"ref={this.textArea}/>
       </div>
-
     )
   }
 
