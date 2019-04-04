@@ -72,6 +72,7 @@ class QuestionPosted extends Component {
   renderOffers = () => {
     if (!this.props.question.answered) {
       const offers = this.props.offers;
+      // eslint-disable-next-line
       return offers.map((offer) => {
         const tutor = this.props.users.find(user => user.user_id === offer.tutor)
         if (offer.linked_question === +this.state.questionid) return <div key={offer.offer_id}><Card tutor={tutor} offer={offer} rejectOffer={() => this.rejectOffer(offer.offer_id)} chatNow={(e) => this.handleClick(e, tutor.user_id, offer.offer_id)}/></div>
