@@ -1,6 +1,6 @@
-![hero-logo](./src/assets/hero-logo.png)
+<div align="center"><img src="./src/assets/hero-logo.png"/></div>
 
-## 
+
 
 ## Table of contents
 
@@ -21,8 +21,6 @@
 
 
 <div align="center" style="margin: 80px"><img src ="./src/assets/JSQuestionsPreview.gif" /></div>
-
-
 
 
 
