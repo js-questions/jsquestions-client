@@ -9,6 +9,7 @@ import ChatMessages from './chat-messages';
 import Overlay from './overlay';
 import ModalEndChat from './../modal/modal-end-chat';
 import ShowDetails from './chat-show-details';
+import Json from 'circular-json';
 
 // video chat
 import axios from 'axios';
@@ -28,22 +29,20 @@ class Chat extends Component {
     tutorOrLearner: this.props.location.pathname.split('/')[4],
     showFeedbackModal: false,
     tutorJoined: false,
-    minutes: 0,
-    seconds: 0,
-    secondsString: '00',
-    overTime: 'white',
+    // minutes: 0,
+    // seconds: 0,
+    // secondsString: '00',
+    // overTime: 'white',
     clockReset: true,
     timerId: null,
     questionTitle: null,
     questionDescription: null,
     questionResources: null,
     questionCode: null,
-    questionLearner: null,
-    questionTutor:null,
     showMoreInfo: false,
     // video chat
-    mySessionId: 'SessionA',
-    myUserName: 'Participant' + Math.floor(Math.random() * 100),
+    mySessionId: this.props.location.pathname.split('/')[2],
+    myUserName: this.props.user.username,
     session: undefined,
     mainStreamManager: undefined,
     publisher: undefined,
@@ -52,10 +51,9 @@ class Chat extends Component {
 
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
-    this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
-    this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
+    this.setChatDetails = this.setChatDetails.bind(this);
   }
 
   componentDidMount() {
@@ -70,7 +68,7 @@ class Chat extends Component {
       if (participants === 2) {
         if (this.state.clockReset) {
           //starts the timer on joining of the tutor
-          this.setState({tutorJoined: true}, () => this.startTimer());
+          this.setState({tutorJoined: true})
         }
         this.setState({clockReset:false})
 
@@ -109,7 +107,8 @@ class Chat extends Component {
         questionCode: this.props.question.code,
       })
       //Question details are stored in the sessionStorage to keep details of the question in the chat on refresh
-      sessionStorage.setItem('chatDetails', JSON.stringify(this.state))
+      sessionStorage.setItem('chatDetails', Json.stringify(this.state))
+      console.log('this.state', this.state);
     } else {
       const questionDetails = JSON.parse(sessionStorage.getItem('chatDetails'));
       this.setState({
@@ -121,37 +120,37 @@ class Chat extends Component {
     }
   }
 
-  startTimer = () => {
-    if (!sessionStorage.getItem('timeStarted')){
-      //Stores the chat started in the sessionStorage in order to keep the clock's time on refresh
-      sessionStorage.setItem('timeStarted', Date.now());
-    }
+  // startTimer = () => {
+  //   if (!sessionStorage.getItem('timeStarted')){
+  //     //Stores the chat started in the sessionStorage in order to keep the clock's time on refresh
+  //     sessionStorage.setItem('timeStarted', Date.now());
+  //   }
 
-    if (sessionStorage.getItem('timeStarted')) {
-      const newTime = Date.now() - sessionStorage.getItem('timeStarted');
-      const secs = Number(((newTime % 60000) / 1000).toFixed(0));
-      const mins= Math.floor(newTime/ 60000);
-      this.setState({
-        minutes: mins,
-        seconds: secs,
-      })
-    }
+  //   if (sessionStorage.getItem('timeStarted')) {
+  //     const newTime = Date.now() - sessionStorage.getItem('timeStarted');
+  //     const secs = Number(((newTime % 60000) / 1000).toFixed(0));
+  //     const mins= Math.floor(newTime/ 60000);
+  //     this.setState({
+  //       minutes: mins,
+  //       seconds: secs,
+  //     })
+  //   }
 
-    const intervalId = setInterval( () => {
-      this.setState({seconds: this.state.seconds + 1})
-      if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
-      else this.setState({secondsString: this.state.seconds})
-      if (this.state.seconds === 60) {
-        this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
-      }
-      if (this.state.minutes === 15) {
-        this.setState({ overTime: 'red'});
-      }
-    }, 1000)
+  //   const intervalId = setInterval( () => {
+  //     this.setState({seconds: this.state.seconds + 1})
+  //     if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
+  //     else this.setState({secondsString: this.state.seconds})
+  //     if (this.state.seconds === 60) {
+  //       this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
+  //     }
+  //     if (this.state.minutes === 15) {
+  //       this.setState({ overTime: 'red'});
+  //     }
+  //   }, 1000)
 
-    this.setState({ timerId: intervalId });
+  //   this.setState({ timerId: intervalId });
 
-  }
+  // }
 
   renderOverlay = () => {
     if (this.state.tutorOrLearner === 'learner' && !this.state.tutorJoined) {
@@ -207,18 +206,6 @@ class Chat extends Component {
     this.leaveSession();
   }
 
-  handleChangeSessionId(e) {
-    this.setState({
-        mySessionId: e.target.value,
-    });
-  }
-
-  handleChangeUserName(e) {
-      this.setState({
-          myUserName: e.target.value,
-      });
-  }
-
   handleMainVideoStream(stream) {
       if (this.state.mainStreamManager !== stream) {
           this.setState({
@@ -250,7 +237,7 @@ class Chat extends Component {
             session: this.OV.initSession(),
         },
         () => {
-            var mySession = this.state.session;
+            let mySession = this.state.session;
 
             // --- 3) Specify the actions when events take place in the session ---
 
@@ -258,8 +245,8 @@ class Chat extends Component {
             mySession.on('streamCreated', (event) => {
                 // Subscribe to the Stream to receive it. Second parameter is undefined
                 // so OpenVidu doesn't create an HTML video by its own
-                var subscriber = mySession.subscribe(event.stream, undefined);
-                var subscribers = this.state.subscribers;
+                let subscriber = mySession.subscribe(event.stream, undefined);
+                let subscribers = this.state.subscribers;
                 subscribers.push(subscriber);
 
                 // Update the state with the new subscribers
@@ -337,20 +324,14 @@ class Chat extends Component {
     this.setState({
         session: undefined,
         subscribers: [],
-        mySessionId: 'SessionA',
-        myUserName: 'Participant' + Math.floor(Math.random() * 100),
+        mySessionId: this.props.location.pathname.split('/')[2],
+        myUserName: this.props.user.username,
         mainStreamManager: undefined,
         publisher: undefined
     });
 }
 
-  // end - video chat functions
-
   render() {
-
-    // video chat info
-    const mySessionId = this.state.mySessionId;
-    const myUserName = this.state.myUserName;
 
     return(
       <div className="chat-component">
@@ -373,6 +354,9 @@ class Chat extends Component {
             <p>Title: <span>{this.state.questionTitle}</span></p>
           </div>
           <div>
+          <input className="btn btn-large btn-danger" type="button" id="buttonLeaveSession" onClick={this.joinSession} value="Start video"/>
+          </div>
+          <div>
             <button className="button-secondary" onClick={() => this.setState({showMoreInfo: true})}>Show more details</button>
           </div>
         </div>
@@ -381,54 +365,16 @@ class Chat extends Component {
       {/* Start video chat */}
       <div className="chat-body">
         <div className="container">
-                {this.state.session === undefined ? (
-                    <div id="join">
-                        <div id="img-div">
-                            <img src="resources/images/openvidu_grey_bg_transp_cropped.png" alt="OpenVidu logo" />
-                        </div>
-                        <div id="join-dialog" className="jumbotron vertical-center">
-                            <h1> Join a video session </h1>
-                            <form className="form-group" onSubmit={this.joinSession}>
-                                <p>
-                                    <label>Participant: </label>
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        id="userName"
-                                        value={myUserName}
-                                        onChange={this.handleChangeUserName}
-                                        required
-                                    />
-                                </p>
-                                <p>
-                                    <label> Session: </label>
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        id="sessionId"
-                                        value={mySessionId}
-                                        onChange={this.handleChangeSessionId}
-                                        required
-                                    />
-                                </p>
-                                <p className="text-center">
-                                    <input className="btn btn-lg btn-success" name="commit" type="submit" value="JOIN" />
-                                </p>
-                            </form>
-                        </div>
-                    </div>
-                ) : null}
-
                 {this.state.session !== undefined ? (
                     <div id="session">
                         <div id="session-header">
-                            <h1 id="session-title">{mySessionId}</h1>
+
                             <input
                                 className="btn btn-large btn-danger"
                                 type="button"
                                 id="buttonLeaveSession"
                                 onClick={this.leaveSession}
-                                value="Leave session"
+                                value="Stop video"
                             />
                         </div>
 
@@ -438,12 +384,12 @@ class Chat extends Component {
                             </div>
                         ) : null}
                         <div id="video-container" className="col-md-6">
-                            {this.state.publisher !== undefined ? (
+                            {/* {this.state.publisher !== undefined ? (
                                 <div className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(this.state.publisher)}>
                                     <UserVideoComponent
                                         streamManager={this.state.publisher} />
                                 </div>
-                            ) : null}
+                            ) : null} */}
                             {this.state.subscribers.map((sub, i) => (
                                 <div key={i} className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(sub)}>
                                     <UserVideoComponent streamManager={sub} />
@@ -453,8 +399,6 @@ class Chat extends Component {
                     </div>
                 ) : null}
             </div>
-        );
-    }
     </div>
 
         {/* <div className="chat-body">
