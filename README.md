@@ -20,9 +20,7 @@
 
 
 
-
-
-![JSQuestionsPreview](./src/assets/JSQuestionsPreview.gif)
+<div style="text-align:center"><img src ="./src/assets/JSQuestionsPreview.gif" /></div>
 
 
 
