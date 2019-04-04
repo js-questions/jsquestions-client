@@ -54,7 +54,14 @@ After go to - http://localhost:3000/ and now you are ready to start developing!
 
 
 
-## Developers team
+## Development team
 
 Amber Williams - [GitHub](https://github.com/Amber-Williams) - [LinkedIn](https://www.linkedin.com/in/amber-williams-dev/)
 
+Sue Li - [GitHub](https://github.com/zsli16) - [LinkedIn](https://www.linkedin.com/in/sueli88/)
+
+Natalia Ortiz - [GitHub](https://github.com/nataliaero) - [LinkedIn](https://www.linkedin.com/in/natalia-ortiz-gomez/)
+
+Julián González - [GitHub](https://github.com/1971S) - [LinkedIn](https://www.linkedin.com/in/jgpicatoste/)
+
+Rodrigo Alcala - [GitHub]( https://github.com/rodalcala) - [LinkedIn](https://www.linkedin.com/in/rodrigoalcala/)
