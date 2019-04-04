@@ -69,7 +69,7 @@ export const rejectOffer = (id) => {
   return function (dispatch) {
     const token = localStorage.getItem('token');
     if (token) {
-      return fetch(`http://localhost:4000/offers/${id}/reject`, {
+      return fetch(`${process.env.REACT_APP_SERVER_URL}/offers/${id}/reject`, {
         method: 'PUT',
         headers: {
           'Authorization': 'Bearer ' + token,
@@ -85,7 +85,7 @@ export const rejectOffer = (id) => {
 export const fetchQuestionAndOffers = (questionid, token) => {
   return function (dispatch) {
     if (token) {
-      return fetch(`http://localhost:4000/questions/${questionid}/offers`, {
+      return fetch(`${process.env.REACT_APP_SERVER_URL}/questions/${questionid}/offers`, {
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + token,

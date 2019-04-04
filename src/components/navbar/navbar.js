@@ -40,7 +40,7 @@ class Navbar extends React.Component {
 
   fetchUsers = () => {
     if (this.state.token) {
-      fetch(`http://localhost:4000/users`, {
+      fetch(`${process.env.REACT_APP_SERVER_URL}/users`, {
         headers : {
           'Authorization' : 'Bearer ' + this.state.token,
       }})
@@ -83,7 +83,7 @@ class Navbar extends React.Component {
   checkUser = () => {
     if (this.state.token) {
       const decoded = jwt_decode(this.state.token);
-      fetch(`http://localhost:4000/users/${decoded.user_id}`, {
+      fetch(`${process.env.REACT_APP_SERVER_URL}/users/${decoded.user_id}`, {
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + this.state.token,
