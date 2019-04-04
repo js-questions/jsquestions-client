@@ -8,6 +8,7 @@ import Question from '../question/question';
 import ModalOfferHelp from './../modal/modal-offer-help';
 
 class AnswerPage extends Component {
+
   state = {
     questions: null,
     loggedIn: false,
@@ -25,7 +26,7 @@ class AnswerPage extends Component {
     if (token) {
       this.setState({loggedIn: true})
     }
-    fetch(`http://localhost:4000/questions`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/questions`, {
       method: 'GET',
       headers : {
         'Authorization' : 'Bearer ' + token,
@@ -40,7 +41,7 @@ class AnswerPage extends Component {
   getUsers = () => {
     const token = localStorage.getItem('token');
     if (token) {
-      fetch(`http://localhost:4000/users/`, {
+      fetch(`${process.env.REACT_APP_SERVER_URL}/users/`, {
         method: 'GET',
         headers : {
           'Authorization' : 'Bearer ' + token,
@@ -62,7 +63,7 @@ class AnswerPage extends Component {
 
   sendOffer = (details) => {
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:4000/questions/${details.questionid}/offers`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/questions/${details.questionid}/offers`, {
       method: 'POST',
       headers: {
         'Authorization' : 'Bearer ' + token,

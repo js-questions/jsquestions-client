@@ -29,7 +29,7 @@ class QuestionPosted extends Component {
 
   // Send GET request to server for all users and update store
   fetchUsers = () => {
-    fetch(`http://localhost:4000/users`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/users`, {
       headers : {
         'Authorization' : 'Bearer ' + this.state.token,
     }})
@@ -47,7 +47,7 @@ class QuestionPosted extends Component {
   }
 
   alertTutor = async (token, tutorId, offerId) => { // also sending offerId
-    await fetch(`http://localhost:4000/questions/${this.state.questionid}`, {
+    await fetch(`${process.env.REACT_APP_SERVER_URL}/questions/${this.state.questionid}`, {
       method: 'PUT',
       headers : {
         'Authorization' : 'Bearer ' + token,

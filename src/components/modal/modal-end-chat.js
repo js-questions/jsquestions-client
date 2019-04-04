@@ -19,7 +19,7 @@ function ModalEndChat(props){
       "credits": 50,
     }
 
-    fetch(`http://localhost:4000/questions/${props.questionId}/feedback`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/questions/${props.questionId}/feedback`, {
       method: 'PUT',
       headers : {
         'Authorization' : 'Bearer ' + token,

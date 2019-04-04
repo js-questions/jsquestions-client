@@ -13,7 +13,7 @@ import { updateKarma } from './redux/actions.js';
 
 import Chat from './components/chat/chat.js';
 import openSocket from 'socket.io-client';
-const socket = openSocket('http://localhost:4000/');
+const socket = openSocket(`${process.env.REACT_APP_SERVER_URL}/`);
 
 const EntryPage = () => (
   <>

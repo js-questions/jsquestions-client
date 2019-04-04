@@ -17,7 +17,7 @@ class MyQuestions extends Component {
   // Send a GET request to the server to retrieve all questions and update store.
   componentWillMount = async () => {
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:4000/questions/asked`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/questions/asked`, {
       method: 'GET',
       headers : {
         'Authorization' : 'Bearer ' + token,
