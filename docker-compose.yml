@@ -5,7 +5,7 @@ services:
   client:
     build: .
     volumes:
-     - /client/node_modules
      - .:/client
+     - /client/node_modules
     ports:
-     - "3000:3000"
+     - "3000:3000" 

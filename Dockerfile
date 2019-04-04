@@ -1,7 +1,7 @@
 # Load node server
 FROM node:10
 
-# working dir
+# Change working dir to /client
 WORKDIR /client
 
 # Add files from current to /app
@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Run the build
-CMD [ "npm", "run", "start" ];
+CMD [ "npm", "start" ];
 
 # Expose the port
 EXPOSE 3000
