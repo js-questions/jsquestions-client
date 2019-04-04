@@ -20,7 +20,7 @@
 
 
 
-<div style="text-align:center"><img src ="./src/assets/JSQuestionsPreview.gif" /></div>
+<div align="center"><img src ="./src/assets/JSQuestionsPreview.gif" /></div>
 
 
 
