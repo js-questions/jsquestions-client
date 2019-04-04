@@ -44,7 +44,7 @@ After go to - http://localhost:3000/ and now you are ready to start developing!
 - [React](https://reactjs.org/)
 - [Redux](https://redux.js.org/)
 - [React Spring](https://www.react-spring.io/)
-- [Socket io](https://socket.io/)
+- [Socket\.io](https://socket.io/)
 - [Docker](https://www.docker.com/)
 - [SASS](https://sass-lang.com/)
 
