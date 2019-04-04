@@ -59,7 +59,7 @@ class CodeEditor extends Component {
     this.codemirror.setOption('theme', 'material');
 
     // set editor size
-    this.codemirror.setSize('65vw', '80vh');
+    this.codemirror.setSize('55vw', '80vh');
   }
 
   codeChanged = () => {

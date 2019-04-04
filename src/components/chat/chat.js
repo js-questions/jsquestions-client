@@ -345,6 +345,8 @@ class Chat extends Component {
           </div>
           <div className="right">
             <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
+            <input className="btn-video" type="button" id="buttonLeaveSession" onClick={this.joinSession} value="Start video"/>
+            <input className="btn-video" type="button" id="buttonLeaveSession" onClick={this.leaveSession} value="Stop video"/>
             <button className="end-call-button" onClick={this.hangUp}>End Call</button>
           </div>
         </div>
@@ -353,9 +355,7 @@ class Chat extends Component {
             {this.showDetails()}
             <p>Title: <span>{this.state.questionTitle}</span></p>
           </div>
-          <div>
-          <input className="btn btn-large btn-danger" type="button" id="buttonLeaveSession" onClick={this.joinSession} value="Start video"/>
-          </div>
+         
           <div>
             <button className="button-secondary" onClick={() => this.setState({showMoreInfo: true})}>Show more details</button>
           </div>
@@ -364,47 +364,30 @@ class Chat extends Component {
 
       {/* Start video chat */}
       <div className="chat-body">
-        <div className="container">
-                {this.state.session !== undefined ? (
-                    <div id="session">
-                        <div id="session-header">
-
-                            <input
-                                className="btn btn-large btn-danger"
-                                type="button"
-                                id="buttonLeaveSession"
-                                onClick={this.leaveSession}
-                                value="Stop video"
-                            />
+        <CodeEditor socket={this.props.socket} room={this.state.roomId}/>
+        <div className="chat-video-message">
+          <div className="container">
+              {this.state.session !== undefined ? (
+                <div className="filledVideo">
+                    {this.state.mainStreamManager !== undefined ? (
+                        <div className="single-video">
+                            <UserVideoComponent streamManager={this.state.mainStreamManager} />
                         </div>
-
-                        {this.state.mainStreamManager !== undefined ? (
-                            <div id="main-video" className="col-md-6">
-                                <UserVideoComponent streamManager={this.state.mainStreamManager} />
+                    ) : null}
+                    <div  className="single-video">
+                        {this.state.subscribers.map((sub, i) => (
+                            <div key={i} className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(sub)}>
+                                <UserVideoComponent streamManager={sub} />
                             </div>
-                        ) : null}
-                        <div id="video-container" className="col-md-6">
-                            {/* {this.state.publisher !== undefined ? (
-                                <div className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(this.state.publisher)}>
-                                    <UserVideoComponent
-                                        streamManager={this.state.publisher} />
-                                </div>
-                            ) : null} */}
-                            {this.state.subscribers.map((sub, i) => (
-                                <div key={i} className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(sub)}>
-                                    <UserVideoComponent streamManager={sub} />
-                                </div>
-                            ))}
-                        </div>
+                        ))}
                     </div>
-                ) : null}
+                 
+                </div>
+              ) : (<div className="emptyVideo"></div>)}
             </div>
+            <ChatMessages socket={this.props.socket} room={this.state.roomId} />
+          </div>
     </div>
-
-        {/* <div className="chat-body">
-          <CodeEditor socket={this.props.socket} room={this.state.roomId}/>
-          <ChatMessages socket={this.props.socket} room={this.state.roomId} />
-        </div> */}
 
         <div className="chat-footer">
           <p>Troubleshooting - I need to report a problem</p>
