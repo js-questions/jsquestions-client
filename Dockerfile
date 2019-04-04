@@ -7,8 +7,8 @@ WORKDIR /client
 # Add files from current to /app
 COPY package.json /client/package.json
 
-# Install node packages
-RUN npm install
+# Install node packages silently to avoid flooding the terminal
+RUN npm install --silent
 
 # Add source files
 COPY . .
