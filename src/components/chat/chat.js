@@ -19,12 +19,14 @@ class Chat extends Component {
     tutorOrLearner: this.props.location.pathname.split('/')[4],
     showFeedbackModal: false,
     tutorJoined: false,
+    // for the chat timer
     minutes: 0,
     seconds: 0,
     secondsString: '00',
     overTime: 'white',
-    clockReset: true,
-    timerId: null,
+    clockReset: true, // clockReset = resets timer when there are 2 partcipants 
+    timerId: null, // timerId = Id of setInterval function to start the timer
+    // for question info
     questionTitle: null,
     questionDescription: null,
     questionResources: null,
