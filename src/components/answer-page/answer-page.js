@@ -113,7 +113,7 @@ class AnswerPage extends Component {
       return <div>LOADING...</div>
     }
     //Renders questions
-    else if (this.state.questions.length > 0) {
+    else if (this.state.allUsers && this.state.offlineUsers && this.state.questions.length > 0) {
       const questionsHelpNow = this.state.questions.filter((question) => question.status==='help-now' && this.state.offlineUsers.filter(user => user.user_id===question.learner).length===0);
       const questionsPending = this.state.questions.filter((question) => question.status==='pending' && this.state.offlineUsers.filter(user => user.user_id===question.learner).length===0);
       const questionsClosed = this.state.questions.filter((question) => question.status==='closed' && this.state.offlineUsers.filter(user => user.user_id===question.learner).length===0);
