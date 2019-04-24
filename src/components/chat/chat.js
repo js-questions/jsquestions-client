@@ -11,6 +11,7 @@ import ChatMessages from './chat-messages';
 import Overlay from './overlay';
 import ModalEndChat from './../modal/modal-end-chat';
 import ShowDetails from './chat-show-details';
+import ChatTimer from './chat-timer.js';
 
 class Chat extends Component {
   state = {
@@ -19,13 +20,7 @@ class Chat extends Component {
     tutorOrLearner: this.props.location.pathname.split('/')[4],
     showFeedbackModal: false,
     tutorJoined: false,
-    // for the chat timer
-    minutes: 0,
-    seconds: 0,
-    secondsString: '00',
-    overTime: 'white',
-    clockReset: true, // clockReset = resets timer when there are 2 partcipants 
-    timerId: null, // timerId = Id of setInterval function to start the timer
+
     // for question info
     questionTitle: null,
     questionDescription: null,
@@ -37,17 +32,18 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    this.props.socket.emit('join room', this.state.roomId)
+    this.props.socket.emit('join room', this.state.roomId);
+
+    // stores the question to sessionStorage for both users
     this.setChatDetails();
+
     // Notify that user is online (since navbar is not rendered, which is normally used to show if user is online)
     this.props.socket.emit('user online', {token: localStorage.getItem('token')});
+
     this.props.socket.on('join room', (participants) => {
       if (participants === 2) {
-        if (this.state.clockReset) {
-          //starts the timer on joining of the tutor
-          this.setState({tutorJoined: true}, () => this.startTimer());
-        }
-        this.setState({clockReset:false})
+
+        this.setState({tutorJoined: true}, () => this.startTimer());
 
         if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) {
           let targetOffer;
@@ -58,21 +54,23 @@ class Chat extends Component {
             targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by);
             sessionStorage.setItem('targetOffer', JSON.stringify(targetOffer));
           }
+
           this.setState({targetTutor: targetOffer[0].tutor});
+
           this.props.socket.emit('question info', {
             question: this.props.question,
             tutor: JSON.parse(sessionStorage.getItem('targetOffer'))
           })
+        } else { 
+          this.setState({tutorJoined: false});
         }
-      } else {
-        this.setState({tutorJoined: false});
-      }
+      } 
     });
-    this.props.socket.on('question info', (data) => {
-      this.props.updateChatQuestion(data);
-    })
+
     //HANG-UP
-    this.props.socket.on('hang up', () => {this.setState({showFeedbackModal: true})})
+    this.props.socket.on('hang up', () => {
+      this.setState({showFeedbackModal: true});
+    })
   }
 
   setChatDetails = async () => {
@@ -97,35 +95,7 @@ class Chat extends Component {
   }
 
   startTimer = () => {
-    if (!sessionStorage.getItem('timeStarted')){
-      //Stores the chat started in the sessionStorage in order to keep the clock's time on refresh
-      sessionStorage.setItem('timeStarted', Date.now());
-    }
-
-    if (sessionStorage.getItem('timeStarted')) {
-      const newTime = Date.now() - sessionStorage.getItem('timeStarted');
-      const secs = Number(((newTime % 60000) / 1000).toFixed(0));
-      const mins= Math.floor(newTime/ 60000);
-      this.setState({
-        minutes: mins,
-        seconds: secs,
-      })
-    }
-
-    const intervalId = setInterval( () => {
-      this.setState({seconds: this.state.seconds + 1})
-      if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
-      else this.setState({secondsString: this.state.seconds})
-      if (this.state.seconds === 60) {
-        this.setState({ seconds: 0, minutes: this.state.minutes + 1, secondsString: '00'})
-      }
-      if (this.state.minutes === 15) {
-        this.setState({ overTime: 'red'});
-      }
-    }, 1000)
-
-    this.setState({ timerId: intervalId });
-
+    return <ChatTimer socket={this.props.socket} room={this.state.roomId}/> 
   }
 
   renderOverlay = () => {
@@ -170,7 +140,6 @@ class Chat extends Component {
     this.props.socket.removeListener('join room');
     this.props.socket.removeListener('question info');
     this.props.socket.removeListener('hang up');
-    clearInterval(this.state.timerId);
   }
 
   render() {
@@ -185,7 +154,7 @@ class Chat extends Component {
             <p>Live Help Session</p>
           </div>
           <div className="right">
-            <h3 id="timer" style={{color: this.state.overTime}}>{this.state.minutes}:{this.state.secondsString}</h3>
+            {this.startTimer()}
             <button className="end-call-button" onClick={this.hangUp}>End Call</button>
           </div>
         </div>

@@ -14,11 +14,44 @@ class ChatTimer extends Component {
     minutes: 0,
     seconds: 0,
     secondsString: '00',
-    overTime: 'black'
+    overTime: 'white',
+    timerId: null,
+  }
+
+  componentDidMount = () => {
+    this.props.socket.on('start timer', () => {
+      console.log('ive received start timer');
+      this.startTimer();
+    })
+  }
+
+  componentWillUnmount = () => {
+    clearInterval(this.state.timerId);
   }
 
   startTimer = () => {
-    setInterval(async () => {
+    if (!sessionStorage.getItem('timeStarted')) {
+      //Stores the chat started in the sessionStorage in order to keep the clock's time on refresh
+      const newTime = sessionStorage.setItem('timeStarted', Date.now());
+      const secs = Number(((newTime % 60000) / 1000).toFixed(0));
+      const mins= Math.floor(newTime/ 60000);
+      this.setState({
+        minutes: mins,
+        seconds: secs,
+      })
+    }
+
+    if (sessionStorage.getItem('timeStarted')) {
+      const newTime = Date.now() - sessionStorage.getItem('timeStarted');
+      const secs = Number(((newTime % 60000) / 1000).toFixed(0));
+      const mins= Math.floor(newTime/ 60000);
+      this.setState({
+        minutes: mins,
+        seconds: secs,
+      })
+    }
+
+    const intervalId = setInterval(async () => {
       this.setState({seconds: this.state.seconds + 1})
       if (this.state.seconds < 10 ) this.setState({secondsString: '0' + this.state.seconds})
       else this.setState({secondsString: this.state.seconds})
@@ -34,6 +67,9 @@ class ChatTimer extends Component {
       }
 
     }, 1000)
+
+    this.setState({ timerId: intervalId });
+
   }
 
   render() {
