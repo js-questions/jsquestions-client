@@ -20,6 +20,7 @@ class Chat extends Component {
     tutorOrLearner: this.props.location.pathname.split('/')[4],
     showFeedbackModal: false,
     tutorJoined: false,
+    clockReset: true,
 
     // for question info
     questionTitle: null,
@@ -43,28 +44,34 @@ class Chat extends Component {
     this.props.socket.on('join room', (participants) => {
       if (participants === 2) {
 
-        this.setState({tutorJoined: true}, () => this.startTimer());
+        if (this.state.clockReset) {
+          //starts the timer on joining of the tutor
+          this.setState({tutorJoined: true})
+          this.startTimer();
+        }
+
+        this.setState({clockReset:false})
 
         if (this.state.tutorOrLearner === 'learner' && this.props.question.learner === this.props.user.user_id) {
-          let targetOffer;
           if (sessionStorage.getItem('targetOffer')) {
             //targetOffer is stored in the sessionStorage for the edge case that the user refreshes in the chat to be able to still send karma to the tutor
-            targetOffer = JSON.parse( sessionStorage.getItem('targetOffer'))
+            let targetOffer = JSON.parse( sessionStorage.getItem('targetOffer'))
+            this.setState({targetTutor: targetOffer});
           } else {
-            targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by);
+            let targetOffer = this.props.offers.filter(offer => offer.offer_id === this.props.question.answered_by);
+            this.setState({targetTutor: targetOffer[0].tutor});
             sessionStorage.setItem('targetOffer', JSON.stringify(targetOffer));
           }
-
-          this.setState({targetTutor: targetOffer[0].tutor});
 
           this.props.socket.emit('question info', {
             question: this.props.question,
             tutor: JSON.parse(sessionStorage.getItem('targetOffer'))
           })
-        } else { 
-          this.setState({tutorJoined: false});
         }
-      } 
+  
+      } else {
+        this.setState({tutorJoined: false});
+      }
     });
 
     //HANG-UP

@@ -20,7 +20,6 @@ class ChatTimer extends Component {
 
   componentDidMount = () => {
     this.props.socket.on('start timer', () => {
-      console.log('ive received start timer');
       this.startTimer();
     })
   }
@@ -30,15 +29,10 @@ class ChatTimer extends Component {
   }
 
   startTimer = () => {
-    if (!sessionStorage.getItem('timeStarted')) {
+
+    if (!sessionStorage.getItem('timeStarted')){
       //Stores the chat started in the sessionStorage in order to keep the clock's time on refresh
-      const newTime = sessionStorage.setItem('timeStarted', Date.now());
-      const secs = Number(((newTime % 60000) / 1000).toFixed(0));
-      const mins= Math.floor(newTime/ 60000);
-      this.setState({
-        minutes: mins,
-        seconds: secs,
-      })
+      sessionStorage.setItem('timeStarted', Date.now());
     }
 
     if (sessionStorage.getItem('timeStarted')) {
