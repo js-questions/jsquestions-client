@@ -141,7 +141,7 @@ class Navbar extends React.Component {
             <input id="searchTerm" type="text" maxLength="200" autoComplete="off" placeholder="What do you need help with?" onChange={this.updateInput}/>
             <NavLink to={{pathname: '/ask', state: {title: this.state.questionTitle}}} className="navbar-item searchTerm-button">?</NavLink>
           </form>
-          <h3>For when Stack Overflow and the Internet just aren't enough.</h3>
+          <h3 id="tagline">For when Stack Overflow and the Internet just aren't enough.</h3>
           <h2><Link className="link navbar__underline" to="/answer">Want to help others?</Link></h2>
         </div>
       )
