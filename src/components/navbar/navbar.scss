@@ -241,10 +241,43 @@ $searchSize :  50px;
   box-shadow: 3px 3px 8px 0px darken($secondary, 5%);
 }
 
+#tagline {
+  text-align: center;
+  padding: 0px 10%;
+}
+
 .log-in {
   padding-right: 20px;
 }
 
 input:focus {
   outline: none;
+}
+
+
+@media only screen and (max-width: 450px) {
+  .navbar {
+    padding: 0px 5%;
+  }
+
+  .navbar__link {
+    display: none;
+  }
+
+  .navbar-item {
+    padding-right: 0px;
+    margin-right: 0px;
+  }
+
+  .landing-page-body img {
+    width: 250px;
+  }
+
+  .question-bar {
+    max-width: 350px;
+  }
+
+  #searchTerm {
+    font-size: 1em;
+  }
 }
