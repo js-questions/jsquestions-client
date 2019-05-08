@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+
+  client:
+    build: .
+    volumes:
+     - .:/client
+     - /client/node_modules
+    ports:
+     - "3000:3000"
+    container_name: JSQ-Client
