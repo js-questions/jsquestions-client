@@ -59,12 +59,14 @@
   background-color: black;
   width: 100%;
   align-items: center;
+  padding: 0px 5%;
 }
 
 .landing-page__footer p {
   color: $white;
   font-size: 1.5rem;
   padding: 20px 0;
+  text-align: center;
 }
 
 .landing-page-icon {
@@ -74,4 +76,16 @@
 
 .privacy-policy {
   text-decoration: underline;
+}
+
+@media only screen and (max-width: 550px) {
+  .landing-page__help-others h3 {
+    margin-bottom: 50px;
+  }
+
+ .privacy-policy {
+   display: block;
+ }
+
+  
 }
