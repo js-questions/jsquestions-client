@@ -121,10 +121,13 @@ hr {
   border-color: $primary;
 }
 
-
 @media only screen and (max-width: 450px) {
   h3 {
     font-size: 1em;
+  }
+
+  .button-primary {
+    min-height: 50px;
   }
 }
 
