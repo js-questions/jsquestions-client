@@ -61,6 +61,7 @@ $searchSize :  50px;
 .navbar__underline {
   position: relative;
   text-decoration: none;
+  margin-left: 10px;
 }
 
 .navbar__underline:before  {
@@ -254,12 +255,32 @@ input:focus {
   outline: none;
 }
 
-
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 675px) {
   .navbar {
     padding: 0px 5%;
   }
 
+  .navbar-box__landingPage {
+    background-position: 10% 25%;
+  }
+
+  .navbar-item {
+    font-size: 1em;
+    margin-right: 5px;
+  }
+
+  .log-in {
+    padding-right: 10px;
+  }
+
+  #searchTerm {
+    font-size: 1em;
+  }
+
+}
+
+@media only screen and (max-width: 550px) {
+  
   .navbar__link {
     display: none;
   }
@@ -271,13 +292,17 @@ input:focus {
 
   .landing-page-body img {
     width: 250px;
+    padding-bottom: 20px;
+    padding-top: 20px;
   }
 
   .question-bar {
     max-width: 350px;
   }
 
-  #searchTerm {
-    font-size: 1em;
+  .landing-page-body h2 {
+    font-size: 1.2em;
   }
+
+  
 }
