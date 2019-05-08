@@ -60,6 +60,7 @@
   width: 100%;
   align-items: center;
   padding: 0px 5%;
+  text-align: center;
 }
 
 .landing-page__footer p {
@@ -83,9 +84,14 @@
     margin-bottom: 50px;
   }
 
+  .landing-page__footer p {
+    text-align: center;
+  }
+
  .privacy-policy {
    display: block;
  }
+
 
   
 }
