@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import logo from './logo.svg';
 import './App.scss';
 import Navbar from './components/navbar/navbar';
 import AskQuestions from './components/ask-questions-page/ask-questions';
