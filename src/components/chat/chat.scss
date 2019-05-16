@@ -1,0 +1,220 @@
+@import '../../colors.scss';
+
+.chat-component {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+.chat-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  background-color: $secondary;
+  padding: 20px;
+  width: 100vw;
+}
+
+.left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.left p {
+  padding: 10px;
+  margin: 10px;
+  color: white;
+  font-size: 1em;
+  display: inline;
+  font-weight: 500;
+}
+
+.right #timer {
+  display: inline;
+  padding: 20px;
+}
+
+.end-call-button {
+  width: 100px;
+  height: 35px;
+  padding: 10px;
+  background-color: $primary;
+  border-radius: 40px;
+  border: 0px;
+  box-shadow: 0 2px rgba(black, .3);
+  font-weight: bolder;
+  font-family: "Montserrat";
+}
+
+.end-call-button:hover {
+  cursor: pointer;
+  background-color: $primary-dark;
+}
+
+.chat-body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: #EEECEC;
+  padding-bottom: 30px;
+}
+
+.chat-box {
+  width: 30%;
+  height: 80vh;
+  background-color: $white;
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.form-wrapper {
+  position: relative;
+  padding: 5px 10px;
+  min-height: 35px;
+  margin-bottom: 5px;
+}
+
+.message-field {
+  width: 100%;
+  font-size: .7em;
+  resize: none;
+  padding-right: 20px;
+  min-height: 3rem;
+  max-height: 3rem;
+}
+
+.message-field::placeholder {
+  font-size: .8em;
+}
+
+.send-icon {
+  position: absolute;
+  right: 15px;
+  bottom: 10px;
+  border: 0;
+  outline: 0;
+  width: 20px;
+}
+
+.chat-footer {
+  position: fixed;
+  bottom: 0;
+  height: 30px;
+  background-color: $grey-dark;
+  color: $grey-light;
+  width: 100vw;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.chat-footer p {
+  font-size: .7em;
+  padding: 10px;
+  padding-left: 20px;
+  color: white;
+}
+
+.editor {
+  max-width: 70%;
+  height: 80vh;
+  margin: 15px 0px 15px 15px;
+}
+
+.CodeMirror {
+  z-index: 0;
+}
+
+#txtArea {
+  width: 95%;
+  height: 100%;
+  min-height: 500px;
+}
+
+#messages {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  overflow-y: scroll;
+  vertical-align: bottom;
+  height: 1200px;
+}
+
+.oneMessage {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: 5px 10px;
+  border-radius: 10px;
+  max-width: 90%;
+  min-height: 10%;
+  font-size: .7em;
+  overflow-wrap: break-word;
+}
+
+.myMessage {
+  align-self: flex-end;
+  background-color: $primary-light;
+}
+
+.elseMessage {
+  align-self: flex-start;
+  background-color: #EEECEC;
+}
+
+.messageDate {
+  font-size: 8px;
+  align-self: flex-end;
+}
+
+.chat-info {
+  display: grid;
+  min-height: 30px;
+  grid-template-columns: 60% 40%;
+  margin: 5px 15px;
+}
+
+.chat-info button {
+  margin: 5px;
+  float: right;
+}
+
+.chat-info div:nth-child(1){
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-info p {
+  font-size: 1em;
+  padding: 2px;
+  margin: 3px;
+}
+
+.chat-info p span {
+  background-color: rgb(224, 224, 224);
+  padding: 2px 10px;
+  border-radius: 5px;
+}
+
+.CodeMirror {
+  height: 80vh !important;
+}
+
+.CodeMirror-scroll {
+  padding: 0 !important;
+}
+
+.move-center {
+  position: fixed;
+  top: 25%;
+  bottom: 25%;
+  left: 25%;
+  right: 25%;
+}

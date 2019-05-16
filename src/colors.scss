@@ -1,0 +1,14 @@
+$primary: rgb(255, 216, 102);
+$primary-dark: darken($primary, 5%);
+$primary-light: lighten($primary, 10%);
+$secondary: rgb(33, 35, 51);
+$secondary-transparent: rgba( $secondary, .7 );
+$white: rgb(255, 255, 255);
+$grey: rgb(150, 150, 150);
+$grey-light: lighten($grey, 25%);
+$grey-dark: darken($grey, 25%);
+$green-yellow: greenyellow;
+$green-transparent: rgba(172, 255, 47, 0.653);
+$green-yellow-dark: darken($green-yellow, 18%);
+$red: rgb(158, 59, 59);
+$red-transparent: rgba(174, 63, 63, 0.7);

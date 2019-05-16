@@ -1,0 +1,108 @@
+@import '../../colors.scss';
+
+.offerNotSent {
+  border: 2px solid $green-yellow;
+}
+
+.offerSent {
+  border: 2px solid $primary;
+}
+
+.question__container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 80vw;
+  margin: 10px;
+  border: 1px solid $grey;
+  border-radius: 3px;
+  padding: 10px 20px;
+}
+
+.question__container div {
+  color: $secondary;
+  display: flex;
+  flex-direction: column;
+}
+
+.question__container div p {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 550px;
+}
+
+
+.question__container h4 {
+  margin-right: 15px;
+  margin-bottom: 5px;
+}
+
+.question__user {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  margin-right: 20px;
+}
+
+.question__img {
+  border-radius: 50%;
+  background-color: $primary;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.question__user img {
+  width: 60px;
+  height: 60px;
+}
+
+.question__user p {
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.question__body {
+  width: 60%;
+}
+
+.question__title {
+  margin:  0 15px 20px 15px;
+}
+
+.question__description {
+  word-wrap: break-word;
+}
+
+.availability {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  align-self: flex-end;
+  margin-top: -20px;
+  z-index: 1;
+}
+
+.offline {
+  background-color: $grey;
+}
+
+.online {
+  background-color: $green-yellow;
+}
+
+.icon__answered {
+  color: $green-yellow-dark;
+  font-size: 3rem;
+}
+
+.icon__not-answered {
+  color: $primary;
+}
+
+
+
